@@ -2,3 +2,5 @@
 *.dot
 *_jak.asm
 *.pdf
+*.swp
+*.png
