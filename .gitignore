@@ -1,5 +1,6 @@
 /Jakstab/bin/
 /.idea/
+/Jakstab/src/org/jakstab/.idea/
 *.dot
 *_jak.asm
 *.pdf
