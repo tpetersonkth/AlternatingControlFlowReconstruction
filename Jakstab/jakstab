@@ -1,5 +1,6 @@
 #!/bin/bash
-JS_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+Source="$(readlink -f "${BASH_SOURCE[0]}")"
+JS_HOME="$( cd "$( dirname $Source )" && pwd )"
 JSCLASSPATH=${JS_HOME}/lib/antlr.jar:${JS_HOME}/lib/google-collect-1.0.jar:lib/javabdd-1.0b2.jar:${JS_HOME}/bin
 case `uname` in
     CYGWIN*)
