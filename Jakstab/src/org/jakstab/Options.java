@@ -15,6 +15,9 @@
  * You should have received a copy of the GNU General Public License version
  * 2 along with this work; if not, see <http://www.gnu.org/licenses/>.
  */
+
+//Modified by Thomas Peterson
+
 package org.jakstab;
 
 import java.io.File;
@@ -103,6 +106,11 @@ public class Options {
 			"2: Optimistic: Abstract all calls to ABI contract (fastest).");
 	public static JOption<Integer> getProcAddress = JOption.create("getprocaddress", "n", 2, "How to resolve GetProcAddress: 0: Always succeed, 1: Split success/fail, 2: Merge success/fail (default)");
 
+	//T: Add SE as option
+	//String name, String paramName, T defaultValue, String description
+	public static JOption<Integer> useSE = JOption.create("dse","port",-1, "Use dynamic symoblic execution to underapproximate unknown branch targets.");
+	public static JOption<Boolean> test = JOption.create("test", "Background mode, i.e., disable shutdown hook on enter.");
+
 	private static AnalysisManager mgr = AnalysisManager.getInstance();
 	public static JOption<String> cpas = JOption.create("cpa", "{" + mgr.getShorthandsString() + "}", "x", "Configure which analyses to use for control flow reconstruction.");
 	public static JOption<String> secondaryCPAs = JOption.create("cpa2", "{" + mgr.getShorthandsString() + "}", "", "Secondary analyses to be performed after the initial CFG reconstruction and dead code elimination are completed.");
@@ -114,7 +122,6 @@ public class Options {
 	 * @param args
 	 */
 	public static void parseOptions(String args[]) {
-		
 		// Pre-load analyses so that they can register their options
 		AnalysisManager.getInstance();
 		
@@ -125,12 +132,10 @@ public class Options {
 		if (args.length > 0)
 			argStringBuilder.append(args[args.length - 1]);
 		arguments = argStringBuilder.toString();
-		
 		for (int i = 0; i < args.length; i++) {
 			String arg = args[i];
 			// Dash (-) arguments
 			if (arg.startsWith("-")) {
-				
 				JOption<?> opt = options.get(arg);
 				if (opt != null) {
 					if (opt.getDefaultValue() instanceof Boolean) {
