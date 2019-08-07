@@ -108,8 +108,7 @@ public class Options {
 
 	//T: Add SE as option
 	//String name, String paramName, T defaultValue, String description
-	public static JOption<Integer> useSE = JOption.create("dse","port",-1, "Use dynamic symoblic execution to underapproximate unknown branch targets.");
-	public static JOption<Boolean> test = JOption.create("test", "Background mode, i.e., disable shutdown hook on enter.");
+	public static JOption<Integer> DSE = JOption.create("dse","port",-1, "Use dynamic symoblic execution to underapproximate unknown branch targets.");
 
 	private static AnalysisManager mgr = AnalysisManager.getInstance();
 	public static JOption<String> cpas = JOption.create("cpa", "{" + mgr.getShorthandsString() + "}", "x", "Configure which analyses to use for control flow reconstruction.");
