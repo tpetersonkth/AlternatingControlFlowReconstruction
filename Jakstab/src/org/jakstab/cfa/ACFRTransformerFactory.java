@@ -23,6 +23,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.LinkedList;
 
+import java.io.FileWriter;
+
 import org.jakstab.Options;
 import org.jakstab.Program;
 import org.jakstab.analysis.AbstractState;
@@ -51,11 +53,13 @@ import org.jakstab.util.Tuple;
  */
 public class ACFRTransformerFactory extends ResolvingTransformerFactory {
 
+    private Program program = Program.getProgram();
+
     private static final Logger logger = Logger.getLogger(ACFRTransformerFactory.class);
 
     private Map<RTLNumber, RTLNumber> realToStub = new HashMap<RTLNumber, RTLNumber>();
     private Map<RTLNumber, RTLNumber> stubToReal = new HashMap<RTLNumber, RTLNumber>();
-    private Program program = Program.getProgram();
+    private Set<LinkedList<RTLLabel>> paths = new FastSet<LinkedList<RTLLabel>>();
 
     @Override
     // Returns the transformers of an abstract state
@@ -89,6 +93,7 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
             @Override
             public Set<CFAEdge> visit(RTLGoto stmt) {
                 logger.warn("[*] ACFR goto");
+
                 //Assert that this is infact a goto statement
                 assert stmt.getCondition() != null;
 
@@ -98,7 +103,7 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
                 //The set of edges which will contain the resulting edges
                 Set<CFAEdge> results = new FastSet<CFAEdge>();
 
-                //Optimistic mode //TODO
+                //Optimistic mode //TODO keep or not?
                 if (Options.procedureAbstraction.getValue() == 2) {
                     if (stmt.getType() == RTLGoto.Type.CALL) {
                         //Add fall-through edge
@@ -131,9 +136,6 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
                     RTLLabel nextLabel;
                     logger.warn("[*] jump:" + stmt.getLabel());
                     logger.warn("[*] Info: " + stmt.getDefinedVariables() + ":" + stmt.getUsedVariables() + ":" + stmt.getUsedMemoryLocations() + ":" + stmt.getAddress());
-                    LinkedList<RTLLabel> l = getPath(stmt.getLabel());
-
-                    System.out.println(l);
 
                     // Start building the assume expression: assume correct condition case
                     assert conditionValue != null;
@@ -150,8 +152,12 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
                             logger.warn("[*] ACFR unresolved jump:" + stmt.getLabel());
                             sound = false;
 
+                            unresolvedBranches.add(stmt.getLabel());//Used for statistics
+
                             //Get the path towards the unresolved branch and ask DSE for help           //TODO
-                            unresolvedBranches.add(stmt.getLabel());
+                            LinkedList<RTLLabel> path = getPath(stmt.getLabel());
+                            paths.add(path);
+
                             continue;
                         }
                         // assume (condition = true AND targetExpression = targetValue)
@@ -179,6 +185,8 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
 
                     results.add(new CFAEdge(assume.getLabel(), assume.getNextLabel(), assume, Kind.MAY));
                 }
+
+                exportPaths(paths,"/tmp/test.txt");
 
                 //TOOD: Currently not used
                 // Add all edges from under-approximation
@@ -332,11 +340,40 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
             return l;
         }
         else{
-            System.out.println("[*] ---- "+currentLabel);
             LinkedList<RTLLabel> l = getPath(program.getStatement(currentLabel).getPrevLabel());
             l.add(currentLabel);
             return l;
         }
+    }
+
+    private void exportPaths(Set<LinkedList<RTLLabel>> paths, String filename){
+        String out = "";
+        //Format output
+        for (LinkedList<RTLLabel> path : paths){
+            AbsoluteAddress prevAddr = null;
+            for (RTLLabel statement : path) {
+                AbsoluteAddress addr = statement.getAddress();
+                if (addr != prevAddr && addr != null){
+                    out += addr + ",";
+                }
+                prevAddr = addr;
+            }
+
+            //Remove trailing comma
+            out = out.substring(0, out.length() - 1);
+            out += "\n";
+
+        }
+
+        try{
+            FileWriter fw = new FileWriter(filename);
+            fw.write(out);
+            fw.close();
+        }catch(Exception e){System.out.println(e);}
+
+        System.out.println("exported:");
+        System.out.println(out);
+
     }
 
 }
