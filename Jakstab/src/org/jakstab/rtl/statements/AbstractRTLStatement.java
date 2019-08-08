@@ -16,6 +16,8 @@
  * 2 along with this work; if not, see <http://www.gnu.org/licenses/>.
  */
 
+//Modified by Thomas Peterson
+
 package org.jakstab.rtl.statements;
 
 import java.util.Set;
@@ -46,6 +48,7 @@ public abstract class AbstractRTLStatement implements RTLStatement, Cloneable {
 	protected Set<RTLMemoryLocation> usedMemoryLocations = null;
 
 	protected RTLLabel label;
+	protected RTLLabel prevLabel;
 	protected RTLLabel nextLabel;
 
 	protected void invalidateCache() {
@@ -169,6 +172,19 @@ public abstract class AbstractRTLStatement implements RTLStatement, Cloneable {
 		if (res != 0) return res;
 		throw new IllegalStateException("Comparing two non-equal RTLStatements with the same label: "
 				+ this.label + " " + o.getLabel());
+	}
+
+	@Override
+	public RTLLabel getPrevLabel() {
+		return prevLabel;
+	}
+
+	@Override
+	public void setPrevLabel(RTLLabel prevLabel) {
+		//This ensures that it is always possible to find the shortest loop-free path to this statement
+		if (this.prevLabel == null){
+			this.prevLabel = prevLabel;
+		}
 	}
 
 	@Override

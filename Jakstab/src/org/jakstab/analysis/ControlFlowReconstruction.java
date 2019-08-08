@@ -138,6 +138,7 @@ public class ControlFlowReconstruction implements Algorithm {
 		List<ConfigurableProgramAnalysis> cpas = new LinkedList<ConfigurableProgramAnalysis>();
 		boolean addedExplicitAnalysis = false;
 		boolean addedUnderApproximation = false;
+		boolean addedDSE = false;
 		AnalysisManager mgr = AnalysisManager.getInstance();
 
 
@@ -172,9 +173,14 @@ public class ControlFlowReconstruction implements Algorithm {
 			logger.fatal("You need to specify at least one explicit value analysis: c, b, x or i");
 			System.exit(1);
 		}
+
+		//T: Check if DSE is enabled
+		if (Options.DSE.getValue() != -1){
+			addedDSE = true;
+		}
 		
 		ConfigurableProgramAnalysis cpa;
-		if (!addedUnderApproximation) {
+		if (!addedUnderApproximation && !addedDSE) {
 			cpa = new CompositeProgramAnalysis(new LocationAnalysis(), cpas.toArray(new ConfigurableProgramAnalysis[cpas.size()]));
 		} else {
 			cpa = new DualCompositeAnalysis(new LocationAnalysis(), cpas.toArray(new ConfigurableProgramAnalysis[cpas.size()]));
@@ -182,13 +188,16 @@ public class ControlFlowReconstruction implements Algorithm {
 
 		// Init State transformer factory
 		if (Options.basicBlocks.getValue()) {
-			
+
 			if (addedUnderApproximation) {
 				logger.fatal("Currently, basic block summarization cannot be combined with under-approximations!");
 				System.exit(1);
 			}
 			transformerFactory = new PessimisticBasicBlockFactory();
-			
+		} else if (Options.DSE.getValue() != -1) {
+
+			transformerFactory = new ACFRTransformerFactory();
+
 		} else if (addedUnderApproximation) {
 			
 			transformerFactory = new AlternatingStateTransformerFactory();
