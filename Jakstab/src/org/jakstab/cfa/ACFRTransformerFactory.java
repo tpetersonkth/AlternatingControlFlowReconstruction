@@ -59,7 +59,6 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
 
     private Map<RTLNumber, RTLNumber> realToStub = new HashMap<RTLNumber, RTLNumber>();
     private Map<RTLNumber, RTLNumber> stubToReal = new HashMap<RTLNumber, RTLNumber>();
-    private Set<LinkedList<RTLLabel>> paths = new FastSet<LinkedList<RTLLabel>>();
 
     @Override
     // Returns the transformers of an abstract state
@@ -154,7 +153,7 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
 
                             unresolvedBranches.add(stmt.getLabel());//Used for statistics
 
-                            //Get the path towards the unresolved branch and ask DSE for help           //TODO
+                            //Get the path towards the unresolved branch and ask DSE for help
                             LinkedList<RTLLabel> path = getPath(stmt.getLabel());
                             paths.add(path);
 
@@ -185,8 +184,6 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
 
                     results.add(new CFAEdge(assume.getLabel(), assume.getNextLabel(), assume, Kind.MAY));
                 }
-
-                exportPaths(paths,"/tmp/test.txt");
 
                 //TOOD: Currently not used
                 // Add all edges from under-approximation
@@ -344,49 +341,6 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
             l.add(currentLabel);
             return l;
         }
-    }
-
-    private void exportPaths(Set<LinkedList<RTLLabel>> paths, String filename){//TODO remove intiial pseudo block from paths
-        String out = "";
-
-        //Format output
-        boolean firstPath = true;
-        for (LinkedList<RTLLabel> path : paths) {
-            AbsoluteAddress prevAddr = null;
-
-            if (!firstPath) {
-                out += "\n";
-            }
-
-            boolean firstAddr = true;
-            for (RTLLabel statement : path) {
-                AbsoluteAddress addr = statement.getAddress();
-
-                if (addr != prevAddr && addr != null){
-                    if (!firstAddr){
-                         out += ",";
-                    }
-                    out += addr;
-                }
-
-                firstAddr = false;
-                prevAddr = addr;
-            }
-
-            firstPath = false;
-
-        }
-
-        //Export to file
-        try{
-            FileWriter fw = new FileWriter(filename);
-            fw.write(out);
-            fw.close();
-        }catch(Exception e){System.out.println(e);}
-
-        System.out.println("exported:");
-        System.out.println(out);
-
     }
 
 }

@@ -15,6 +15,9 @@
  * You should have received a copy of the GNU General Public License version
  * 2 along with this work; if not, see <http://www.gnu.org/licenses/>.
  */
+
+//Modified by Thomas Peterson
+
 package org.jakstab.analysis;
 
 import java.util.*;
@@ -33,6 +36,7 @@ import org.jakstab.asm.x86.X86Instruction;
 import org.jakstab.cfa.*;
 import org.jakstab.rtl.statements.BasicBlock;
 import org.jakstab.util.*;
+import org.jakstab.util.DSE;
 
 /**
  * The control flow reconstruction algorithm in the CPA framework.
@@ -370,6 +374,12 @@ public class ControlFlowReconstruction implements Algorithm {
 			status = e.toString();
 			throw e;
 		} finally {
+			if (Options.DSE.getValue() != -1){
+				//Export the paths to the unresolved branches to DSE
+				System.out.println("[*] received paths size: " + transformerFactory.getUnresolvedPaths().size());
+				DSE.exportPaths(transformerFactory.getUnresolvedPaths(),"/tmp/JakstabUnresolvedPaths.txt");
+			}
+
 			program.setCFA(transformerFactory.getCFA());
 			program.setUnresolvedBranches(transformerFactory.getUnresolvedBranches());
 		}
