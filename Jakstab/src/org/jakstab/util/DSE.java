@@ -31,6 +31,8 @@ import org.jakstab.cfa.RTLLabel;
  */
 public class DSE {
 
+    private static final Logger logger = Logger.getLogger(DSE.class);
+
     public static void exportPaths(Set<LinkedList<RTLLabel>> paths, String filename){//TODO remove intiial pseudo block from paths
         String out = "";
 
@@ -69,8 +71,8 @@ public class DSE {
             fw.close();
         }catch(Exception e){System.out.println(e);}
 
-        System.out.println("exported:");
-        System.out.println(out);
+        logger.debug("Exported the following paths to DSE:");
+        logger.debug(out);
 
     }
 

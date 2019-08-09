@@ -376,7 +376,6 @@ public class ControlFlowReconstruction implements Algorithm {
 		} finally {
 			if (Options.DSE.getValue() != -1){
 				//Export the paths to the unresolved branches to DSE
-				System.out.println("[*] received paths size: " + transformerFactory.getUnresolvedPaths().size());
 				DSE.exportPaths(transformerFactory.getUnresolvedPaths(),"/tmp/JakstabUnresolvedPaths.txt");
 			}
 
