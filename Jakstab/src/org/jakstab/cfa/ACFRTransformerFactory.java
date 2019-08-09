@@ -346,25 +346,38 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
         }
     }
 
-    private void exportPaths(Set<LinkedList<RTLLabel>> paths, String filename){
+    private void exportPaths(Set<LinkedList<RTLLabel>> paths, String filename){//TODO remove intiial pseudo block from paths
         String out = "";
+
         //Format output
-        for (LinkedList<RTLLabel> path : paths){
+        boolean firstPath = true;
+        for (LinkedList<RTLLabel> path : paths) {
             AbsoluteAddress prevAddr = null;
+
+            if (!firstPath) {
+                out += "\n";
+            }
+
+            boolean firstAddr = true;
             for (RTLLabel statement : path) {
                 AbsoluteAddress addr = statement.getAddress();
+
                 if (addr != prevAddr && addr != null){
-                    out += addr + ",";
+                    if (!firstAddr){
+                         out += ",";
+                    }
+                    out += addr;
                 }
+
+                firstAddr = false;
                 prevAddr = addr;
             }
 
-            //Remove trailing comma
-            out = out.substring(0, out.length() - 1);
-            out += "\n";
+            firstPath = false;
 
         }
 
+        //Export to file
         try{
             FileWriter fw = new FileWriter(filename);
             fw.write(out);
