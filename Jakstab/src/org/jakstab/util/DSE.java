@@ -24,7 +24,7 @@ import java.io.FileWriter;
 
 import org.jakstab.asm.AbsoluteAddress;
 import org.jakstab.cfa.RTLLabel;
-
+import org.jakstab.loader.Harness;
 
 /**
  * @author Thomas Peterson
@@ -48,6 +48,12 @@ public class DSE {
             boolean firstAddr = true;
             for (RTLLabel statement : path) {
                 AbsoluteAddress addr = statement.getAddress();
+
+                //Skip the initial pseudo block that only exists in the intermediate represenation
+                if (addr.getValue() == Harness.PROLOGUE_BASE){
+                    assert(firstAddr);//Prologue base should never be able to be anywhere else than at the start of a path
+                    continue;
+                }
 
                 if (addr != prevAddr && addr != null){
                     if (!firstAddr){
