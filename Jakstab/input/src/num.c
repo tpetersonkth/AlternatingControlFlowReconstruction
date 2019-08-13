@@ -6,10 +6,6 @@ int main(int argc, char *argv[]){
         char *p;
         int x = strtol(argv[1], &p, 10);
 
-        printf("received argc=%d\n",argc);
-        printf("received argv[0]=%s\n",argv[0]);
-        printf("received x=%d\n",x);
-
         if(x > 10){
                 printf("x is more than 10\n");
         }
