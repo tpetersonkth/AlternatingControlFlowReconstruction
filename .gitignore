@@ -1,4 +1,6 @@
 /Jakstab/bin/
+mcore_*/
+input
 *.idea/
 *.dot
 *_jak.asm
