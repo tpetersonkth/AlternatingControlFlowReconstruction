@@ -15,7 +15,7 @@ def run(program, address):
     #Store variables in global context to ensure that we can communicate them to the callback function
     with m.locked_context() as context:
         context['instructionAddress'] = address
-        context['targets'] = []
+        context['targets'] = set()
 
     #Register hook to have each executed instruction's RIP printed to the commandline
     m.add_hook(None, print_ip)
@@ -29,9 +29,10 @@ def run(program, address):
     #Naive guided execution...
     @m.hook(None)
     def hook(state):
-        if state.cpu.RIP not in [0x08048080,0x08048085,0x0804808a,0x0804808f,0x08048094,0x08048096,0x0804809b]:
-            print("Abandoning state with RIP="+hex(state.cpu.RIP))
-            state.abandon()
+        pass
+        #if state.cpu.RIP not in [0x08048080,0x08048085,0x0804808a,0x0804808f,0x08048094,0x08048096,0x0804809b]:
+        #    print("Abandoning state with RIP="+hex(state.cpu.RIP))
+        #    state.abandon()
     m.run()
     with m.locked_context() as context:
         targets = context['targets']
@@ -50,11 +51,13 @@ class ACFRPlugin(Plugin):
         if (old_pc == address):
             print("Calculating possible targets")
             out=hex(old_pc)+ "->"
-            targets = []
+
+            with self.manticore.locked_context() as context:
+                targets = context['targets']
 
             #Calculate possible succeessor of the instruction at the target address
             for i in state.solve_n(new_pc, nsolves=5):
-                targets.append(hex(i))
+                targets.add(hex(i))
 
             #Put them in the global context so that they can be accessed later
             with self.manticore.locked_context() as context:
