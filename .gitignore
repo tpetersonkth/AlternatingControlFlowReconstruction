@@ -1,6 +1,7 @@
 /Jakstab/bin/
 mcore_*/
-input
+/SE/x86
+*.i64
 *.idea/
 *.dot
 *_jak.asm
