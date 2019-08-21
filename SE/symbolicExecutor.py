@@ -1,3 +1,7 @@
+"""
+Author: Thomas Peterson
+Year: 2019
+"""
 from manticore.native import Manticore
 from customPlugins import ACFRPlugin
 

@@ -1,3 +1,8 @@
+"""
+Author: Thomas Peterson
+Year: 2019
+"""
+
 from manticore.core.plugin import Plugin
 
 #A plugin to extract the successor instructions of a given instruction and to direct execution along a set of predefined paths
