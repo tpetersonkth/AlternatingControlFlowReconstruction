@@ -9,7 +9,6 @@ from customPlugins import ExtractorPlugin, DirectedExtractorPlugin
 
 #TODO: Use logger
 #TODO: Purely symbolic execution?
-#TODO: Multiple target addresses
 #TODO: Avoid generating the output directory
 #TODO(Possible): Timeout
 

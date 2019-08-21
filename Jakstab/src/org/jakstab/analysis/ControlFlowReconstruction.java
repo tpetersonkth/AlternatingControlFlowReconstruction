@@ -131,7 +131,8 @@ public class ControlFlowReconstruction implements Algorithm {
 	private ResolvingTransformerFactory transformerFactory;
 	private CPAAlgorithm cpaAlgorithm;
 	private String status;
-	
+	private boolean addedDSE = false;
+
 	public ControlFlowReconstruction(Program program) {
 
 		logger.info("Initializing control flow reconstruction.");
@@ -142,7 +143,6 @@ public class ControlFlowReconstruction implements Algorithm {
 		List<ConfigurableProgramAnalysis> cpas = new LinkedList<ConfigurableProgramAnalysis>();
 		boolean addedExplicitAnalysis = false;
 		boolean addedUnderApproximation = false;
-		boolean addedDSE = false;
 		AnalysisManager mgr = AnalysisManager.getInstance();
 
 
@@ -178,9 +178,10 @@ public class ControlFlowReconstruction implements Algorithm {
 			System.exit(1);
 		}
 
-		//T: Check if DSE is enabled
+		//T: Check if DSE is enabled and connect to DSE server if that is the case
 		if (Options.DSE.getValue() != -1){
 			addedDSE = true;
+			DSE.connect(Options.DSE.getValue());
 		}
 		
 		ConfigurableProgramAnalysis cpa;
@@ -198,7 +199,7 @@ public class ControlFlowReconstruction implements Algorithm {
 				System.exit(1);
 			}
 			transformerFactory = new PessimisticBasicBlockFactory();
-		} else if (Options.DSE.getValue() != -1) {
+		} else if (addedDSE) {
 
 			transformerFactory = new ACFRTransformerFactory();
 
@@ -374,9 +375,9 @@ public class ControlFlowReconstruction implements Algorithm {
 			status = e.toString();
 			throw e;
 		} finally {
-			if (Options.DSE.getValue() != -1){
+			if (addedDSE){
 				//Export the paths to the unresolved branches to DSE
-				DSE.exportPaths(transformerFactory.getUnresolvedPaths(),"/tmp/JakstabUnresolvedPaths.txt");
+				DSE.exportPaths(transformerFactory.getUnresolvedPaths());
 			}
 
 			program.setCFA(transformerFactory.getCFA());

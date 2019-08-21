@@ -93,7 +93,7 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
             public Set<CFAEdge> visit(RTLGoto stmt) {
                 logger.warn("[*] ACFR goto");
 
-                //Assert that this is infact a goto statement
+                //Assert that this is in fact a goto statement
                 assert stmt.getCondition() != null;
 
                 //Interpret the abstract state as a DualCompositeState
@@ -135,6 +135,7 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
                     RTLLabel nextLabel;
                     logger.warn("[*] jump:" + stmt.getLabel());
                     logger.warn("[*] Info: " + stmt.getDefinedVariables() + ":" + stmt.getUsedVariables() + ":" + stmt.getUsedMemoryLocations() + ":" + stmt.getAddress());
+                    logger.debug("State is: " + a);
 
                     // Start building the assume expression: assume correct condition case
                     assert conditionValue != null;
@@ -147,7 +148,7 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
                     } else {
                         logger.debug("[*] ACFR Condition is true. Jump pointing to: 0x" + Integer.toHexString(targetValue == null ? 0 : targetValue.intValue()));
                         if (targetValue == null) {
-                            //If the target of the jump can not be determined
+                            // If the target of the jump can not be determined
                             logger.warn("[*] ACFR unresolved jump:" + stmt.getLabel());
                             sound = false;
 
