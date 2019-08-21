@@ -2,12 +2,16 @@
 Author: Thomas Peterson
 Year: 2019
 """
+import pathsObject, pathObject
+
 from manticore.native import Manticore
-from customPlugins import ACFRPlugin
+from customPlugins import ExtractorPlugin, DirectedExtractorPlugin
 
 #TODO: Use logger
 #TODO: Purely symbolic execution?
 #TODO: Multiple target addresses
+#TODO: Avoid generating the output directory
+#TODO(Possible): Timeout
 
 def execute(program, address):
     #m = Manticore(program, pure_symbolic=True)
@@ -19,8 +23,8 @@ def execute(program, address):
         context['targets'] = set()
 
     #Register hook to have each executed instruction's RIP printed to the command line
-    m.add_hook(None, print_ip)
-    m.register_plugin(ACFRPlugin())
+    #m.add_hook(None, print_rip)
+    m.register_plugin(ExtractorPlugin())
 
     m.run()
     with m.locked_context() as context:
@@ -29,27 +33,35 @@ def execute(program, address):
     print("Run finished")
     print("Determined that the instruction at " + hex(address) + " can jump to the following addresses: " + ",".join(targets))
 
-def executeDirected(program, address, paths, pathslen):
+def executeDirected(program, pathsObject):
     #m = Manticore(program, pure_symbolic=True)
     m = Manticore(program, pure_symbolic=False)
 
     #Store variables in global context to ensure that we can communicate them to the callback function
     with m.locked_context() as context:
-        context['instructionAddress'] = address
-        context['targets'] = set()
+        context['paths'] = pathsObject
+        context['targets'] = dict()
 
     #Register hook to have each executed instruction's RIP printed to the command line
-    m.add_hook(None, print_ip)
-    m.register_plugin(ACFRPlugin())
+    m.add_hook(None, print_rip)
+    m.register_plugin(DirectedExtractorPlugin())
 
-    #Direct execution
+
+    for i in pathsObject.paths:
+        l = [hex(j) for j in i.path]
+        print(",".join(l))
+
+    #Direct the execution
     @m.hook(None)
     def hook(state):
         #TODO: Move to plugin
+        with m.locked_context() as context:
+            pathsObject = context['paths']
+
         #Update PCCounter
         if 'PCCounter' not in state.context:
             state.context['PCCounter'] = 0
-            state.context['pathIDs'] = range(pathslen)
+            state.context['pathIDs'] = range(pathsObject.pathsLen) #All paths start with the first instruction of the binary
         else:
             state.context['PCCounter'] += 1
 
@@ -57,16 +69,17 @@ def executeDirected(program, address, paths, pathslen):
         newPathIDS = []
         PCCounter = state.context['PCCounter']
         for pathID in state.context['pathIDs']:
-            if PCCounter >= len(paths[pathID]):#TODO: Precompute this!!!
+            if PCCounter >= pathsObject.paths[pathID].pathLen:
                 continue
-            if paths[pathID][PCCounter] == state.cpu.RIP:
+
+            if pathsObject.paths[pathID].path[PCCounter] == state.cpu.RIP :
                 print("keeping: "+str(pathID))
                 newPathIDS.append(pathID)
 
         state.context['pathIDs'] = newPathIDS
 
         if (not state.context['pathIDs']):#No path includes the state state
-            print("Abandoning state with RIP=" + hex(state.cpu.RIP))
+            print("Abandoning state with RIP=" + hex(state.cpu.RIP) + " PCCounter=" + str(PCCounter))
             state.abandon()
 
     m.run()
@@ -74,9 +87,13 @@ def executeDirected(program, address, paths, pathslen):
         targets = context['targets']
 
     print("Run finished")
-    print("Determined that the instruction at " + hex(address) + " can jump to the following addresses: " + ",".join(targets))
-
+    for t in pathsObject.lastAddresses:
+        t = hex(t)
+        if t in targets.keys():
+            print("Determined that the instruction at " + t + " can jump to the following addresses: " + ",".join(targets[t]))
+        else:
+            print("Could not resolve the targets of the instruction at " + t)
 
 #Prints the RIP of a state
-def print_ip(state):
+def print_rip(state):
     print(hex(state.cpu.RIP))
