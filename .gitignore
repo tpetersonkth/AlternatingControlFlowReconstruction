@@ -1,8 +1,15 @@
+#Ignore input binaries
+/input/*
+!/input/*.*
+!/input/*/
+
+#Other ignores
 /Jakstab/bin/
 mcore_*/
 /SE/x86
 *__pycache__/
 *.i64
+*.o
 *.idea/
 *.dot
 *_jak.asm
