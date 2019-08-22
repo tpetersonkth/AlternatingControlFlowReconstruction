@@ -11,7 +11,6 @@ import symbolicExecutor, pathsObject, pathObject, communication
 
 logger = logging.getLogger(__name__)
 
-
 def main():
     if (len(sys.argv) < 2):
         print("Usage: Python manticoreServer.py [port number]")
@@ -46,15 +45,6 @@ class Server():
 
             self.connection.sendAnswer("Everything okay")
 
-
-#Deprecated
-def loadPathsFromFile(filename):
-
-    with open(filename, "r") as f:
-        lines = f.readlines()
-
-    return formatPaths(lines)
-
 def formatPaths(lines):
     paths = []
     for line in lines:
@@ -64,6 +54,15 @@ def formatPaths(lines):
         path = [int(i.strip(), 16) for i in path]  # Remove newline characters and convert to integers
         paths.append(pathObject.PathObject(path))
     return pathsObject.PathsObject(paths)
+
+#Deprecated
+def loadPathsFromFile(filename):
+
+    with open(filename, "r") as f:
+        lines = f.readlines()
+
+    return formatPaths(lines)
+
 
 if __name__ == "__main__":
     main()
