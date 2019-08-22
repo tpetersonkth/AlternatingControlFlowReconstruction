@@ -3,26 +3,53 @@ Author: Thomas Peterson
 Year: 2019
 """
 
-#TODO smaller recv buffer and concatentation of messages
-
 import socket
 
-HOST = 'localhost'  # Standard loopback interface address (localhost)
-PORT = 65430        # Port to listen on (non-privileged ports are > 1023)
+#TODO: Catch sigterm in getWork()
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))
-    s.listen()
-    conn, addr = s.accept()
-    with conn:
-        print('Connected by', addr)
+class Communication():
+    conn = None
+    encoding = "utf-8"
+    def __init__(self,port):
+        self.host = 'localhost' # Standard loopback interface address (localhost)
+        self.port = port        # Port to listen on
+
+    def connect(self):
+        if self.conn == None:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind((self.host, self.port))
+                s.listen()
+                self.conn, addr = s.accept()
+
+    def getWork(self):
+        BUFFERSIZE = 1024# 1kb buffer
+
+        data=b''
         while True:
-            data = conn.recv(1048576) #1 mb buffer
-            if not data:
-                break
-            print("Recieved: " + str(data))
-            conn.sendall(b'All good, I\'ll analyze the paths!'+b'\n')
+            rec = self.conn.recv(BUFFERSIZE)
+            if(rec):
+                #print("Recieved.\n " + str(rec))
+                data+=rec
+                if self.isValidRequest(data):
+                    break
+        return self.formatRequest(data).decode(self.encoding)
 
+    def sendAnswer(self,answer):
+        answer = str.encode(answer,self.encoding)
+        self.conn.sendall(answer + b'\n')
 
-def isValidRequest():
-    pass
+    def close(self):
+        self.conn.close()
+        self.conn = None
+
+    def isValidRequest(self, message):
+        if message.startswith(b'START') and message.endswith(b'END'):
+            return True
+        return False
+
+    def formatRequest(self, request):
+        if not self.isValidRequest(request):
+            raise Exception
+
+        #Remove START and END
+        return request[5:-3]

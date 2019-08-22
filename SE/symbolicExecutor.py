@@ -93,6 +93,8 @@ def executeDirected(program, pathsObject):
         else:
             print("Could not resolve the targets of the instruction at " + t)
 
+    return targets
+
 #Prints the RIP of a state
 def print_rip(state):
     print(hex(state.cpu.RIP))

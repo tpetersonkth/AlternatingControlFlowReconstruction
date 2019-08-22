@@ -31,6 +31,7 @@ import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.io.DataInputStream;
 import java.io.Writer;
+import java.io.File;
 
 import java.net.Socket;
 
@@ -42,7 +43,7 @@ public class DSE {
     private static final Logger logger = Logger.getLogger(DSE.class);
     private static Socket clientSocket = null;
 
-    public static void exportPaths(Set<LinkedList<RTLLabel>> paths){
+    public static void exportPaths(String mainfile, Set<LinkedList<RTLLabel>> paths){
         String out = "";
 
         //Format output
@@ -91,7 +92,8 @@ public class DSE {
         }
         */
 
-        sendRequest("START"+out+"END");
+        File f = new File(mainfile);
+        sendRequest("START"+f.getAbsolutePath()+"\n"+out+"END");
 
         logger.debug("Exported the following paths to DSE:");
         logger.debug(out);

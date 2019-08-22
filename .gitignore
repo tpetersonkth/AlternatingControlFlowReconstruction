@@ -1,6 +1,7 @@
 /Jakstab/bin/
 mcore_*/
 /SE/x86
+*__pycache__/
 *.i64
 *.idea/
 *.dot

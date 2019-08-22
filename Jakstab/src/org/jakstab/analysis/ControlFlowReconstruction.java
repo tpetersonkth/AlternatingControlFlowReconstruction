@@ -377,7 +377,7 @@ public class ControlFlowReconstruction implements Algorithm {
 		} finally {
 			if (addedDSE){
 				//Export the paths to the unresolved branches to DSE
-				DSE.exportPaths(transformerFactory.getUnresolvedPaths());
+				DSE.exportPaths(Options.mainFilename, transformerFactory.getUnresolvedPaths());
 			}
 
 			program.setCFA(transformerFactory.getCFA());
