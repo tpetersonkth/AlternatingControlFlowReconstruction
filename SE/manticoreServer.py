@@ -26,13 +26,13 @@ class Server():
 
     def __init__(self, port):
         self.connection = communication.Communication(port)
-        print("[*] Waiting for connection..")
-        self.connection.connect()
-        print("[*] Connection received!")
 
     def run(self):
         # Work loop
         while True:
+            print("[*] Waiting for connection..")
+            self.connection.connect()
+            print("[*] Connection received!")
             request = self.connection.getWork()
             request = request.split("\n")
             program = request[0]
@@ -58,6 +58,8 @@ def loadPathsFromFile(filename):
 def formatPaths(lines):
     paths = []
     for line in lines:
+        if line == '':
+            continue
         path = line.split(",")
         path = [int(i.strip(), 16) for i in path]  # Remove newline characters and convert to integers
         paths.append(pathObject.PathObject(path))

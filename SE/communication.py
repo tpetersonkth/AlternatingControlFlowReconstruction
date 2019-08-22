@@ -10,16 +10,19 @@ import socket
 class Communication():
     conn = None
     encoding = "utf-8"
+    socket = None
+
     def __init__(self,port):
         self.host = 'localhost' # Standard loopback interface address (localhost)
         self.port = port        # Port to listen on
 
+        #Set up socket
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.bind((self.host, self.port))
+        self.socket.listen()
+
     def connect(self):
-        if self.conn == None:
-            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                s.bind((self.host, self.port))
-                s.listen()
-                self.conn, addr = s.accept()
+        self.conn, addr = self.socket.accept()
 
     def getWork(self):
         BUFFERSIZE = 1024# 1kb buffer
