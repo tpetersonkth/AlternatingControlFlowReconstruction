@@ -65,12 +65,15 @@ public class ELFModule implements ExecutableImage {
 		byte[] data = inBuf.getByteArray();
 		elf = new Elf(moduleFile.getAbsolutePath());
 		elf.loadSymbols();
-		
+
 		requiredLibraries = new FastSet<String>();
-		Elf.Dynamic[] dynamics = elf.getDynamicSections(elf.getSectionByName(".dynamic"));
-		for (Elf.Dynamic dyn : dynamics) {
-			if (dyn.d_tag == Dynamic.DT_NEEDED) {
-				requiredLibraries.add(dyn.toString());
+		Object dynamicSection = elf.getSectionByName(".dynamic");
+		if (dynamicSection  != null){
+			Elf.Dynamic[] dynamics = elf.getDynamicSections(elf.getSectionByName(".dynamic"));
+			for (Elf.Dynamic dyn : dynamics) {
+				if (dyn.d_tag == Dynamic.DT_NEEDED) {
+					requiredLibraries.add(dyn.toString());
+				}
 			}
 		}
 		
@@ -97,98 +100,107 @@ public class ELFModule implements ExecutableImage {
 		imports = new HashSet<UnresolvedSymbol>();
 		
 		Elf.Section pltSection = elf.getSectionByName(".plt");
-		
+
 		// Get relocations for PLT
-		
-		byte[] pltRelocs = null;
-		for (Elf.Section section : elf.getSections()) {
-			if (section.sh_type == Elf.Section.SHT_REL || 
-					section.sh_type == Elf.Section.SHT_RELA) {
-				// sh_info holds the section number to which the relocation
-				// info applies
-				if (pltSection == elf.getSections()[(int)section.sh_info])
-					pltRelocs = section.loadSectionData();
+
+		if (pltSection != null){
+			byte[] pltRelocs = null;
+			for (Elf.Section section : elf.getSections()) {
+				logger.debug("[*] Section: "+section);
+				logger.debug("[*] sh_info index: " + (int)section.sh_info);
+				if (section.sh_type == Elf.Section.SHT_REL ||
+						section.sh_type == Elf.Section.SHT_RELA) {
+					logger.debug("[*] type is either SHT_REL or SHT_RELA ");
+					// sh_info holds the section number to which the relocation
+					// info applies
+					if (pltSection == elf.getSections()[(int)section.sh_info]) {
+						logger.debug("[*] pltSection = elf.getsections()[section.sh_info] ");
+						pltRelocs = section.loadSectionData();
+					}
+				}
 			}
-		}
-		assert (pltRelocs != null);
-		
-		int pltIdx = (int)(pltSection.sh_offset);
-		pltStart = getVirtualAddress(pltIdx).getValue();
-		pltSize = pltSection.sh_size;
-		logger.debug("Reading PLT from " + getVirtualAddress(pltIdx));
+			if (pltRelocs != null) {
+				assert (pltRelocs != null);
 
-		X86Disassembler disasm = new X86Disassembler(inBuf);
-		// push GOT + 4
-		Instruction instr = disasm.decodeInstruction(pltIdx);
-		assert instr.getName().equals("pushl");
-		pltIdx += instr.getSize();
-		// jmp *(GOT + 8) 
-		instr = disasm.decodeInstruction(pltIdx);
-		assert instr instanceof X86JmpInstruction;
-		pltIdx += instr.getSize();
+				int pltIdx = (int) (pltSection.sh_offset);
+				pltStart = getVirtualAddress(pltIdx).getValue();
+				pltSize = pltSection.sh_size;
+				logger.debug("Reading PLT from " + getVirtualAddress(pltIdx));
 
-		while (true) {
-			if (data[pltIdx] == 0) {
-				pltIdx++;
-			} else {
-				instr = disasm.decodeInstruction(pltIdx);
+				X86Disassembler disasm = new X86Disassembler(inBuf);
+				// push GOT + 4
+				Instruction instr = disasm.decodeInstruction(pltIdx);
+				assert instr.getName().equals("pushl");
 				pltIdx += instr.getSize();
-				if (!instr.getName().equals("nop")) break;
-			}
-		}
-		// now we should be at the first PLT jump
-		while (true) {
-			AbsoluteAddress jmpLocation = getVirtualAddress(pltIdx);
-			X86JmpInstruction jmpToFunction = (X86JmpInstruction)instr;
+				// jmp *(GOT + 8)
+				instr = disasm.decodeInstruction(pltIdx);
+				assert instr instanceof X86JmpInstruction;
+				pltIdx += instr.getSize();
 
-			// Where the function pointer is to be stored
-			AbsoluteAddress pltSlot = new AbsoluteAddress((((X86MemoryOperand)jmpToFunction.getBranchDestination())).getDisplacement());
-			//logger.debug("Address of memory trampoline is " + pltSlot + 
-			//		", file offset 0x" + Long.toHexString(getFilePointer(pltSlot)));
-			// Before loading, there's a trampoline pointer back to the following push instruction stored in this slot
-			inBuf.seek(getFilePointer(pltSlot));
-			AbsoluteAddress trampolineDest = new AbsoluteAddress(inBuf.readDWORD());
-			//logger.debug("Trampoline destination is " + trampolineDest);
-			pltIdx = (int)getFilePointer(trampolineDest);
-			// Read the push instruction
-			instr = disasm.decodeInstruction(pltIdx);
-			X86Instruction pushSTOff = (X86Instruction)instr;
-			// The push instruction's parameter is an index into the symbol table
-			int symbolTableOff = ((Immediate)pushSTOff.getOperand1()).getNumber().intValue();
-			// Read function name from symbol table
-			//String functionName = elf.getSymbols()[symbolTableOff].toString();
-			
-			// r_offset is at 0, r_info at 4. r_info is an integer containing the symbol index
-			int ri = symbolTableOff + 4;
-			// little endian only
-			int r_info = ((pltRelocs[ri + 3] << 24) + (pltRelocs[ri + 2] << 16) + (pltRelocs[ri + 1] << 8) + pltRelocs[ri]);
-			int type = (byte)r_info;
-			int symIdx = r_info >> 8;
-			// type must be R_386_JMP_SLOT
-			assert (type == 7);
+				while (true) {
+					if (data[pltIdx] == 0) {
+						pltIdx++;
+					} else {
+						instr = disasm.decodeInstruction(pltIdx);
+						pltIdx += instr.getSize();
+						if (!instr.getName().equals("nop")) break;
+					}
+				}
+				// now we should be at the first PLT jump
+				while (true) {
+					AbsoluteAddress jmpLocation = getVirtualAddress(pltIdx);
+					X86JmpInstruction jmpToFunction = (X86JmpInstruction) instr;
 
-			//String functionName = elf.getDynamicSymbols()[(symbolTableOff / 8)].toString();
-			String functionName = elf.getDynamicSymbols()[symIdx].toString();
+					// Where the function pointer is to be stored
+					AbsoluteAddress pltSlot = new AbsoluteAddress((((X86MemoryOperand) jmpToFunction.getBranchDestination())).getDisplacement());
+					//logger.debug("Address of memory trampoline is " + pltSlot +
+					//		", file offset 0x" + Long.toHexString(getFilePointer(pltSlot)));
+					// Before loading, there's a trampoline pointer back to the following push instruction stored in this slot
+					inBuf.seek(getFilePointer(pltSlot));
+					AbsoluteAddress trampolineDest = new AbsoluteAddress(inBuf.readDWORD());
+					//logger.debug("Trampoline destination is " + trampolineDest);
+					pltIdx = (int) getFilePointer(trampolineDest);
+					// Read the push instruction
+					instr = disasm.decodeInstruction(pltIdx);
+					X86Instruction pushSTOff = (X86Instruction) instr;
+					// The push instruction's parameter is an index into the symbol table
+					int symbolTableOff = ((Immediate) pushSTOff.getOperand1()).getNumber().intValue();
+					// Read function name from symbol table
+					//String functionName = elf.getSymbols()[symbolTableOff].toString();
 
-			
-			UnresolvedSymbol importSymbol = new UnresolvedSymbol(this, "ELF", functionName, (int)getFilePointer(pltSlot), AddressingType.ABSOLUTE);
-			imports.add(importSymbol);
-			symbolMap.put(jmpLocation, functionName);
-			symbolMap.put(pltSlot, "__imp_" + functionName);
-			// Now skip the following jump to PLT0 (a call to the dynamic loader)
-			pltIdx += instr.getSize();
-			instr = disasm.decodeInstruction(pltIdx);
-			assert instr instanceof X86JmpInstruction : "Expected jmp to PLT[0] in PLT at this offset!";
-			pltIdx += instr.getSize();
-			// And now pltIdx points to the next PLT entry
+					// r_offset is at 0, r_info at 4. r_info is an integer containing the symbol index
+					int ri = symbolTableOff + 4;
+					// little endian only
+					int r_info = ((pltRelocs[ri + 3] << 24) + (pltRelocs[ri + 2] << 16) + (pltRelocs[ri + 1] << 8) + pltRelocs[ri]);
+					int type = (byte) r_info;
+					int symIdx = r_info >> 8;
+					// type must be R_386_JMP_SLOT
+					assert (type == 7);
 
-			// Check if there are more plt entries.
-			if (data[pltIdx] == 0) {
-				break;
-			}
-			instr = disasm.decodeInstruction(pltIdx);
-			if (!(instr instanceof X86JmpInstruction)) {
-				break;
+					//String functionName = elf.getDynamicSymbols()[(symbolTableOff / 8)].toString();
+					String functionName = elf.getDynamicSymbols()[symIdx].toString();
+
+
+					UnresolvedSymbol importSymbol = new UnresolvedSymbol(this, "ELF", functionName, (int) getFilePointer(pltSlot), AddressingType.ABSOLUTE);
+					imports.add(importSymbol);
+					symbolMap.put(jmpLocation, functionName);
+					symbolMap.put(pltSlot, "__imp_" + functionName);
+					// Now skip the following jump to PLT0 (a call to the dynamic loader)
+					pltIdx += instr.getSize();
+					instr = disasm.decodeInstruction(pltIdx);
+					assert instr instanceof X86JmpInstruction : "Expected jmp to PLT[0] in PLT at this offset!";
+					pltIdx += instr.getSize();
+					// And now pltIdx points to the next PLT entry
+
+					// Check if there are more plt entries.
+					if (data[pltIdx] == 0) {
+						break;
+					}
+					instr = disasm.decodeInstruction(pltIdx);
+					if (!(instr instanceof X86JmpInstruction)) {
+						break;
+					}
+				}
 			}
 		}
 		
