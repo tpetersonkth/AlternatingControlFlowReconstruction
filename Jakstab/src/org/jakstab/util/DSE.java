@@ -17,12 +17,14 @@
  */
 package org.jakstab.util;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.LinkedList;
 
 import java.io.FileWriter;
 
 import org.jakstab.asm.AbsoluteAddress;
+import org.jakstab.cfa.CFAEdge;
 import org.jakstab.cfa.RTLLabel;
 import org.jakstab.loader.Harness;
 
@@ -34,14 +36,64 @@ import java.io.Writer;
 import java.io.File;
 
 import java.net.Socket;
+import java.util.Stack;
 
 /**
  * @author Thomas Peterson
+ * This class contains the logic related to the directed symbolic execution. It extracts paths to unresolved
+ * branches and exports these to an directed symbolic execution tool.
  */
 public class DSE {
 
     private static final Logger logger = Logger.getLogger(DSE.class);
     private static Socket clientSocket = null;
+
+    //Limited Depth First Search to find paths to the unresolved branches
+    public static Set<LinkedList<RTLLabel>> DFS(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long depth){//TODO: Figure out if it is possible to use state instead of RTLLabel
+        Stack<RTLLabel> stack = new Stack<RTLLabel>();
+        Set<LinkedList<RTLLabel>> paths = DLS(graph,start,targets,depth,stack);
+        return paths;
+    }
+
+    private static  Set<LinkedList<RTLLabel>> DLS(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long depth, Stack<RTLLabel> stack) {
+        Set<LinkedList<RTLLabel>> paths = new HashSet<>();
+        if (depth > 0){
+            stack.push(start);
+
+            //Start is the current node
+            if (targets.contains(start)){
+                System.out.println("Found a path:");
+                AbsoluteAddress lastAddress = null;
+                LinkedList<RTLLabel> path = new LinkedList<RTLLabel>();
+                for(RTLLabel label : stack) {
+                    if (lastAddress != label.getAddress()){
+                        path.add(label);//Doubly linked list => O(1) to append element
+
+                        if (lastAddress == null){
+                            System.out.printf(label.getAddress().toString());
+                        }
+                        else{
+                            System.out.printf("->"+label.getAddress().toString());
+                        }
+
+                        lastAddress = label.getAddress();
+                    }
+                }
+                paths.add(path);
+            }
+
+            //TODO: Time optimization by changing representation of CFA
+            //Perform DFS on all children recursively
+            for(CFAEdge edge : graph){
+                if (edge.getSource().getLabel().equals(start)){
+                    Set<LinkedList<RTLLabel>> newpaths = DLS(graph, edge.getTarget().getLabel(), targets,depth-1,stack);
+                    paths.addAll(newpaths);
+                }
+            }
+            stack.pop();
+        }
+        return paths;
+    }
 
     public static void exportPaths(String mainfile, Set<LinkedList<RTLLabel>> paths){
         String out = "";

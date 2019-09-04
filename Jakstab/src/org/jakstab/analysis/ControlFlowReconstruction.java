@@ -34,6 +34,7 @@ import org.jakstab.analysis.tracereplay.TraceReplayAnalysis;
 import org.jakstab.asm.*;
 import org.jakstab.asm.x86.X86Instruction;
 import org.jakstab.cfa.*;
+import org.jakstab.loader.Harness;
 import org.jakstab.rtl.statements.BasicBlock;
 import org.jakstab.util.*;
 import org.jakstab.util.DSE;
@@ -59,7 +60,7 @@ public class ControlFlowReconstruction implements Algorithm {
 				return worklist.pick();
 			}
 		}
-		
+
 		@Override
 		public boolean add(AbstractState a) {
 			if (!program.containsLabel((RTLLabel)a.getLocation())) {
@@ -149,7 +150,7 @@ public class ControlFlowReconstruction implements Algorithm {
 		for (int i=0; i<Options.cpas.getValue().length(); i++) {
 			
 			char shortHand = Options.cpas.getValue().charAt(i);
-			
+
 			// Special handling for trace replay analysis that really creates multiple CPAs
 			if (shortHand == 't') {
 				logger.info("--- Using trace replay analysis.");
@@ -377,7 +378,9 @@ public class ControlFlowReconstruction implements Algorithm {
 		} finally {
 			if (addedDSE){
 				//Export the paths to the unresolved branches to DSE
-				DSE.exportPaths(Options.mainFilename, transformerFactory.getUnresolvedPaths());
+				RTLLabel start = new RTLLabel(Harness.prologueAddress,0);
+				Set<LinkedList<RTLLabel>> paths = DSE.DFS(transformerFactory.getCFA(),start, transformerFactory.getUnresolvedBranches(), 1000);
+				DSE.exportPaths(Options.mainFilename, paths);
 			}
 
 			program.setCFA(transformerFactory.getCFA());
