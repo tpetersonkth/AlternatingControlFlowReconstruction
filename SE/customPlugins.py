@@ -64,7 +64,7 @@ class DirectedExtractorPlugin(Plugin):
             out = hex(old_pc)+ "->"
 
             #Calculate possible successors of the instruction at the target address
-            for concreteNewPC in state.solve_n(new_pc, nsolves=1):#TODO: Other value for nsolves?
+            for concreteNewPC in state.solve_n(new_pc, nsolves=5):#TODO: Other value for nsolves? Check if conditional branch. 1 if unconditional. Maybe add constraint that next value can not equal first?
                 for pathId in pathsEndingHere:
                     if pathId not in targets.keys():
                         targets[pathId] = set()
