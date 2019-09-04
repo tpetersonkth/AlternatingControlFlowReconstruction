@@ -47,12 +47,15 @@ class Server():
 
 def formatPaths(lines):
     paths = []
+    id = 0
     for line in lines:
         if line == '':
             continue
         path = line.split(",")
         path = [int(i.strip(), 16) for i in path]  # Remove newline characters and convert to integers
-        paths.append(pathObject.PathObject(path))
+        paths.append(pathObject.PathObject(path,id))
+        id +=1
+        
     return pathsObject.PathsObject(paths)
 
 #Deprecated

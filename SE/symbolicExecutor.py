@@ -67,15 +67,18 @@ def executeDirected(program, pathsObject):
         #Check if RIP of the state is matching a path, else abandon it
         newPathIDS = []
         PCCounter = state.context['PCCounter']
+        keeping = []
         for pathID in state.context['pathIDs']:
             if PCCounter >= pathsObject.paths[pathID].pathLen:
                 continue
 
             if pathsObject.paths[pathID].path[PCCounter] == state.cpu.RIP :
-                print("keeping: "+str(pathID))
                 newPathIDS.append(pathID)
+                keeping.append(str(pathID))
 
         state.context['pathIDs'] = newPathIDS
+
+        print("keeping: " + ",".join(keeping))
 
         if (not state.context['pathIDs']):#No path includes the state state
             print("Abandoning state with RIP=" + hex(state.cpu.RIP) + " PCCounter=" + str(PCCounter))
@@ -85,13 +88,16 @@ def executeDirected(program, pathsObject):
     with m.locked_context() as context:
         targets = context['targets']
 
-    print("Run finished")
-    for t in pathsObject.lastAddresses:
-        t = hex(t)
-        if t in targets.keys():
-            print("Determined that the instruction at " + t + " can jump to the following addresses: " + ",".join(targets[t]))
+    print("--Results Sorted by Pathlen--")
+    sortedPaths = sorted(pathsObject.paths, key=lambda x: x.pathLen, reverse=False)
+    for i in range(pathsObject.pathsLen):
+        pathID = sortedPaths[i].pathID
+        if pathID in targets.keys():
+            print("Path " + str(pathID) + "[len=" + str(sortedPaths[i].pathLen) + "] ending with " + hex(
+                pathsObject.lastAddresses[pathID]) + " has the following successors " +
+                  ",".join([str(i) for i in targets[pathID]]))
         else:
-            print("Could not resolve the targets of the instruction at " + t)
+            print("Path " + str(pathID) + "[len=" + str(sortedPaths[i].pathLen) + "]" + " is infeasible")
 
     return targets
 
