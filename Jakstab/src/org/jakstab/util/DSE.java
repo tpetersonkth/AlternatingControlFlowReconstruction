@@ -49,13 +49,15 @@ public class DSE {
     private static Socket clientSocket = null;
 
     //Limited Depth First Search to find paths to the unresolved branches
-    public static Set<LinkedList<RTLLabel>> DFS(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long depth){//TODO: Figure out if it is possible to use state instead of RTLLabel
+    //Suffers from stack overflow when depth is to large
+    //For large values of depth it is thus recommended to use LDFSIterative
+    public static Set<LinkedList<RTLLabel>> LDFS(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long depth){
         Stack<RTLLabel> stack = new Stack<RTLLabel>();
-        Set<LinkedList<RTLLabel>> paths = DLS(graph,start,targets,depth,stack);
+        Set<LinkedList<RTLLabel>> paths = LDFSRec(graph,start,targets,depth,stack);
         return paths;
     }
 
-    private static  Set<LinkedList<RTLLabel>> DLS(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long depth, Stack<RTLLabel> stack) {
+    private static  Set<LinkedList<RTLLabel>> LDFSRec(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long depth, Stack<RTLLabel> stack) {
         Set<LinkedList<RTLLabel>> paths = new HashSet<>();
         if (depth > 0){
             stack.push(start);
@@ -82,11 +84,10 @@ public class DSE {
                 paths.add(path);
             }
 
-            //TODO: Time optimization by changing representation of CFA
-            //Perform DFS on all children recursively
+            //Perform DFS on all children recursively //TODO: Store CFA in an optimized fashion
             for(CFAEdge edge : graph){
                 if (edge.getSource().getLabel().equals(start)){
-                    Set<LinkedList<RTLLabel>> newpaths = DLS(graph, edge.getTarget().getLabel(), targets,depth-1,stack);
+                    Set<LinkedList<RTLLabel>> newpaths = LDFSRec(graph, edge.getTarget().getLabel(), targets,depth-1,stack);
                     paths.addAll(newpaths);
                 }
             }
@@ -95,13 +96,66 @@ public class DSE {
         return paths;
     }
 
+    public static  Set<LinkedList<RTLLabel>> LDFSIterative(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long maxDepth) {
+        class Node {
+            public RTLLabel label;
+            public Node prev;
+            public long depth;
+            Node(RTLLabel label, Node prev, long depth){
+                this.label = label;
+                this.prev = prev;
+                this.depth = depth;
+            }
+        }
+
+        Stack<Node> stack = new Stack<Node>();
+        Node startNode = new Node(start, null, maxDepth);
+        stack.push(startNode);
+
+        Set<LinkedList<RTLLabel>> paths = new HashSet<>();
+
+        while(!stack.empty()){
+            Node current =  stack.pop();
+
+            if (current.depth <= 0){
+                continue;
+            }
+
+            //Start is the current node
+            if (targets.contains(current.label)){
+                AbsoluteAddress lastAddress = null;
+                LinkedList<RTLLabel> path = new LinkedList<RTLLabel>();
+
+                Node curr = current;
+                while(curr != null){
+                    if (curr.label.getAddress() != lastAddress){
+                        path.add(0, curr.label);//Doubly linked list => O(1) to append element
+                    }
+                    lastAddress = curr.label.getAddress();
+                    curr = curr.prev;
+                }
+                paths.add(path);
+            }
+
+            for(CFAEdge edge : graph){
+                if (edge.getSource().getLabel().equals(current.label)){
+                    stack.push(new Node(edge.getTarget().getLabel(),current,current.depth-1));
+                }
+            }
+
+        }
+        return paths;
+    }
+
     public static void exportPaths(String mainfile, Set<LinkedList<RTLLabel>> paths){
         String out = "";
+        long pathCount = 0;//Avoid iterating over paths twice to obtain length
 
         //Format output
         boolean firstPath = true;
         for (LinkedList<RTLLabel> path : paths) {
             AbsoluteAddress prevAddr = null;
+            pathCount = pathCount + 1;
 
             if (!firstPath) {
                 out += "\n";
@@ -147,7 +201,7 @@ public class DSE {
         File f = new File(mainfile);
         sendRequest("START"+f.getAbsolutePath()+"\n"+out+"END");
 
-        logger.debug("Exported the following paths to DSE:");
+        logger.debug("Exported " + Long.toString(pathCount) + " paths to DSE");
         logger.debug(out);
     }
 
@@ -175,7 +229,7 @@ public class DSE {
             out.flush();
 
             //Wait for data from DSE server
-            while((response = inFromServer.readLine()) == null);
+            while((response = inFromServer.readLine()) == null);//TODO: Possible to avoid polling?
         }
         catch(IOException e){
             logger.error("Could not send request to DSE server.",e);

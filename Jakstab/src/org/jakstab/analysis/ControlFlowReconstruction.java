@@ -379,7 +379,7 @@ public class ControlFlowReconstruction implements Algorithm {
 			if (addedDSE){
 				//Export the paths to the unresolved branches to DSE
 				RTLLabel start = new RTLLabel(Harness.prologueAddress,0);
-				Set<LinkedList<RTLLabel>> paths = DSE.DFS(transformerFactory.getCFA(),start, transformerFactory.getUnresolvedBranches(), 1000);
+				Set<LinkedList<RTLLabel>> paths = DSE.LDFSIterative(transformerFactory.getCFA(),start, transformerFactory.getUnresolvedBranches(), 1000);
 				DSE.exportPaths(Options.mainFilename, paths);
 			}
 
