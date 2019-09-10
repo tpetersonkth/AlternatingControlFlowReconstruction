@@ -45,7 +45,7 @@ import org.jakstab.util.Tuple;
 /**
  * Provides state transformers without assumptions about procedures. Call instructions
  * are treated as push / jmp combinations and return instructions as indirect jumps. If
- * the target of a jump cannot be resolved, send the problem to an under-approximation algorithm.
+ * the target of a jump cannot be resolved, send the path to this jump to an under-approximation algorithm.
  * Then, wait for the under-approximation algorithm to finish. Thereafter, use the obtained targets
  * to create MUST edges.
  *
@@ -83,8 +83,6 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
                         break;
                     }
                 }
-
-                program.getStatement(stmt.getNextLabel()).setPrevLabel(stmt.getLabel());
 
                 return Collections.singleton(new CFAEdge(stmt.getLabel(), stmt.getNextLabel(), stmt, edgeKind));
             }
@@ -154,10 +152,6 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
 
                             unresolvedBranches.add(stmt.getLabel());//Used for statistics
 
-                            //Get the path towards the unresolved branch and ask DSE for help
-                            LinkedList<RTLLabel> path = getPath(stmt.getLabel());
-                            paths.add(path);
-
                             continue;
                         }
                         // assume (condition = true AND targetExpression = targetValue)
@@ -174,9 +168,6 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
                     RTLAssume assume = new RTLAssume(assumption, stmt);
                     assume.setLabel(stmt.getLabel());
                     assume.setNextLabel(nextLabel);
-
-                    //Update prevLabel of next statement with current label
-                    program.getStatement(nextLabel).setPrevLabel(stmt.getLabel());
 
                     // Target address sanity check
                     if (nextLabel.getAddress().getValue() < 10L) {
@@ -330,18 +321,6 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
 
     private boolean isProgramAddress(RTLNumber n) {
         return program.getModule(new AbsoluteAddress(n.longValue())) != null;
-    }
-
-    private LinkedList<RTLLabel> getPath(RTLLabel currentLabel){
-        if (currentLabel == null){
-            LinkedList<RTLLabel> l = new LinkedList<RTLLabel>();
-            return l;
-        }
-        else{
-            LinkedList<RTLLabel> l = getPath(program.getStatement(currentLabel).getPrevLabel());
-            l.add(currentLabel);
-            return l;
-        }
     }
 
 }

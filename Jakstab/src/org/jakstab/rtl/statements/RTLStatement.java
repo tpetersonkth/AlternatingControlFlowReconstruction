@@ -30,9 +30,8 @@ import org.jakstab.ssl.Architecture;
 
 public interface RTLStatement extends Comparable<RTLStatement>, StateTransformer {
 
-	public void setPrevLabel(RTLLabel prevLabel);
-	public RTLLabel getPrevLabel();
 	public void setNextLabel(RTLLabel nextLabel);
+
 	public RTLLabel getNextLabel();
 	
 	/**

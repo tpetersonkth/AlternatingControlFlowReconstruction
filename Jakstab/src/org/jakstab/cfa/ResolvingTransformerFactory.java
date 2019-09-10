@@ -42,7 +42,6 @@ public abstract class ResolvingTransformerFactory implements StateTransformerFac
 	private static final Logger logger = Logger.getLogger(ResolvingTransformerFactory.class);
 
 	protected final Set<RTLLabel> unresolvedBranches = new FastSet<RTLLabel>();
-	protected Set<LinkedList<RTLLabel>> paths = new FastSet<LinkedList<RTLLabel>>();
 	protected boolean sound = true;
 	protected SetMultimap<RTLLabel,CFAEdge> outEdges = HashMultimap.create();
 
@@ -52,10 +51,6 @@ public abstract class ResolvingTransformerFactory implements StateTransformerFac
 
 	public Set<RTLLabel> getUnresolvedBranches() {
 		return unresolvedBranches;
-	}
-
-	public Set<LinkedList<RTLLabel>> getUnresolvedPaths() {
-		return paths;
 	}
 
 	@Override
