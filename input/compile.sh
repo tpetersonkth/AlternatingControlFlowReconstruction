@@ -6,5 +6,5 @@ if [[ $file == *"."* ]]; then
         file=${file::-4}
 fi
 echo "Compiling $file.asm"
-nasm -f elf "$file.asm"
+nasm -O0 -f elf "$file.asm"
 ld -m elf_i386 -e _start -o "$file" "$file.o"
