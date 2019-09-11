@@ -6,8 +6,6 @@
 !/input/Synthetic/Small/*.*
 /input/Synthetic/Medium/*
 !/input/Synthetic/Medium/*.*
-/input/Real/*
-!/input/Real/*.*
 
 #Other ignores
 /Jakstab/bin/
