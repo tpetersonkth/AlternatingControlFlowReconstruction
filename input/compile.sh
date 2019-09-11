@@ -16,6 +16,6 @@ fi
 filecpp="${file}.cpp"
 if test -f "$filecpp"; then
         echo "Compiling $filecpp"
-        g++ "$filecpp" -o "$file"
+        g++ "$filecpp" -m32 -o "$file"
 fi
 
