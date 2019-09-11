@@ -378,8 +378,19 @@ public class ControlFlowReconstruction implements Algorithm {
 		} finally {
 			if (addedDSE){
 				//Export the paths to the unresolved branches to DSE
+				System.out.println("Searching for paths to export");
 				RTLLabel start = new RTLLabel(Harness.prologueAddress,0);
-				Set<LinkedList<RTLLabel>> paths = DSE.LDFSIterative(transformerFactory.getCFA(),start, transformerFactory.getUnresolvedBranches(), 1000);
+
+				Set<CFAEdge> cfa = transformerFactory.getCFA();
+				Set<RTLLabel> unresolved = transformerFactory.getUnresolvedBranches();
+				long startTime = System.currentTimeMillis();
+				Set<LinkedList<RTLLabel>> paths2 = DSE.LDFS(cfa,start, unresolved, 200);
+				System.out.println("\nRecursive path search took: "+Long.toString(System.currentTimeMillis() - startTime)+" milliseconds");
+
+				startTime = System.currentTimeMillis();
+				Set<LinkedList<RTLLabel>> paths = DSE.LDFSIterative(cfa,start, unresolved, 200);
+				System.out.println("Iterative path search took: "+Long.toString(System.currentTimeMillis() - startTime)+" milliseconds");
+
 				DSE.exportPaths(Options.mainFilename, paths);
 			}
 

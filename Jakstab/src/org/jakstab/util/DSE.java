@@ -64,19 +64,20 @@ public class DSE {
 
             //Start is the current node
             if (targets.contains(start)){
-                System.out.println("Found a path:");
                 AbsoluteAddress lastAddress = null;
                 LinkedList<RTLLabel> path = new LinkedList<RTLLabel>();
                 for(RTLLabel label : stack) {
                     if (lastAddress != label.getAddress()){
                         path.add(label);//Doubly linked list => O(1) to append element
 
+                        /*
                         if (lastAddress == null){
                             System.out.printf(label.getAddress().toString());
                         }
                         else{
                             System.out.printf("->"+label.getAddress().toString());
                         }
+                         */
 
                         lastAddress = label.getAddress();
                     }

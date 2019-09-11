@@ -89,7 +89,7 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
 
             @Override
             public Set<CFAEdge> visit(RTLGoto stmt) {
-                logger.warn("[*] ACFR goto");
+                logger.debug("[*] ACFR goto");
 
                 //Assert that this is in fact a goto statement
                 assert stmt.getCondition() != null;
@@ -131,8 +131,8 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
                     RTLNumber conditionValue = pair.get(0);
                     RTLNumber targetValue = pair.get(1);
                     RTLLabel nextLabel;
-                    logger.warn("[*] jump:" + stmt.getLabel());
-                    logger.warn("[*] Info: " + stmt.getDefinedVariables() + ":" + stmt.getUsedVariables() + ":" + stmt.getUsedMemoryLocations() + ":" + stmt.getAddress());
+                    logger.debug("[*] jump:" + stmt.getLabel());
+                    logger.debug("[*] Info: " + stmt.getDefinedVariables() + ":" + stmt.getUsedVariables() + ":" + stmt.getUsedMemoryLocations() + ":" + stmt.getAddress());
                     logger.debug("State is: " + a);
 
                     // Start building the assume expression: assume correct condition case
