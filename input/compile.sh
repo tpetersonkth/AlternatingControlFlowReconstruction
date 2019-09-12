@@ -19,3 +19,9 @@ if test -f "$filecpp"; then
         g++ "$filecpp" -m32 -o "$file"
 fi
 
+filec="${file}.c"
+if test -f "$filec"; then
+        echo "Compiling $filec"
+        gcc -m32 -fno-stack-protector -O0 "$filec" -o "$file"
+fi
+
