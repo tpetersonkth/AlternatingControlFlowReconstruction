@@ -1,6 +1,7 @@
 ;An assembly programming misusing the ret instruction
 ;cpa c: ret instruction could not be resolved as it uses memory but constant prop only propagates registers
 ;cpa cs: Can not handle, does not report unresolved branches but thinks exe stops at the ret instruction in function.
+;it assumes that call and ret instructions are handled in a correct way.
 
 SECTION .text
 

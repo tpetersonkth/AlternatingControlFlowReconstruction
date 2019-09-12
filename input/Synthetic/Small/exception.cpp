@@ -1,7 +1,8 @@
 /*
 A file containing a minimalistic exception in cpp.
-cpa c: 
-cpa cs:
+cpa c: Gets stuck at ret instruction at address 0x000005d5
+cpa cs: Can resolve the ret instruction c couldn't resolve but gets stuck at call 550 located at address 0x000005cc (? I don't know why..)
+cpa b/i/x: Can resolve all
 */
 
 int main()
