@@ -17,16 +17,13 @@
  */
 package org.jakstab.util;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.LinkedList;
-
-import java.io.FileWriter;
+import java.util.*;
 
 import org.jakstab.asm.AbsoluteAddress;
 import org.jakstab.cfa.CFAEdge;
 import org.jakstab.cfa.RTLLabel;
 import org.jakstab.loader.Harness;
+import org.jakstab.loader.elf.IAddress;
 
 import java.io.IOException;
 import java.io.BufferedWriter;
@@ -36,7 +33,6 @@ import java.io.Writer;
 import java.io.File;
 
 import java.net.Socket;
-import java.util.Stack;
 
 /**
  * @author Thomas Peterson
@@ -69,16 +65,6 @@ public class DSE {
                 for(RTLLabel label : stack) {
                     if (lastAddress != label.getAddress()){
                         path.add(label);//Doubly linked list => O(1) to append element
-
-                        /*
-                        if (lastAddress == null){
-                            System.out.printf(label.getAddress().toString());
-                        }
-                        else{
-                            System.out.printf("->"+label.getAddress().toString());
-                        }
-                         */
-
                         lastAddress = label.getAddress();
                     }
                 }
@@ -97,7 +83,80 @@ public class DSE {
         return paths;
     }
 
-    public static  Set<LinkedList<RTLLabel>> LDFSIterative(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long maxDepth) {
+    public static  Set<LinkedList<AbsoluteAddress>> LDFSIterative(ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>  adjList, Pair<Integer,AbsoluteAddress> start, Set<AbsoluteAddress> targets, long maxDepth, Set<CFAEdge> cfa) {
+        class Node {
+            public int id;
+            public AbsoluteAddress address;
+            public Node prev;
+            public long depth;
+            Node(int id, AbsoluteAddress address, Node prev, long depth){
+                this.id = id;
+                this.address = address;
+                this.prev = prev;
+                this.depth = depth;
+            }
+        }
+
+        Stack<Node> stack = new Stack<Node>();
+        Node startNode = new Node(start.getLeft(),start.getRight(), null, maxDepth);
+        stack.push(startNode);
+
+        Set<LinkedList<AbsoluteAddress>> paths = new HashSet<>();
+        long sinceLast = System.currentTimeMillis();
+        while(!stack.empty()){
+            Node current = stack.pop();
+
+            if (System.currentTimeMillis()-sinceLast >= 1000){
+                sinceLast = System.currentTimeMillis();
+
+                System.out.println("Queued nodes to explore: "+stack.size()+" depth of the current elements: ");
+                int max = 0;
+                for(Node n : stack){
+                    System.out.printf(n.depth+",");
+                }
+            }
+
+            if (current.depth <= 0){
+                continue;
+            }
+
+            //Extract path to this address
+            if (targets.contains(current.address)){
+                AbsoluteAddress lastAddress = null;
+                LinkedList<AbsoluteAddress> path = new LinkedList<AbsoluteAddress>();
+
+                Node curr = current;
+                while(curr != null){
+                    if (!curr.address.equals(lastAddress)){
+                        path.add(0, curr.address);//Doubly linked list => O(1) to append element
+                    }
+                    lastAddress = curr.address;
+                    curr = curr.prev;
+                }
+                paths.add(path);
+            }
+
+            /*
+            for(CFAEdge e : cfa){
+                boolean same = e.getSource().getAddress().equals(e.getTarget().getAddress());
+                if (e.getSource().getAddress().equals(current.address) && !same){
+                    stack.push(new Node(0,e.getTarget().getAddress(),current,current.depth-1));
+                }
+            }
+            */
+
+            int currId = current.id;
+            for(Pair<Integer,AbsoluteAddress> target : adjList.get(currId)){
+                stack.push(new Node(target.getLeft(),target.getRight(),current,current.depth-1));
+            }
+
+        }
+
+        return paths;
+
+    }
+
+    public static  Set<LinkedList<RTLLabel>> LDFSIterativeOLD(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long maxDepth) {
         class Node {
             public RTLLabel label;
             public Node prev;
@@ -148,7 +207,61 @@ public class DSE {
         return paths;
     }
 
-    public static void exportPaths(String mainfile, Set<LinkedList<RTLLabel>> paths){
+
+    public static void exportPaths(String mainfile, Set<LinkedList<AbsoluteAddress>> paths){
+        String out = "";
+        long pathCount = 0;//Avoid iterating over paths twice to obtain length
+
+        //Format output
+        boolean firstPath = true;
+        for (LinkedList<AbsoluteAddress> path : paths) {
+            pathCount = pathCount + 1;
+
+            if (!firstPath) {
+                out += "\n";
+            }
+
+            boolean firstAddr = true;
+            for (AbsoluteAddress addr : path) {
+
+                //Skip the initial pseudo block that only exists in the intermediate represenation
+                if (addr.getValue() == Harness.PROLOGUE_BASE){
+                    assert(firstAddr);//Prologue base should never be able to be anywhere else than at the start of a path
+                    continue;
+                }
+
+                if (!firstAddr){
+                    out += ",";
+                }
+                out += addr;
+
+                firstAddr = false;
+            }
+
+            firstPath = false;
+
+        }
+
+        //Export to file(Deprecated)
+        /*
+        try{
+            FileWriter fw = new FileWriter(filename);
+            fw.write(out);
+            fw.close();
+        }
+        catch(IOException e){
+            logger.error("Could not export paths to file. ",e);
+        }
+        */
+
+        File f = new File(mainfile);
+        sendRequest("START"+f.getAbsolutePath()+"\n"+out+"END");
+
+        logger.info("Exported " + Long.toString(pathCount) + " paths to DSE");
+        logger.debug(out);
+    }
+
+    public static void exportPathsOLD(String mainfile, Set<LinkedList<RTLLabel>> paths){
         String out = "";
         long pathCount = 0;//Avoid iterating over paths twice to obtain length
 
@@ -202,7 +315,7 @@ public class DSE {
         File f = new File(mainfile);
         sendRequest("START"+f.getAbsolutePath()+"\n"+out+"END");
 
-        logger.debug("Exported " + Long.toString(pathCount) + " paths to DSE");
+        logger.info("Exported " + Long.toString(pathCount) + " paths to DSE");
         logger.debug(out);
     }
 
