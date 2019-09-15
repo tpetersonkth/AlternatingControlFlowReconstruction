@@ -9,6 +9,7 @@ import sys, logging
 import symbolicExecutor
 
 logger = logging.getLogger(__name__)
+logger.setLevel('INFO')
 
 def main():
     if (len(sys.argv) < 3):
@@ -16,7 +17,7 @@ def main():
         sys.exit(0)
     program = sys.argv[1]
     address = int(sys.argv[2],16)
-    print("Running with program="+program+" address="+hex(address))
+    logger.info("Running with program="+program+" address="+hex(address))
     symbolicExecutor.execute(program,address)
 
 if __name__ == "__main__":

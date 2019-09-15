@@ -10,13 +10,14 @@ import sys, logging
 import symbolicExecutor, pathsObject, pathObject, communication
 
 logger = logging.getLogger(__name__)
+logger.setLevel('INFO')
 
 def main():
     if (len(sys.argv) < 2):
         print("Usage: Python manticoreServer.py [port number]")
         sys.exit(0)
     port=sys.argv[1]
-    print("[*] Starting server..")
+    logger.info("[*] Starting server..")
     server = Server(int(port))
     server.run()
 
@@ -29,17 +30,17 @@ class Server():
     def run(self):
         # Work loop
         while True:
-            print("[*] Waiting for connection..")
+            logger.info("[*] Waiting for connection..")
             self.connection.connect()
-            print("[*] Connection received!")
+            logger.info("[*] Connection received!")
             request = self.connection.getWork()
             request = request.split("\n")
             program = request[0]
             paths = formatPaths(request[1:])
 
-            print(request)
-            print("Program: "+program)
-            print("Number of paths received: " + str(paths.pathsLen))
+            logger.info(request)
+            logger.info("Program: "+program)
+            logger.info("Number of paths received: " + str(paths.pathsLen))
 
             symbolicExecutor.executeDirected(program, paths)
 

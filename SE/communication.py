@@ -31,7 +31,6 @@ class Communication():
         while True:
             rec = self.conn.recv(BUFFERSIZE)
             if(rec):
-                #print("Recieved.\n " + str(rec))
                 data+=rec
                 if self.isValidRequest(data):
                     break

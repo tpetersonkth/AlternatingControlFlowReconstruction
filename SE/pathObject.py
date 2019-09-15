@@ -9,4 +9,3 @@ class PathObject():
         self.path = path
         self.pathLen = len(path)
         self.pathID = id
-        #TODO: Add stateid from jakstab

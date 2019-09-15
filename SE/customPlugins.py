@@ -2,8 +2,11 @@
 Author: Thomas Peterson
 Year: 2019
 """
-
+import logging
 from manticore.core.plugin import Plugin
+
+logger = logging.getLogger(__name__)
+logger.setLevel('INFO')
 
 #A plugin to extract the successor instructions of a given instruction
 class ExtractorPlugin(Plugin):
@@ -17,7 +20,7 @@ class ExtractorPlugin(Plugin):
 
         #Check if we just executed the address we are looking for
         if (old_pc == address):
-            print("Calculating possible targets")
+            logger.info("Calculating possible targets")
             out=hex(old_pc)+ "->"
 
             with self.manticore.locked_context() as context:
@@ -31,9 +34,9 @@ class ExtractorPlugin(Plugin):
             with self.manticore.locked_context() as context:
                 context['targets'] = targets
 
-            #Print our results!
+            #Log our results!
             out += ",".join(targets)
-            print(out)
+            logger.info(out)
 
 #A plugin to extract the successor instructions of a given instruction and to direct execution along a set of predefined paths
 class DirectedExtractorPlugin(Plugin):
@@ -65,10 +68,10 @@ class DirectedExtractorPlugin(Plugin):
 
         state.context['pathIDs'] = newPathIDS
 
-        print("keeping: " + ",".join(keeping))
+        logger.info("keeping: " + ",".join(keeping))
 
         if (not state.context['pathIDs']):  # No path includes the state state
-            print("Abandoning state with RIP=" + hex(state.cpu.RIP) + " PCCounter=" + str(PCCounter))
+            logger.info("Abandoning state with RIP=" + hex(state.cpu.RIP) + " PCCounter=" + str(PCCounter))
             state.abandon()
 
 
@@ -99,9 +102,9 @@ class DirectedExtractorPlugin(Plugin):
                         targets[pathId] = set()
                     targets[pathId].add(hex(concreteNewPC))
 
-            #Print our results!
+            #Log our results!
             out += ",".join([str(i) for i in targets[i]])
-            print(out)
+            logger.info(out)
 
         # Put the results in the global context so that they can be accessed later
         with self.manticore.locked_context() as context:
