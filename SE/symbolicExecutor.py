@@ -50,40 +50,6 @@ def executeDirected(program, pathsObject):
         l = [hex(j) for j in i.path]
         print(",".join(l))
 
-    #Direct the execution
-    @m.hook(None)
-    def hook(state):
-        #TODO: Move to plugin
-        with m.locked_context() as context:
-            pathsObject = context['paths']
-
-        #Update PCCounter
-        if 'PCCounter' not in state.context:
-            state.context['PCCounter'] = 0
-            state.context['pathIDs'] = range(pathsObject.pathsLen) #All paths start with the first instruction of the binary
-        else:
-            state.context['PCCounter'] += 1
-
-        #Check if RIP of the state is matching a path, else abandon it
-        newPathIDS = []
-        PCCounter = state.context['PCCounter']
-        keeping = []
-        for pathID in state.context['pathIDs']:
-            if PCCounter >= pathsObject.paths[pathID].pathLen:
-                continue
-
-            if pathsObject.paths[pathID].path[PCCounter] == state.cpu.RIP :
-                newPathIDS.append(pathID)
-                keeping.append(str(pathID))
-
-        state.context['pathIDs'] = newPathIDS
-
-        print("keeping: " + ",".join(keeping))
-
-        if (not state.context['pathIDs']):#No path includes the state state
-            print("Abandoning state with RIP=" + hex(state.cpu.RIP) + " PCCounter=" + str(PCCounter))
-            state.abandon()
-
     m.run()
     with m.locked_context() as context:
         targets = context['targets']
