@@ -1,5 +1,4 @@
-;cpa c: Can propagates eax=0 to the cmp instruction and resolves all branches without claiming that unreachable can be reached
-
+;cpa c: Can propagate eax=0 to the cmp instruction and resolves all branches without claiming that unreachable can be reached
 ;Note: Strange extra instruction in cfa graph?
 
 SECTION .text
