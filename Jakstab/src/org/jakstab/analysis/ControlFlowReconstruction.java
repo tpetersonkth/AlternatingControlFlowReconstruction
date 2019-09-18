@@ -228,7 +228,7 @@ public class ControlFlowReconstruction implements Algorithm {
 		Worklist<AbstractState> worklist = new PriorityWorklist();
 		//Worklist<AbstractState> worklist = new FastSet<AbstractState>();
 
-		cpaAlgorithm = new CPAAlgorithm(cpa, transformerFactory, worklist, Options.failFast.getValue());
+		cpaAlgorithm = new CPAAlgorithm(cpa, transformerFactory, worklist, Options.failFast.getValue(), addedDSE);
 	}
 
 	public ReachedSet getReachedStates() {
@@ -376,57 +376,6 @@ public class ControlFlowReconstruction implements Algorithm {
 			status = e.toString();
 			throw e;
 		} finally {
-			if (addedDSE){
-				//Export the paths to the unresolved branches to DSE
-				logger.info("Formatting graph for efficient path extraction");
-
-				Set<CFAEdge> cfa = transformerFactory.getCFA();
-
-				Pair<ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>,Map<AbsoluteAddress, Integer>> out = DSE.getAdjList(cfa);
-				ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>> adjList = out.getLeft();
-				Map<AbsoluteAddress, Integer> addressToId = out.getRight();
-
-				/*
-				//Print nodes that have more than 2 outgoing edges (Jmp reg or ret instructions)
-				for(int i = 0; i < id + 1; i++){
-
-					if (adjList.get(i).size() > 2){
-						String out = "At id "+Integer.toString(i)+"="+idToAddress.get(i).toString()+": ";
-						for(Pair<Integer,AbsoluteAddress> a : adjList.get(i)){
-							out += a.toString()+",";
-						}
-						logger.warn(out);
-					}
-				}
-				 */
-
-				Set<RTLLabel> unresolvedLabels = transformerFactory.getUnresolvedBranches();
-				Set<AbsoluteAddress> unresolved = new HashSet<AbsoluteAddress>();
-				for(RTLLabel label : unresolvedLabels){
-					unresolved.add(label.getAddress());
-				}
-
-				logger.info("Searching for paths to export");
-				long startTime = System.currentTimeMillis();
-
-				/*
-				RTLLabel startLabel = new RTLLabel(Harness.prologueAddress,0);
-				Set<LinkedList<RTLLabel>> pathsRec = DSE.LDFS(cfa,startLabel, unresolvedLabels, 120);
-				System.out.println("\nRecursive path search took: "+Long.toString(System.currentTimeMillis() - startTime)+" milliseconds and found " + pathsRec.size() + " paths");
-
-				startTime = System.currentTimeMillis();
-				Set<LinkedList<RTLLabel>> pathsOldIt = DSE.LDFSIterativeOLD(cfa,startLabel, unresolvedLabels, 120);
-				System.out.println("\nOld iterative path search took: "+Long.toString(System.currentTimeMillis() - startTime)+" milliseconds and found " + pathsOldIt.size() + " paths");
-				 */
-
-				Pair<Integer, AbsoluteAddress> startPair = new Pair<Integer, AbsoluteAddress>(addressToId.get(Harness.prologueAddress),Harness.prologueAddress);
-				startTime = System.currentTimeMillis();
-				Set<LinkedList<AbsoluteAddress>> paths = DSE.LDFSIterative(adjList,startPair, unresolved, 200, cfa);
-				System.out.println("Iterative path search took: "+Long.toString(System.currentTimeMillis() - startTime)+" milliseconds and found " + paths.size() + " paths");
-
-				DSE.exportPaths(Options.mainFilename, paths);
-
-			}
 
 			program.setCFA(transformerFactory.getCFA());
 			program.setUnresolvedBranches(transformerFactory.getUnresolvedBranches());
