@@ -207,6 +207,44 @@ public class DSE {
         return paths;
     }
 
+    public static Pair<ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>,Map<AbsoluteAddress, Integer>> getAdjList(Set<CFAEdge> cfa){
+        //Extract unique addresses
+        Set<AbsoluteAddress> addresses= new HashSet<AbsoluteAddress>();
+        for (CFAEdge edge : cfa) {
+            addresses.add(edge.getSource().getAddress());
+            addresses.add(edge.getTarget().getAddress());
+        }
+
+        //Create mapping between address and id
+        Map<AbsoluteAddress, Integer> addressToId = new HashMap<AbsoluteAddress, Integer>();
+        //Map<Integer, AbsoluteAddress> idToAddress = new HashMap<Integer, AbsoluteAddress>();
+        int id = 0;
+        for (AbsoluteAddress address : addresses){
+            addressToId.put(address,id);
+            //idToAddress.put(id,address);
+            id = id + 1;
+        }
+
+        //Create the adjacency list using the id:s
+        ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>> adjList = new ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>(100);
+        for(int i = 0; i < id + 1; i++){
+            adjList.add(new LinkedList<Pair<Integer,AbsoluteAddress>>());
+        }
+        for (CFAEdge edge : cfa) {
+            int from = addressToId.get(edge.getSource().getAddress());
+            int to = addressToId.get(edge.getTarget().getAddress());
+
+            //Corner case occurs if an instruction jumps to itself
+            boolean cornerCase = edge.getTarget().getAddress().equals(edge.getSource().getAddress()) && edge.getTarget().getLabel().getIndex() == 0;
+
+            if(from!=to){
+                Pair<Integer,AbsoluteAddress> P = new Pair<Integer,AbsoluteAddress>(to,edge.getTarget().getAddress());
+                adjList.get(from).add(P);
+            }
+        }
+        return new Pair<ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>,Map<AbsoluteAddress, Integer>>(adjList,addressToId);
+    }
+
 
     public static void exportPaths(String mainfile, Set<LinkedList<AbsoluteAddress>> paths){
         String out = "";

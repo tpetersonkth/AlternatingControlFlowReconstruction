@@ -382,41 +382,9 @@ public class ControlFlowReconstruction implements Algorithm {
 
 				Set<CFAEdge> cfa = transformerFactory.getCFA();
 
-				//Extract unique addresses
-				Set<AbsoluteAddress> addresses= new HashSet<AbsoluteAddress>();
-				for (CFAEdge edge : cfa) {
-					addresses.add(edge.getSource().getAddress());
-					addresses.add(edge.getTarget().getAddress());
-				}
-
-				//Create mapping between address and id
-				Map<AbsoluteAddress, Integer> addressToId = new HashMap<AbsoluteAddress, Integer>();
-				Map<Integer, AbsoluteAddress> idToAddress = new HashMap<Integer, AbsoluteAddress>();
-				int id = 0;
-				for (AbsoluteAddress address : addresses){
-					addressToId.put(address,id);
-					idToAddress.put(id,address);
-					System.out.println("Adding id "+id+":"+address+" to maps ");
-					id = id + 1;
-				}
-
-				//Create the adjacency list using the id:s
-				ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>> adjList = new ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>(100);
-				for(int i = 0; i < id + 1; i++){
-					adjList.add(new LinkedList<Pair<Integer,AbsoluteAddress>>());
-				}
-				for (CFAEdge edge : cfa) {
-					int from = addressToId.get(edge.getSource().getAddress());
-					int to = addressToId.get(edge.getTarget().getAddress());
-
-					//Corner case occurs if an instruction jumps to itself
-					boolean cornerCase = edge.getTarget().getAddress().equals(edge.getSource().getAddress()) && edge.getTarget().getLabel().getIndex() == 0;
-
-					if(from!=to){
-						Pair<Integer,AbsoluteAddress> P = new Pair<Integer,AbsoluteAddress>(to,edge.getTarget().getAddress());
-						adjList.get(from).add(P);
-					}
-				}
+				Pair<ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>,Map<AbsoluteAddress, Integer>> out = DSE.getAdjList(cfa);
+				ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>> adjList = out.getLeft();
+				Map<AbsoluteAddress, Integer> addressToId = out.getRight();
 
 				/*
 				//Print nodes that have more than 2 outgoing edges (Jmp reg or ret instructions)
@@ -453,7 +421,7 @@ public class ControlFlowReconstruction implements Algorithm {
 
 				Pair<Integer, AbsoluteAddress> startPair = new Pair<Integer, AbsoluteAddress>(addressToId.get(Harness.prologueAddress),Harness.prologueAddress);
 				startTime = System.currentTimeMillis();
-				Set<LinkedList<AbsoluteAddress>> paths = DSE.LDFSIterative(adjList,startPair, unresolved, 120, cfa);
+				Set<LinkedList<AbsoluteAddress>> paths = DSE.LDFSIterative(adjList,startPair, unresolved, 200, cfa);
 				System.out.println("Iterative path search took: "+Long.toString(System.currentTimeMillis() - startTime)+" milliseconds and found " + paths.size() + " paths");
 
 				DSE.exportPaths(Options.mainFilename, paths);
