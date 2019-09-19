@@ -28,11 +28,11 @@ class Server():
         self.connection = communication.Communication(port)
 
     def run(self):
+        logger.info("[*] Waiting for connection..")
+        self.connection.connect()
+        logger.info("[*] Connection received!")
         # Work loop
         while True:
-            logger.info("[*] Waiting for connection..")
-            self.connection.connect()
-            logger.info("[*] Connection received!")
             request = self.connection.getWork()
             request = request.split("\n")
             program = request[0]
@@ -42,9 +42,19 @@ class Server():
             logger.info("Program: "+program)
             logger.info("Number of paths received: " + str(paths.pathsLen))
 
-            symbolicExecutor.executeDirected(program, paths)
+            targets = symbolicExecutor.executeDirected(program, paths)
 
-            self.connection.sendAnswer("Everything okay")
+            response = formatResponse(paths,targets)
+
+            self.connection.sendAnswer(response)
+
+def formatResponse(paths,targets):
+    response = "START"
+    pairs = []
+    for pathID in targets.keys():
+        pairs.append(hex(paths.lastAddresses[pathID]) + "," + next(iter(targets[pathID]))) #TODO Export all not just first
+    response += "\n".join(pairs)+"END"
+    return response
 
 def formatPaths(lines):
     paths = []
@@ -56,7 +66,7 @@ def formatPaths(lines):
         path = [int(i.strip(), 16) for i in path]  # Remove newline characters and convert to integers
         paths.append(pathObject.PathObject(path,id))
         id +=1
-        
+
     return pathsObject.PathsObject(paths)
 
 #Deprecated
