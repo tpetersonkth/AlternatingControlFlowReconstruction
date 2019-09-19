@@ -19,11 +19,16 @@ package org.jakstab.util;
 
 import java.util.*;
 
+import org.jakstab.Program;
+import org.jakstab.analysis.AbstractState;
 import org.jakstab.asm.AbsoluteAddress;
 import org.jakstab.cfa.CFAEdge;
+import org.jakstab.cfa.Location;
 import org.jakstab.cfa.RTLLabel;
+import org.jakstab.cfa.StateTransformer;
 import org.jakstab.loader.Harness;
 import org.jakstab.loader.elf.IAddress;
+import org.jakstab.rtl.statements.RTLStatement;
 
 import java.io.IOException;
 import java.io.BufferedWriter;
@@ -245,15 +250,62 @@ public class DSE {
         return new Pair<ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>,Map<AbsoluteAddress, Integer>>(adjList,addressToId);
     }
 
+    public static Set<CFAEdge> execute(LinkedList<AbstractState> unresolvedStates, String mainfile, Set<LinkedList<AbsoluteAddress>> paths, LinkedList<AbstractState> toExploreAgain, LinkedList<AbstractState>  tops){
+        String formattedPaths = formatPaths(paths);
+        File f = new File(mainfile);
+        String Response = sendRequest("START"+f.getAbsolutePath()+"\n"+formattedPaths+"END");
+        logger.info("Received from DSE: "+Response);
+        return extractEdges(unresolvedStates,Response,toExploreAgain,tops);
+    }
 
-    public static void exportPaths(String mainfile, Set<LinkedList<AbsoluteAddress>> paths){
+    public static Set<CFAEdge> extractEdges(LinkedList<AbstractState> unresolvedStates, String formattedString, LinkedList<AbstractState> toExploreAgain, LinkedList<AbstractState>  tops){
+        assert(formattedString.startsWith("START") && formattedString.endsWith("END"));
+        formattedString = formattedString.substring(5,formattedString.length()-3);
+        System.out.println("Formatted string:" + formattedString);
+        String pairs[] = formattedString.split("\n");
+
+        // If no successors were received
+        if (pairs[0].equals("")){
+            return new HashSet<CFAEdge>();
+        }
+
+        Set<CFAEdge> edges = new HashSet<CFAEdge>();
+        for (String pair : pairs){
+            String addresses[] = pair.split(",");
+
+            System.out.println(Arrays.toString(addresses));
+            System.out.println(addresses[0]);
+
+            AbsoluteAddress fromAdr = new AbsoluteAddress(Long.decode(addresses[0]));
+            RTLLabel fromLabel = null;
+            for (AbstractState a : unresolvedStates){
+                System.out.println("Checking:"+a.getLocation().getAddress() + "=?="+fromAdr);
+                if (a.getLocation().getAddress().equals(fromAdr)){
+                    fromLabel = a.getLocation().getLabel();
+                    toExploreAgain.add(a);
+                    //TODO: add a to set of states to remove
+                }
+
+            }
+
+            //Assert that all the answers recieved have a corresponding abstract state
+            assert(fromLabel != null);
+
+            RTLLabel toLabel = new RTLLabel(new AbsoluteAddress(Long.decode(addresses[1])),0);
+            RTLStatement stmt = Program.getProgram().getStatement(fromLabel);
+            edges.add(new CFAEdge(fromLabel,toLabel,stmt));
+        }
+
+        return edges;
+    }
+
+
+    public static String formatPaths(Set<LinkedList<AbsoluteAddress>> paths){
         String out = "";
-        long pathCount = 0;//Avoid iterating over paths twice to obtain length
 
         //Format output
         boolean firstPath = true;
         for (LinkedList<AbsoluteAddress> path : paths) {
-            pathCount = pathCount + 1;
 
             if (!firstPath) {
                 out += "\n";
@@ -291,12 +343,7 @@ public class DSE {
             logger.error("Could not export paths to file. ",e);
         }
         */
-
-        File f = new File(mainfile);
-        sendRequest("START"+f.getAbsolutePath()+"\n"+out+"END");
-
-        logger.info("Exported " + Long.toString(pathCount) + " paths to DSE");
-        logger.debug(out);
+        return out;
     }
 
     public static void exportPathsOLD(String mainfile, Set<LinkedList<RTLLabel>> paths){

@@ -163,7 +163,10 @@ public class CPAAlgorithm implements Algorithm {
 		long lastSteps = 0;
 		long lastTime = 0;
 		boolean remainingTops = this.addedDSE;
-		while ((!worklist.isEmpty() || remainingTops==true) && !stop && (!failFast || isSound())) {
+		LinkedList<AbstractState> unresolvedStates = new LinkedList<>();
+		LinkedList<AbstractState> trueTops = new LinkedList<>();
+		Set<CFAEdge> DSEedges = new HashSet<>();
+		while ((!worklist.isEmpty() || remainingTops) && !stop && (!failFast || isSound())) {
 			if (!worklist.isEmpty()){
 				statesVisited++;
 				if (++steps == stepThreshold) {
@@ -220,9 +223,18 @@ public class CPAAlgorithm implements Algorithm {
 
 				// getTransformers() might throw exceptions
 				try {
+					Set<CFAEdge> edges = transformerFactory.getTransformers(a);
+					Set<CFAEdge> allEdges = new HashSet<>();
+					allEdges.addAll(edges);
+					allEdges.addAll(DSEedges);
+					//edges.add(DSEedges);
+					if (allEdges.isEmpty()){
+						if (!trueTops.contains(a)){
+							unresolvedStates.add(a);
+						}
+					}
 					// For each outgoing edge
-					for (CFAEdge cfaEdge : transformerFactory.getTransformers(a)) {
-
+					for (CFAEdge cfaEdge : allEdges) {
 						Precision targetPrecision = precisionMap.get(cfaEdge.getTarget());
 						if (targetPrecision == null) {
 							targetPrecision = cpa.initPrecision(cfaEdge.getTarget(), cfaEdge.getTransformer());
@@ -295,7 +307,6 @@ public class CPAAlgorithm implements Algorithm {
 								if (art != null) art.addChild(unadjustedState, cfaEdge, succ);
 							}
 						}
-
 						// end for each outgoing edge
 					}
 				} catch (StateException e) {
@@ -315,20 +326,38 @@ public class CPAAlgorithm implements Algorithm {
 				ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>> adjList = out.getLeft();
 				Map<AbsoluteAddress, Integer> addressToId = out.getRight();
 
-				Set<RTLLabel> unresolvedLabels = transformerFactory.getUnresolvedBranches();
 				Set<AbsoluteAddress> unresolved = new HashSet<AbsoluteAddress>();
-				for(RTLLabel label : unresolvedLabels){
-					unresolved.add(label.getAddress());
+				for(AbstractState a : unresolvedStates){
+					unresolved.add(a.getLocation().getAddress());
+					logger.info("Unresolved:"+a.getLocation().getAddress());
 				}
 
 				logger.info("Searching for paths to export");
 				Pair<Integer, AbsoluteAddress> startPair = new Pair<Integer, AbsoluteAddress>(addressToId.get(Harness.prologueAddress),Harness.prologueAddress);
 				long startTimeDSE = System.currentTimeMillis();
-				Set<LinkedList<AbsoluteAddress>> paths = DSE.LDFSIterative(adjList,startPair, unresolved, 200, cfa);
-				System.out.println("Iterative path search took: "+Long.toString(System.currentTimeMillis() - startTime)+" milliseconds and found " + paths.size() + " paths");
+				Set<LinkedList<AbsoluteAddress>> paths = DSE.LDFSIterative(adjList, startPair, unresolved, 200, cfa);
+				logger.info("Iterative path search took: "+Long.toString(System.currentTimeMillis() - startTimeDSE)+" milliseconds and found " + paths.size() + " paths");
+				logger.info("CFA size:"+cfa.size()+" adjList size:"+adjList.size());
 
-				DSE.exportPaths(Options.mainFilename, paths);
-				remainingTops = false;
+				//Create empty lists and pass them by reference to DSE
+				LinkedList<AbstractState> toExploreAgain = new LinkedList<AbstractState>();
+				LinkedList<AbstractState>  tops = new LinkedList<AbstractState>();
+				DSEedges = DSE.execute(unresolvedStates, Options.mainFilename, paths, toExploreAgain, tops);
+				if (!DSEedges.isEmpty()){
+					trueTops.addAll(tops);
+					for (AbstractState a : toExploreAgain){
+						//AbstractState a2 = propagate(a);
+						//worklist.add(a2);
+						worklist.add(a);
+					}
+					System.out.println("Received edges from DSE! :D");
+				}
+				else{
+					remainingTops = false;
+				}
+				//remainingTops = false;
+				unresolvedStates = new LinkedList<>();
+
 			}
 		}
 		long endTime = System.currentTimeMillis();
