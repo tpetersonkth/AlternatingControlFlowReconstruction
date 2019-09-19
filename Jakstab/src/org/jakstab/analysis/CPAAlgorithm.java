@@ -227,7 +227,6 @@ public class CPAAlgorithm implements Algorithm {
 					Set<CFAEdge> allEdges = new HashSet<>();
 					allEdges.addAll(edges);
 					allEdges.addAll(DSEedges);
-					//edges.add(DSEedges);
 					if (allEdges.isEmpty()){
 						if (!trueTops.contains(a)){
 							unresolvedStates.add(a);
@@ -343,14 +342,15 @@ public class CPAAlgorithm implements Algorithm {
 				LinkedList<AbstractState> toExploreAgain = new LinkedList<AbstractState>();
 				LinkedList<AbstractState>  tops = new LinkedList<AbstractState>();
 				DSEedges = DSE.execute(unresolvedStates, Options.mainFilename, paths, toExploreAgain, tops);
+				logger.info("Size of CFA before adding DSE edges: " + transformerFactory.getCFA().size());
+				transformerFactory.saveDSEEdges(DSEedges);
+				logger.info("Size of CFA after adding DSE edges: " + transformerFactory.getCFA().size());
+
 				if (!DSEedges.isEmpty()){
 					trueTops.addAll(tops);
 					for (AbstractState a : toExploreAgain){
-						//AbstractState a2 = propagate(a);
-						//worklist.add(a2);
 						worklist.add(a);
 					}
-					System.out.println("Received edges from DSE! :D");
 				}
 				else{
 					remainingTops = false;

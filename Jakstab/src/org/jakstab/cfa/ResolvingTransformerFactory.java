@@ -82,6 +82,24 @@ public abstract class ResolvingTransformerFactory implements StateTransformerFac
 		return transformers;
 	}
 
+	public void saveDSEEdges(Set<CFAEdge> transformers){
+
+		Set<RTLLabel> labels = new HashSet<>();
+		for(CFAEdge edge : transformers){
+			labels.add(edge.getSource().getLabel());
+		}
+
+		for (RTLLabel label : labels){
+			Set<CFAEdge> edgesFromLabel = new HashSet<>();
+			for(CFAEdge edge : transformers){
+				if (edge.getSource().getLabel().equals(label)){
+					edgesFromLabel.add(edge);
+				}
+			}
+			this.saveNewEdges(edgesFromLabel, label);
+		}
+	}
+
 	protected void saveNewEdges(Set<CFAEdge> transformers, RTLLabel l) {
 		// Make sure we only add new edges. Edges are mutable so we cannot just implement
 		// hashCode and equals and add everything into a HashSet.
