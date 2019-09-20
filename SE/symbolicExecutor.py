@@ -38,7 +38,8 @@ def execute(program, address):
 
 def executeDirected(program, pathsObject):
     #m = Manticore(program, pure_symbolic=True)
-    m = Manticore(program, pure_symbolic=False)
+    workplace_url = "/tmp/mcore_tmp"
+    m = Manticore(program, workspace_url=workplace_url, pure_symbolic=False)
 
     #Store variables in global context to ensure that we can communicate them to the callback function
     with m.locked_context() as context:
