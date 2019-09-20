@@ -1,3 +1,5 @@
+;DSE(Ran with cpa c) can resolve both ret instructions correctly
+
 SECTION .bss
 buf      resb 1
 

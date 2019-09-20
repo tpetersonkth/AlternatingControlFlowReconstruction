@@ -162,10 +162,9 @@ public class CPAAlgorithm implements Algorithm {
 		long startTime = System.currentTimeMillis();
 		long lastSteps = 0;
 		long lastTime = 0;
-		boolean remainingTops = this.addedDSE;
 		LinkedList<AbstractState> unresolvedStates = new LinkedList<>();
 		Set<CFAEdge> DSEedges = new HashSet<>();
-		while ((!worklist.isEmpty() || remainingTops) && !stop && (!failFast || isSound())) {
+		while ((!worklist.isEmpty()) && !stop && (!failFast || isSound())) {
 			if (!worklist.isEmpty()){
 				statesVisited++;
 				if (++steps == stepThreshold) {
@@ -313,7 +312,7 @@ public class CPAAlgorithm implements Algorithm {
 					throw e;
 				}
 			}
-			else{
+			if(worklist.isEmpty() && !unresolvedStates.isEmpty()){
 				//Export the paths to the unresolved branches to DSE
 				logger.info("Formatting graph for efficient path extraction");
 				ResolvingTransformerFactory transformerFactory = (ResolvingTransformerFactory) this.transformerFactory;
@@ -342,16 +341,9 @@ public class CPAAlgorithm implements Algorithm {
 				transformerFactory.saveDSEEdges(DSEedges);
 				logger.info("Size of CFA after adding DSE edges: " + transformerFactory.getCFA().size());
 				unresolvedStates = new LinkedList<>();
-
-				if (!DSEedges.isEmpty()){
-					for (AbstractState a : toExploreAgain){
-						worklist.add(a);
-					}
+				for (AbstractState a : toExploreAgain){
+					worklist.add(a);
 				}
-				else{
-					remainingTops = false;
-				}
-
 			}
 		}
 		long endTime = System.currentTimeMillis();
