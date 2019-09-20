@@ -249,7 +249,7 @@ public class DSE {
         return new Pair<ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>,Map<AbsoluteAddress, Integer>>(adjList,addressToId);
     }
 
-    public static Set<CFAEdge> execute(LinkedList<AbstractState> unresolvedStates, String mainfile, Set<LinkedList<AbsoluteAddress>> paths, LinkedList<AbstractState> toExploreAgain, LinkedList<AbstractState>  tops){
+    public static Set<CFAEdge> execute(LinkedList<AbstractState> unresolvedStates, String mainfile, Set<LinkedList<AbsoluteAddress>> paths, LinkedList<AbstractState> toExploreAgain){
         if(paths.isEmpty()){
             return new HashSet<CFAEdge>();
         }
@@ -257,10 +257,10 @@ public class DSE {
         File f = new File(mainfile);
         String Response = sendRequest("START"+f.getAbsolutePath()+"\n"+formattedPaths+"END");
         logger.info("Received from DSE: "+Response);
-        return extractEdges(unresolvedStates,Response,toExploreAgain,tops);
+        return extractEdges(unresolvedStates,Response,toExploreAgain);
     }
 
-    public static Set<CFAEdge> extractEdges(LinkedList<AbstractState> unresolvedStates, String formattedString, LinkedList<AbstractState> toExploreAgain, LinkedList<AbstractState>  tops){
+    public static Set<CFAEdge> extractEdges(LinkedList<AbstractState> unresolvedStates, String formattedString, LinkedList<AbstractState> toExploreAgain){
         assert(formattedString.startsWith("START") && formattedString.endsWith("END"));
         formattedString = formattedString.substring(5,formattedString.length()-3);
         System.out.println("Formatted string:" + formattedString);
@@ -285,7 +285,6 @@ public class DSE {
                 if (a.getLocation().getAddress().equals(fromAdr)){
                     fromLabel = a.getLocation().getLabel();
                     toExploreAgain.add(a);
-                    //TODO: add a to set of states to remove
                 }
 
             }

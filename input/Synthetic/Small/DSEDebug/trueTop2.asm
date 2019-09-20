@@ -20,10 +20,11 @@ _start:
         jmp exit
 echo:
         call function
+        call function2
         jmp exit
 
 function:
-        mov  edx, eax           ; length
+        mov  edx, 1             ; length
         mov  ecx, buf           ; buffer
         mov  ebx, 1             ; stdout
         mov  eax, 4             ; sys_write
@@ -37,3 +38,4 @@ exit:
         mov ebx, 0;
         mov eax, 1;
         int 0x80;
+

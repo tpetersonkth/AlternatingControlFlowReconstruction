@@ -164,7 +164,6 @@ public class CPAAlgorithm implements Algorithm {
 		long lastTime = 0;
 		boolean remainingTops = this.addedDSE;
 		LinkedList<AbstractState> unresolvedStates = new LinkedList<>();
-		LinkedList<AbstractState> trueTops = new LinkedList<>();
 		Set<CFAEdge> DSEedges = new HashSet<>();
 		while ((!worklist.isEmpty() || remainingTops) && !stop && (!failFast || isSound())) {
 			if (!worklist.isEmpty()){
@@ -228,9 +227,7 @@ public class CPAAlgorithm implements Algorithm {
 					allEdges.addAll(edges);
 					allEdges.addAll(DSE.getTransformers(DSEedges,a));
 					if (allEdges.isEmpty()){
-						if (!trueTops.contains(a)){
-							unresolvedStates.add(a);
-						}
+						unresolvedStates.add(a);
 					}
 					// For each outgoing edge
 					for (CFAEdge cfaEdge : allEdges) {
@@ -340,14 +337,13 @@ public class CPAAlgorithm implements Algorithm {
 
 				//Create empty lists and pass them by reference to DSE
 				LinkedList<AbstractState> toExploreAgain = new LinkedList<AbstractState>();
-				LinkedList<AbstractState>  tops = new LinkedList<AbstractState>();
-				DSEedges = DSE.execute(unresolvedStates, Options.mainFilename, paths, toExploreAgain, tops);
+				DSEedges = DSE.execute(unresolvedStates, Options.mainFilename, paths, toExploreAgain);
 				logger.info("Size of CFA before adding DSE edges: " + transformerFactory.getCFA().size());
 				transformerFactory.saveDSEEdges(DSEedges);
 				logger.info("Size of CFA after adding DSE edges: " + transformerFactory.getCFA().size());
+				unresolvedStates = new LinkedList<>();
 
 				if (!DSEedges.isEmpty()){
-					trueTops.addAll(tops);
 					for (AbstractState a : toExploreAgain){
 						worklist.add(a);
 					}
@@ -355,8 +351,6 @@ public class CPAAlgorithm implements Algorithm {
 				else{
 					remainingTops = false;
 				}
-				//remainingTops = false;
-				unresolvedStates = new LinkedList<>();
 
 			}
 		}
