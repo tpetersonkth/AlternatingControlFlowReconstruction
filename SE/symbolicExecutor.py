@@ -3,9 +3,7 @@ Author: Thomas Peterson
 Year: 2019
 """
 
-#TODO: Use logger
 #TODO: Purely symbolic execution?
-#TODO: Avoid generating the output directory
 #TODO(Possible): Timeout
 
 from manticore.native import Manticore

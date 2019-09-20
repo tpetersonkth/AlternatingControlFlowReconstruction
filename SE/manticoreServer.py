@@ -51,7 +51,7 @@ class Server():
 
                 response = formatResponse(paths,targets)
 
-                print("Sending: " + response)
+                logger.info("Sending: " + response)
 
                 self.connection.sendAnswer(response)
 
@@ -59,7 +59,8 @@ def formatResponse(paths,targets):
     response = "START"
     pairs = []
     for pathID in targets.keys():
-        pairs.append(hex(paths.lastAddresses[pathID]) + "," + next(iter(targets[pathID]))) #TODO Export all not just first
+        for target in targets[pathID]:
+            pairs.append(hex(paths.lastAddresses[pathID]) + "," + target) #TODO Export all not just first
     response += ":".join(pairs) + "END"
     return response
 

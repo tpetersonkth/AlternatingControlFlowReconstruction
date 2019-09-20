@@ -1,5 +1,4 @@
-;Jump to the value of the system time. This should be an unresolvable top.
-;Can be resolved with cpa c and DSE (DSE can call the syscall to get the time and deduce the target of the jmp eax instruction..)
+;Jumps to _start + user input
 
 SECTION .bss
 buf      resb 1
@@ -9,9 +8,13 @@ SECTION .text
 global _start
 
 _start:
-        mov eax, 0x0d
-        mov ebx, buf
-        int 0x80
+        mov  edx, 1             ; max length
+        mov  ecx, buf           ; pointer to buffer
+        mov  ebx, 0             ; stdin
+        mov  eax, 3             ; sys_read
+        int  80h                ; perform syscall
+
         movzx eax, word [buf]
+        add eax, _start
         jmp eax
 
