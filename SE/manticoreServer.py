@@ -28,27 +28,32 @@ class Server():
         self.connection = communication.Communication(port)
 
     def run(self):
-        logger.info("[*] Waiting for connection..")
-        self.connection.connect()
-        logger.info("[*] Connection received!")
-        # Work loop
         while True:
-            request = self.connection.getWork()
-            request = request.split("\n")
-            program = request[0]
-            paths = formatPaths(request[1:])
+            logger.info("Waiting for connection..")
+            self.connection.connect()
+            logger.info("Connection received!")
+            # Work loop
+            while True:
+                try:
+                    request = self.connection.getWork()
+                except:
+                    logger.info("Client disconnected")
+                    break #Client closed socket
+                request = request.split("\n")
+                program = request[0]
+                paths = formatPaths(request[1:])
 
-            logger.info(request)
-            logger.info("Program: "+program)
-            logger.info("Number of paths received: " + str(paths.pathsLen))
+                logger.info(request)
+                logger.info("Program: "+program)
+                logger.info("Number of paths received: " + str(paths.pathsLen))
 
-            targets = symbolicExecutor.executeDirected(program, paths)
+                targets = symbolicExecutor.executeDirected(program, paths)
 
-            response = formatResponse(paths,targets)
+                response = formatResponse(paths,targets)
 
-            print("Sending: " + response)
+                print("Sending: " + response)
 
-            self.connection.sendAnswer(response)
+                self.connection.sendAnswer(response)
 
 def formatResponse(paths,targets):
     response = "START"

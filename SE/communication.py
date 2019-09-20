@@ -5,8 +5,6 @@ Year: 2019
 
 import socket
 
-#TODO: Catch sigterm in getWork()
-
 class Communication():
     conn = None
     encoding = "utf-8"
@@ -30,10 +28,14 @@ class Communication():
         data=b''
         while True:
             rec = self.conn.recv(BUFFERSIZE)
-            if(rec):
-                data+=rec
-                if self.isValidRequest(data):
-                    break
+            if(not rec):
+                self.conn = None
+                raise SocketException
+            data+=rec
+            if self.isValidRequest(data):
+                break
+            else:
+                print("Waiting for more data: "+data)
         return self.formatRequest(data).decode(self.encoding)
 
     def sendAnswer(self,answer):
