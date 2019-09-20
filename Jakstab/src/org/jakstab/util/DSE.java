@@ -152,6 +152,7 @@ public class DSE {
 
             int currId = current.id;
             for(Pair<Integer,AbsoluteAddress> target : adjList.get(currId)){
+                logger.info("DFS: "+current.address + "->" + target.getRight());
                 stack.push(new Node(target.getLeft(),target.getRight(),current,current.depth-1));
             }
 
@@ -239,10 +240,8 @@ public class DSE {
             int from = addressToId.get(edge.getSource().getAddress());
             int to = addressToId.get(edge.getTarget().getAddress());
 
-            //Corner case occurs if an instruction jumps to itself
-            boolean cornerCase = edge.getTarget().getAddress().equals(edge.getSource().getAddress()) && edge.getTarget().getLabel().getIndex() == 0;
-
             if(from!=to){
+                logger.info("Ajdlist adding: "+edge.getSource().getAddress()+"->"+edge.getTarget().getAddress());
                 Pair<Integer,AbsoluteAddress> P = new Pair<Integer,AbsoluteAddress>(to,edge.getTarget().getAddress());
                 adjList.get(from).add(P);
             }
@@ -251,6 +250,9 @@ public class DSE {
     }
 
     public static Set<CFAEdge> execute(LinkedList<AbstractState> unresolvedStates, String mainfile, Set<LinkedList<AbsoluteAddress>> paths, LinkedList<AbstractState> toExploreAgain, LinkedList<AbstractState>  tops){
+        if(paths.isEmpty()){
+            return new HashSet<CFAEdge>();
+        }
         String formattedPaths = formatPaths(paths);
         File f = new File(mainfile);
         String Response = sendRequest("START"+f.getAbsolutePath()+"\n"+formattedPaths+"END");
@@ -262,7 +264,7 @@ public class DSE {
         assert(formattedString.startsWith("START") && formattedString.endsWith("END"));
         formattedString = formattedString.substring(5,formattedString.length()-3);
         System.out.println("Formatted string:" + formattedString);
-        String pairs[] = formattedString.split("\n");
+        String pairs[] = formattedString.split(":");
 
         // If no successors were received
         if (pairs[0].equals("")){
@@ -297,6 +299,18 @@ public class DSE {
         }
 
         return edges;
+    }
+
+    public static Set<CFAEdge> getTransformers(Set<CFAEdge> edges, AbstractState a){
+        RTLLabel l = a.getLocation().getLabel();
+        Set<CFAEdge> transformers = new HashSet<CFAEdge>();
+        for (CFAEdge edge : edges){
+            if (edge.getSource().getLabel().equals(l)){
+                transformers.add(edge);
+            }
+        }
+
+        return transformers;
     }
 
 

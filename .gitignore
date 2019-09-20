@@ -4,6 +4,9 @@
 !/input/*/
 /input/Synthetic/Small/*
 !/input/Synthetic/Small/*.*
+!/input/Synthetic/Small/*/
+/input/Synthetic/Small/DSEDebug/*
+!/input/Synthetic/Small/DSEDebug/*.*
 /input/Synthetic/Medium/*
 !/input/Synthetic/Medium/*.*
 

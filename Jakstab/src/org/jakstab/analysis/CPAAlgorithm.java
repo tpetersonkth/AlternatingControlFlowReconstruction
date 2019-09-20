@@ -226,7 +226,7 @@ public class CPAAlgorithm implements Algorithm {
 					Set<CFAEdge> edges = transformerFactory.getTransformers(a);
 					Set<CFAEdge> allEdges = new HashSet<>();
 					allEdges.addAll(edges);
-					allEdges.addAll(DSEedges);
+					allEdges.addAll(DSE.getTransformers(DSEedges,a));
 					if (allEdges.isEmpty()){
 						if (!trueTops.contains(a)){
 							unresolvedStates.add(a);

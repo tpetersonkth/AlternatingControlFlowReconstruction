@@ -46,6 +46,8 @@ class Server():
 
             response = formatResponse(paths,targets)
 
+            print("Sending: " + response)
+
             self.connection.sendAnswer(response)
 
 def formatResponse(paths,targets):
@@ -53,7 +55,7 @@ def formatResponse(paths,targets):
     pairs = []
     for pathID in targets.keys():
         pairs.append(hex(paths.lastAddresses[pathID]) + "," + next(iter(targets[pathID]))) #TODO Export all not just first
-    response += "\n".join(pairs)+"END"
+    response += ":".join(pairs) + "END"
     return response
 
 def formatPaths(lines):
