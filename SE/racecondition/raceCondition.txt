@@ -1,0 +1,251 @@
+user@user-Y700-15ISK:~/Documents/Thesis/ACFR/SE$ python3 manticoreServer.py 65311
+INFO:__main__:[*] Starting server..
+INFO:__main__:Waiting for connection..
+INFO:__main__:Connection received!
+INFO:__main__:['/home/user/Documents/Thesis/ACFR/input/Synthetic/Small/DSEDebug/doubleCallRet', '0x08048080,0x08048085,0x0804808a,0x0804808f,0x08048094,0x08048096,0x0804809d,0x080480a2,0x080480a4,0x080480cc', '0x08048080,0x08048085,0x0804808a,0x0804808f,0x08048094,0x08048096,0x0804809d,0x080480a2,0x080480ae,0x080480b8,0x080480ba,0x080480bf,0x080480c4,0x080480c9,0x080480cb']
+INFO:__main__:Program: /home/user/Documents/Thesis/ACFR/input/Synthetic/Small/DSEDebug/doubleCallRet
+INFO:__main__:Number of paths received: 2
+INFO:symbolicExecutor:0x8048080,0x8048085,0x804808a,0x804808f,0x8048094,0x8048096,0x804809d,0x80480a2,0x80480a4,0x80480cc
+INFO:symbolicExecutor:0x8048080,0x8048085,0x804808a,0x804808f,0x8048094,0x8048096,0x804809d,0x80480a2,0x80480ae,0x80480b8,0x80480ba,0x80480bf,0x80480c4,0x80480c9,0x80480cb
+INFO:symbolicExecutor:0x8048080
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x8048085
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x804808a
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x804808f
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x8048094
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x8048096
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x804809d
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x80480a2
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x80480a4
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480ae
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480cc
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480b8
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480ba
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480bf
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480c4
+INFO:customPlugins:keeping: 1
+INFO:customPlugins:0x80480cc->0x80480a9
+INFO:symbolicExecutor:0x80480c9
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480a9
+INFO:customPlugins:keeping: 
+INFO:customPlugins:Abandoning state with RIP=0x80480a9 PCCounter=10
+INFO:symbolicExecutor:0x80480cb
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480cb
+INFO:customPlugins:keeping: 1
+INFO:customPlugins:0x80480cb->0x80480b3
+INFO:customPlugins:0x80480cb->0x80480b3
+INFO:symbolicExecutor:0x80480b3
+INFO:symbolicExecutor:0x80480b3
+INFO:customPlugins:keeping: 
+INFO:customPlugins:Abandoning state with RIP=0x80480b3 PCCounter=15
+INFO:customPlugins:keeping: 
+INFO:customPlugins:Abandoning state with RIP=0x80480b3 PCCounter=15
+INFO:symbolicExecutor:--Results Sorted by Pathlen--
+INFO:symbolicExecutor:Path 0[len=10] is infeasible
+INFO:symbolicExecutor:Path 1[len=15] ending with 0x80480cb has the following successors 0x80480b3
+INFO:__main__:Sending: START0x80480cb,0x80480b3END
+INFO:__main__:['/home/user/Documents/Thesis/ACFR/input/Synthetic/Small/DSEDebug/doubleCallRet', '0x08048080,0x08048085,0x0804808a,0x0804808f,0x08048094,0x08048096,0x0804809d,0x080480a2,0x080480ae,0x080480b8,0x080480ba,0x080480bf,0x080480c4,0x080480c9,0x080480cb,0x080480b3,0x080480cd,0x080480d2,0x080480d7,0x080480d9,0x080480db']
+INFO:__main__:Program: /home/user/Documents/Thesis/ACFR/input/Synthetic/Small/DSEDebug/doubleCallRet
+INFO:__main__:Number of paths received: 1
+INFO:symbolicExecutor:0x8048080,0x8048085,0x804808a,0x804808f,0x8048094,0x8048096,0x804809d,0x80480a2,0x80480ae,0x80480b8,0x80480ba,0x80480bf,0x80480c4,0x80480c9,0x80480cb,0x80480b3,0x80480cd,0x80480d2,0x80480d7,0x80480d9,0x80480db
+INFO:symbolicExecutor:0x8048080
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x8048085
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x804808a
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x804808f
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x8048094
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x8048096
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x804809d
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480a2
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480a4
+INFO:customPlugins:keeping: 
+INFO:customPlugins:Abandoning state with RIP=0x80480a4 PCCounter=8
+INFO:symbolicExecutor:0x80480ae
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480b8
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480ba
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480bf
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480c4
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480c9
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480cb
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480cb
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480b3
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480b3
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480cd
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480cd
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480d2
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480d2
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480d7
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480d7
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:--Results Sorted by Pathlen--
+INFO:symbolicExecutor:Path 0[len=21] is infeasible
+INFO:__main__:Sending: STARTEND
+INFO:__main__:Client disconnected
+INFO:__main__:Waiting for connection..
+INFO:__main__:Connection received!
+INFO:__main__:['/home/user/Documents/Thesis/ACFR/input/Synthetic/Small/DSEDebug/doubleCallRet', '0x08048080,0x08048085,0x0804808a,0x0804808f,0x08048094,0x08048096,0x0804809d,0x080480a2,0x080480a4,0x080480cc', '0x08048080,0x08048085,0x0804808a,0x0804808f,0x08048094,0x08048096,0x0804809d,0x080480a2,0x080480ae,0x080480b8,0x080480ba,0x080480bf,0x080480c4,0x080480c9,0x080480cb']
+INFO:__main__:Program: /home/user/Documents/Thesis/ACFR/input/Synthetic/Small/DSEDebug/doubleCallRet
+INFO:__main__:Number of paths received: 2
+INFO:symbolicExecutor:0x8048080,0x8048085,0x804808a,0x804808f,0x8048094,0x8048096,0x804809d,0x80480a2,0x80480a4,0x80480cc
+INFO:symbolicExecutor:0x8048080,0x8048085,0x804808a,0x804808f,0x8048094,0x8048096,0x804809d,0x80480a2,0x80480ae,0x80480b8,0x80480ba,0x80480bf,0x80480c4,0x80480c9,0x80480cb
+INFO:symbolicExecutor:0x8048080
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x8048085
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x804808a
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x804808f
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x8048094
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x8048096
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x804809d
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x80480a2
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x80480a4
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480ae
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480cc
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480b8
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480ba
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480bf
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480c4
+INFO:customPlugins:keeping: 1
+INFO:customPlugins:0x80480cc->0x80480a9
+INFO:symbolicExecutor:0x80480c9
+INFO:symbolicExecutor:0x80480a9
+INFO:customPlugins:keeping: 1
+INFO:customPlugins:keeping: 
+INFO:customPlugins:Abandoning state with RIP=0x80480a9 PCCounter=10
+INFO:symbolicExecutor:0x80480cb
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480cb
+INFO:customPlugins:keeping: 1
+INFO:customPlugins:0x80480cb->0x80480b3
+INFO:customPlugins:0x80480cb->0x80480b3
+INFO:symbolicExecutor:0x80480b3
+INFO:symbolicExecutor:0x80480b3
+INFO:customPlugins:keeping: 
+INFO:customPlugins:Abandoning state with RIP=0x80480b3 PCCounter=15
+INFO:customPlugins:keeping: 
+INFO:customPlugins:Abandoning state with RIP=0x80480b3 PCCounter=15
+INFO:symbolicExecutor:--Results Sorted by Pathlen--
+INFO:symbolicExecutor:Path 0[len=10] ending with 0x80480cc has the following successors 0x80480a9
+INFO:symbolicExecutor:Path 1[len=15] ending with 0x80480cb has the following successors 0x80480b3
+INFO:__main__:Sending: START0x80480cc,0x80480a9:0x80480cb,0x80480b3END
+INFO:__main__:['/home/user/Documents/Thesis/ACFR/input/Synthetic/Small/DSEDebug/doubleCallRet', '0x08048080,0x08048085,0x0804808a,0x0804808f,0x08048094,0x08048096,0x0804809d,0x080480a2,0x080480ae,0x080480b8,0x080480ba,0x080480bf,0x080480c4,0x080480c9,0x080480cb,0x080480b3,0x080480cd,0x080480d2,0x080480d7,0x080480d9,0x080480db', '0x08048080,0x08048085,0x0804808a,0x0804808f,0x08048094,0x08048096,0x0804809d,0x080480a2,0x080480a4,0x080480cc,0x080480a9,0x080480cd,0x080480d2,0x080480d7,0x080480d9,0x080480db']
+INFO:__main__:Program: /home/user/Documents/Thesis/ACFR/input/Synthetic/Small/DSEDebug/doubleCallRet
+INFO:__main__:Number of paths received: 2
+INFO:symbolicExecutor:0x8048080,0x8048085,0x804808a,0x804808f,0x8048094,0x8048096,0x804809d,0x80480a2,0x80480ae,0x80480b8,0x80480ba,0x80480bf,0x80480c4,0x80480c9,0x80480cb,0x80480b3,0x80480cd,0x80480d2,0x80480d7,0x80480d9,0x80480db
+INFO:symbolicExecutor:0x8048080,0x8048085,0x804808a,0x804808f,0x8048094,0x8048096,0x804809d,0x80480a2,0x80480a4,0x80480cc,0x80480a9,0x80480cd,0x80480d2,0x80480d7,0x80480d9,0x80480db
+INFO:symbolicExecutor:0x8048080
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x8048085
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x804808a
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x804808f
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x8048094
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x8048096
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x804809d
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x80480a2
+INFO:customPlugins:keeping: 0,1
+INFO:symbolicExecutor:0x80480a4
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480ae
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480cc
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480b8
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480a9
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480ba
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480cd
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480bf
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480d2
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480c4
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480d7
+INFO:customPlugins:keeping: 1
+INFO:symbolicExecutor:0x80480c9
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480cb
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480cb
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480b3
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480b3
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480cd
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480cd
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480d2
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480d2
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480d7
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:0x80480d7
+INFO:customPlugins:keeping: 0
+INFO:symbolicExecutor:--Results Sorted by Pathlen--
+INFO:symbolicExecutor:Path 1[len=16] is infeasible
+INFO:symbolicExecutor:Path 0[len=21] is infeasible
+INFO:__main__:Sending: STARTEND
+INFO:__main__:Client disconnected
+INFO:__main__:Waiting for connection..
+
