@@ -88,7 +88,7 @@ public class DSE {
         return paths;
     }
 
-    public static  Set<LinkedList<AbsoluteAddress>> LDFSIterative(ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>  adjList, Pair<Integer,AbsoluteAddress> start, Set<AbsoluteAddress> targets, long maxDepth, Set<CFAEdge> cfa) {
+    public static  Set<LinkedList<AbsoluteAddress>> LDFSIterative(ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>  adjList, Pair<Integer,AbsoluteAddress> start, Set<AbsoluteAddress> targets, long maxDepth) {
         class Node {
             public int id;
             public AbsoluteAddress address;
