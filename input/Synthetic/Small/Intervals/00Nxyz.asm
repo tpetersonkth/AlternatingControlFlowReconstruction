@@ -1,4 +1,6 @@
-;Jumps to _start + user input
+;cpa c: can not resolve jmp eax
+;cpa i: can not resolve jmp eax
+;DSE: Determines the successor of jmp eax to be 0x0 but that the path ending in 0x0 is infeasible
 
 SECTION .bss
 buf      resb 1
@@ -14,7 +16,7 @@ _start:
         mov  eax, 3             ; sys_read
         int  80h                ; perform syscall
 
-        movzx eax, word [buf]   ; eax is now top. x = T
+        movzx eax, word [buf]   ; x = T
         mov ebx, eax            ; y = x
         sub eax, ebx            ; z = x-y
         jmp eax
