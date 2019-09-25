@@ -309,7 +309,7 @@ public class CPAAlgorithm implements Algorithm {
 				}
 				throw e;
 			}
-			if(worklist.isEmpty() && !unresolvedStates.isEmpty()){
+			if(worklist.isEmpty() && !unresolvedStates.isEmpty() && addedDSE){
 				//Export the paths to the unresolved branches to DSE
 				logger.info("Formatting graph for efficient path extraction");
 				ResolvingTransformerFactory transformerFactory = (ResolvingTransformerFactory) this.transformerFactory;
