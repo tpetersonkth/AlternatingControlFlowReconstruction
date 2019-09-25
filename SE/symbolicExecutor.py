@@ -6,6 +6,7 @@ Year: 2019
 #TODO: Purely symbolic execution?
 #TODO(Possible): Timeout
 
+import manticore.utils.config as config
 from manticore.native import Manticore
 from customPlugins import ExtractorPlugin, DirectedExtractorPlugin
 
@@ -38,6 +39,8 @@ def executeDirected(program, pathsObject):
     #m = Manticore(program, pure_symbolic=True)
     workplace_url = "/tmp/mcore_tmp"
     m = Manticore(program, workspace_url=workplace_url, pure_symbolic=False)
+    consts = config.get_group("core")
+    consts.__setattr__("procs", 1)
 
     #Store variables in global context to ensure that we can communicate them to the callback function
     with m.locked_context() as context:
