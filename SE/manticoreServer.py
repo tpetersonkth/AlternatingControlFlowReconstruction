@@ -4,10 +4,11 @@ Year: 2019
 """
 
 #Built in modules
-import sys, logging
+import sys, logging, socket
 
 #Custom modules
 import symbolicExecutor, pathsObject, pathObject, communication
+from communication import socketClosedException
 
 logger = logging.getLogger(__name__)
 logger.setLevel('INFO')
@@ -36,9 +37,13 @@ class Server():
             while True:
                 try:
                     request = self.connection.getWork()
-                except:
+                except socketClosedException:
+                    #Client closed socket
                     logger.info("Client disconnected")
-                    break #Client closed socket
+                    break
+                except Exception as inst:
+                    print("Exception:"+str(inst))
+                    break
                 request = request.split("\n")
                 program = request[0]
                 paths = formatPaths(request[1:])

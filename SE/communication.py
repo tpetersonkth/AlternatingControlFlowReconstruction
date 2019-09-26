@@ -3,7 +3,14 @@ Author: Thomas Peterson
 Year: 2019
 """
 
-import socket
+import socket, logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel('INFO')
+
+class socketClosedException(Exception):
+   """Raised when client closes a socket"""
+   pass
 
 class Communication():
     conn = None
@@ -23,19 +30,19 @@ class Communication():
         self.conn, addr = self.socket.accept()
 
     def getWork(self):
-        BUFFERSIZE = 1024# 1kb buffer
+        BUFFERSIZE = 1024 # 1kb buffer
 
         data=b''
         while True:
             rec = self.conn.recv(BUFFERSIZE)
             if(not rec):
                 self.conn = None
-                raise SocketException
+                raise socketClosedException
             data+=rec
             if self.isValidRequest(data):
                 break
             else:
-                logger.info("Waiting for more data: "+data)
+                logger.info("Waiting for more data: "+str(data))
         return self.formatRequest(data).decode(self.encoding)
 
     def sendAnswer(self,answer):
