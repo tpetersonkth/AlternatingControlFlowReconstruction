@@ -1,4 +1,3 @@
-
 int calculate(int a, int b)
 {
     switch(a) {

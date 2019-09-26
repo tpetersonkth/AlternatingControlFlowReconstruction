@@ -2,6 +2,7 @@
 ;Jakstab can only find the path through the first call instruction and thus ret is determined to only
 ;have the successor to the second call instruction. Thus, jakstab can not identify that control flows
 ;to jmp exit
+;Example: why we need to resolve same tops multiple times
 
 SECTION .text
 
