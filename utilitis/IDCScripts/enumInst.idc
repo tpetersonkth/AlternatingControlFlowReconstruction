@@ -1,64 +1,75 @@
 #include <idc.idc>
 
-extern logfile;
+/*
+ * This is an ida plugin which extracts a control flow automata from the IDA analysis
+ * Author: Thomas Peterson
+ * Year: 2019
+ */
+
+extern outputFile;
 
 static main() {
     auto name, addr, prev, first, end, inst, wid, pid, size, target;
     name = get_root_filename();
 
-    logInit(name);
-    logWrite("digraph G {\nnode[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]\nbgcolor=\"transparent\"graph [label=\"label\", labelloc=t, fontsize=35, pad=30]\n");
+    auto nodes = "";
+    auto edges = "";
+
+    outputFile = fopen(name+"_IDA_CFA.dot", "w");
+    fprintf(outputFile,"digraph G {\nnode[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]\nbgcolor=\"transparent\"graph [label=\"label\", labelloc=t, fontsize=35, pad=30]\n");
     //logWrite("----------CFA of "+name+"----------\n");
 
-    Message("%s\n",name);
-    first = GetFunctionAttr(ScreenEA(), FUNCATTR_START);
-    prev = -1; //-1 = Not set
+    first = GetFunctionAttr(ScreenEA(), FUNCATTR_START);//TODO: Check if there is a better way to get first instruction
+    Message("First: %x\n",first);
 
-    //Create an array that will be used as a worklist stack
-    wid = GetArrayId(name);
-    DeleteArray(wid);
-    wid = CreateArray(name);
-
-    //Create a stack of previous labels
-    pid = GetArrayId(name+"prev");
-    DeleteArray(pid);
-    pid = CreateArray(name+"prev");
+    //Create the worklist stack
+    auto worklist = Stack(name);
 
     //Add first instruction to the stack
-    SetArrayLong(wid,0,first);
-    SetArrayLong(pid,0,prev);
-    size = 1;
+    worklist.push(first);
 
-    while (size > 0) {
+    while (worklist.getSize() > 0) {
         //pop inst of the stack
-        size = size - 1;
-        inst = GetArrayElement(AR_LONG,wid,size);
-        prev = GetArrayElement(AR_LONG,pid,size);
+        inst = worklist.pop();
 
-        Message("Current instruction: %x \n",inst);
-        fprintf(logfile,"\"%x\"[label=\"%x\"];\n",inst,inst);
+        Message("Current instruction: %x: \n",inst);
+        nodes = nodes + sprintf("\"%x\"[label=\"%x\"];\n",inst,inst);
+
         //For all successors of inst
         for (target=Rfirst(inst) ; target!=BADADDR ; target=Rnext(inst,target)) {
             Message("RNext: %x -> %x\n", inst, target);
-            fprintf(logfile,"\"%x\" -> \"%x\" [color=\"#000000\",label=\"%s\"];\n",inst,target,GetDisasm(inst));
-            SetArrayLong(wid,size,target);
-            SetArrayLong(pid,size,inst);
-            size = size + 1;
+            edges = edges + sprintf("\"%x\" -> \"%x\" [color=\"#000000\",label=\"%s\"];\n",inst,target,GetDisasm(inst));
+            worklist.push(target);
         }
     }
 
-    logWrite("}");
+
+    fprintf(outputFile,nodes+edges+"}");
 }
 
-static logInit(n){
-  logfile = fopen(n+"_IDA_CFA.dot", "w");
-  if (logfile == 0)
-    return 0;
-  return -1;
-}
+class Stack{
+    Stack(name){
+        Message("Stack constructor has been called with %s ", name);
+        this.name = name;
+        this.size = 0;
 
-static logWrite(str){
-  if (logfile != 0)
-    return fprintf(logfile, "%s", str);
-  return -1;
-}
+        auto oldwid = GetArrayId(name);
+        DeleteArray(oldwid);
+        this.wid = CreateArray(name);
+
+    }
+    ~Stack(){
+        print("Destructor of stack called");
+    }
+    push(inst){
+        SetArrayLong(this.wid,this.size,inst);
+        this.size = this.size + 1;
+    }
+    pop(){
+        this.size = this.size - 1;
+        return GetArrayElement(AR_LONG,this.wid,this.size);
+    }
+    getSize(){
+        return this.size;
+    }
+};
