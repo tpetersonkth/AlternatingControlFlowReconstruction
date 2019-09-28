@@ -18,7 +18,7 @@ _start:
         mov  eax, 3             ; sys_read
         int  80h                ; perform syscall
 
-        movzx eax, word [buf]   ; x = T
+        movzx eax, dword [buf]  ; x = T
         mov ebx, eax            ; y = x
         sub eax, ebx            ; z = x-y = 0
         add eax, exit

@@ -1,5 +1,5 @@
 ;Jumps to _start + user input
-
+;Example: A true top for DSE. However, DSE will suggest possible successors.
 SECTION .bss
 buf      resb 1
 
