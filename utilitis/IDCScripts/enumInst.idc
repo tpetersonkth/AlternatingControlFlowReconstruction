@@ -1,5 +1,4 @@
 #include <idc.idc>
-
 /*
  * This is an ida plugin which extracts a control flow automata from the IDA analysis
  * Author: Thomas Peterson
@@ -11,12 +10,16 @@ extern TRUE;
 extern FALSE;
 
 static main() {
-    auto name, addr, prev, first, end, inst, wid, pid, size, target;
+    auto addr, prev, first, end, inst, wid, pid, size, target;
+
+    //Set up global constants for readability
     TRUE = 0;
     FALSE = 1;
 
-    name = get_root_filename();
+    //The name of the binary we want to analyze
+    auto name = get_root_filename();
 
+    // Variables to store the nodes and edges of the graph
     auto nodes = "";
     auto edges = "";
 
@@ -36,6 +39,7 @@ static main() {
         //pop inst of the stack
         inst = worklist.pop();
 
+        //Update output
         nodes = nodes + sprintf("\"%x\"[label=\"%x\"];\n",inst,inst);
 
         //For all successors of inst
@@ -65,18 +69,20 @@ class Stack{
         this.visited = CreateArray(name+"visited");
 
     }
-    ~Stack(){
-    }
     push(inst){
+        //Pushes an instruction to the stack if it has never been pushed before
         if (this.visited(inst)==FALSE){
+            //Push instruction to stack
             SetArrayLong(this.wid,this.size,inst);
             this.size = this.size + 1;
 
+            //Add the instruction to the set of visited instructions
             SetArrayLong(this.visited,this.unique,inst);
             this.unique = this.unique + 1;
         }
     }
     pop(){
+        //Returns the top-most instruction
         this.size = this.size - 1;
         return GetArrayElement(AR_LONG,this.wid,this.size);
     }
@@ -89,7 +95,6 @@ class Stack{
                 return TRUE;
             }
         }
-        //Message("%x!=%x\n",inst,curr);
         return FALSE;
     }
     getSize(){
