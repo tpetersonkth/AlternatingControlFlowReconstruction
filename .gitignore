@@ -17,12 +17,12 @@
 mcore_*/
 /SE/x86
 *__pycache__/
+*.vscode/
+*.idea/
 *.i64
 *.o
-*.idea/
 *.dot
 *_jak.asm
 *.pdf
 *.swp
 *.png
-
