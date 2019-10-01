@@ -300,6 +300,7 @@ public class Main {
 			if (!(cfr.isCompleted() && Options.secondaryCPAs.getValue().length() > 0)) {
 				if (!Options.noGraphs.getValue()) {
 					graphWriter.writeControlFlowAutomaton(program.getCFG(), baseFileName + "_cfa");
+					graphWriter.writeConcreteControlFlowAutomaton(program.getCFG(), baseFileName + "_ccfa");
 					graphWriter.writeAssemblyBasicBlockGraph(program.getCFG(), baseFileName + "_asmcfg");
 					
 					if (!Options.procedureGraph.getValue().equals("")) {
@@ -351,8 +352,11 @@ public class Main {
 				cpaAlg.run();
 				long customAnalysisEndTime = System.currentTimeMillis();
 
-				if (!Options.noGraphs.getValue())
+				if (!Options.noGraphs.getValue()){
 					graphWriter.writeControlFlowAutomaton(program.getCFG(), baseFileName + "_cfa", cpaAlg.getReachedStates().select(1));
+					graphWriter.writeConcreteControlFlowAutomaton(program.getCFG(), baseFileName + "_ccfa");
+				}
+
 
 				logger.error(Characters.DOUBLE_LINE_FULL_WIDTH);
 				logger.error( "   Statistics for " + Options.secondaryCPAs.getValue());

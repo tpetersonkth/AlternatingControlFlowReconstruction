@@ -29,13 +29,9 @@ import org.jakstab.asm.BranchInstruction;
 import org.jakstab.asm.Instruction;
 import org.jakstab.asm.ReturnInstruction;
 import org.jakstab.asm.SymbolFinder;
-import org.jakstab.cfa.AsmCFG;
-import org.jakstab.cfa.CFAEdge;
+import org.jakstab.cfa.*;
 import org.jakstab.cfa.CFAEdge.Kind;
-import org.jakstab.cfa.ControlFlowGraph;
-import org.jakstab.cfa.Location;
-import org.jakstab.cfa.RTLLabel;
-import org.jakstab.cfa.VpcLocation;
+import org.jakstab.loader.Harness;
 import org.jakstab.rtl.statements.BasicBlock;
 import org.jakstab.rtl.statements.RTLGoto;
 import org.jakstab.rtl.statements.RTLHalt;
@@ -306,6 +302,11 @@ public class ProgramGraphWriter {
 		writeControlFlowGraph(cfg, filename, reached);
 	}
 
+	public void writeConcreteControlFlowAutomaton(ControlFlowGraph cfg, String filename) {
+		ConcreteControlFlowGraph ccfg = new ConcreteControlFlowGraph(cfg.getEdges());
+		writeConcreteControlFlowGraph(ccfg, filename);
+	}
+
 	public void writeVpcBasicBlockGraph(String filename, VpcCfgReconstruction vCfgRec) {
 		
 		ControlFlowGraph vCfg = vCfgRec.getTransformedCfg();		
@@ -475,6 +476,20 @@ public class ProgramGraphWriter {
 	
 		return properties;
 	}
+
+	private Map<String,String> getConcreteNodeProperties(ConcreteControlFlowGraph cfg, AbsoluteAddress loc) {
+		Map<String,String> properties = new HashMap<String, String>();
+
+		//Mark tops as red
+		for (RTLLabel unresolved : program.getUnresolvedBranches()){
+			if(unresolved.getAddress().equals(loc)){
+				properties.put("fillcolor", "red");
+				break;
+			}
+		}
+
+		return properties;
+	}
 	
 	private void writeControlFlowGraph(ControlFlowGraph cfg, String filename, ReachedSet reached) {
 		// Create dot file
@@ -507,6 +522,42 @@ public class ProgramGraphWriter {
 						e.getKind().equals(CFAEdge.Kind.MAY) ? Color.BLACK : Color.GREEN);
 			}
 	
+			gwriter.close();
+		} catch (IOException e) {
+			logger.error("Cannot write to output file", e);
+			return;
+		}
+	}
+
+	private void writeConcreteControlFlowGraph(ConcreteControlFlowGraph cfg, String filename) {
+		// Create dot file
+		GraphWriter gwriter = createGraphWriter(filename);
+		if (gwriter == null) return;
+
+		try {
+			for (AbsoluteAddress node : cfg.getNodes()) {
+				if (node.equals(Harness.prologueAddress)){
+					continue; //Skip the fictional nodes from the prologue
+				}
+
+				String nodeName = node.toString();
+				StringBuilder labelBuilder = new StringBuilder();
+				labelBuilder.append(nodeName);
+				labelBuilder.append("\n");
+
+				gwriter.writeNode(nodeName, labelBuilder.toString(), getConcreteNodeProperties(cfg, node));
+			}
+
+			for (ConcreteCFAEdge e : cfg.getEdges()) {
+				if (e.getSource().equals(Harness.prologueAddress) || e.getTarget().equals(Harness.prologueAddress)){
+					continue; //Skip the fictional nodes from the prologue
+				}
+				gwriter.writeEdge(e.getSource().toString(),
+						e.getTarget().toString(),
+						null,
+						Color.BLACK);
+			}
+
 			gwriter.close();
 		} catch (IOException e) {
 			logger.error("Cannot write to output file", e);
