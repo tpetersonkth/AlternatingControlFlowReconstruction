@@ -163,7 +163,10 @@ public class CPAAlgorithm implements Algorithm {
 		long lastSteps = 0;
 		long lastTime = 0;
 		LinkedList<AbstractState> unresolvedStates = new LinkedList<>();
+		LinkedList<AbstractState> tops = new LinkedList<>();
 		Set<CFAEdge> DSEedges = new HashSet<>();
+		boolean	resolveAllTops = true;//Can be set to false for increased speed at the cost of precision
+		boolean reachedFixpoint = false;
 		while ((!worklist.isEmpty()) && !stop && (!failFast || isSound())) {
 			statesVisited++;
 			if (++steps == stepThreshold) {
@@ -309,7 +312,7 @@ public class CPAAlgorithm implements Algorithm {
 				}
 				throw e;
 			}
-			if(worklist.isEmpty() && !unresolvedStates.isEmpty() && addedDSE){
+			if(worklist.isEmpty() && !reachedFixpoint && addedDSE){
 				//Export the paths to the unresolved branches to DSE
 				logger.info("Formatting graph for efficient path extraction");
 				ResolvingTransformerFactory transformerFactory = (ResolvingTransformerFactory) this.transformerFactory;
@@ -318,12 +321,25 @@ public class CPAAlgorithm implements Algorithm {
 				ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>> adjList = out.getLeft();
 				Map<AbsoluteAddress, Integer> addressToId = out.getRight();
 
+				LinkedList<AbstractState> unresolvedStatesToSend = new LinkedList<>();
+
 				Set<AbsoluteAddress> unresolved = new HashSet<AbsoluteAddress>();
 				for(AbstractState as : unresolvedStates){
 					unresolved.add(as.getLocation().getAddress());
-					logger.info("Unresolved:"+a.getLocation().getAddress());
+					logger.info("Unresolved:"+as.getLocation().getAddress());
 				}
 
+				unresolvedStatesToSend.addAll(unresolvedStates);
+
+				if (resolveAllTops){//if resolve tops again
+					for(AbstractState as : tops){
+						unresolved.add(as.getLocation().getAddress());
+						logger.info("Unresolved:"+as.getLocation().getAddress());
+					}
+					unresolvedStatesToSend.addAll(tops);
+				}
+
+				//Search for paths towards the locations of the unresolved states
 				logger.info("Searching for paths to the unresolved locations");
 				Pair<Integer, AbsoluteAddress> startPair = new Pair<Integer, AbsoluteAddress>(addressToId.get(Harness.prologueAddress),Harness.prologueAddress);
 				long startTimeDSE = System.currentTimeMillis();
@@ -332,13 +348,30 @@ public class CPAAlgorithm implements Algorithm {
 
 				//Create empty lists and pass them by reference to DSE
 				LinkedList<AbstractState> toExploreAgain = new LinkedList<AbstractState>();
-				DSEedges = DSE.execute(unresolvedStates, Options.mainFilename, paths, toExploreAgain);
+				DSEedges = DSE.execute(unresolvedStatesToSend, Options.mainFilename, paths, toExploreAgain);
+				logger.info("Size of toExploreAgain: "+toExploreAgain.size());
 				logger.info("Size of CFA before adding DSE edges: " + transformerFactory.getCFA().size());
+				int oldCFASize = transformerFactory.getCFA().size();
 				transformerFactory.saveDSEEdges(DSEedges);
 				logger.info("Size of CFA after adding DSE edges: " + transformerFactory.getCFA().size());
-				for (AbstractState as : toExploreAgain){
-					worklist.add(as);
+
+				if (resolveAllTops){
+					tops.addAll(unresolvedStates);
+					for (AbstractState as : tops){
+						worklist.add(as);
+					}
 				}
+				else{
+					for (AbstractState as : toExploreAgain){
+						worklist.add(as);
+					}
+				}
+
+				reachedFixpoint = false;
+				if (oldCFASize == transformerFactory.getCFA().size()){
+					reachedFixpoint = true;
+				}
+
 				unresolvedStates = new LinkedList<>();
 			}
 		}
