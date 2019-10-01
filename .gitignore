@@ -19,10 +19,16 @@ mcore_*/
 *__pycache__/
 *.vscode/
 *.idea/
-*.i64
 *.o
 *.dot
 *_jak.asm
 *.pdf
 *.swp
 *.png
+
+#IDA output
+*.i64
+*.nam
+*.til
+*.id0
+*.id1
