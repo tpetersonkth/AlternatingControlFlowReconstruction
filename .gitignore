@@ -21,6 +21,7 @@ mcore_*/
 *.idea/
 *.o
 *.dot
+!/Input/IdealCFAs/*.dot
 *_jak.asm
 *.pdf
 *.swp
