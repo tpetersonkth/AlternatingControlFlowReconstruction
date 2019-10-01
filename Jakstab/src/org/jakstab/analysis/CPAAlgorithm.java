@@ -49,6 +49,7 @@ public class CPAAlgorithm implements Algorithm {
 	
 	private final boolean failFast;
 	private final boolean addedDSE;
+	private final boolean DSEOnlyOnce;
 
 	private long statesVisited;
 	private boolean completed = false;
@@ -80,17 +81,18 @@ public class CPAAlgorithm implements Algorithm {
 
 	public CPAAlgorithm(ConfigurableProgramAnalysis cpa,
 			StateTransformerFactory transformerFactory, Worklist<AbstractState> worklist) {
-		this(cpa, transformerFactory, worklist, false, false);
+		this(cpa, transformerFactory, worklist, false, false,false);
 	}
 
 	public CPAAlgorithm(ConfigurableProgramAnalysis cpa,
-			StateTransformerFactory transformerFactory, Worklist<AbstractState> worklist, boolean failFast, boolean addedDSE) {
+			StateTransformerFactory transformerFactory, Worklist<AbstractState> worklist, boolean failFast, boolean addedDSE, boolean DSEOnlyOnce) {
 		super();
 		this.cpa = cpa;
 		this.transformerFactory = transformerFactory;
 		this.worklist = worklist;
 		this.failFast = failFast;
 		this.addedDSE = addedDSE;
+		this.DSEOnlyOnce = DSEOnlyOnce;//Can be set to true for increased speed at the cost of precision
 		
 		if (Options.errorTrace.getValue() || Options.asmTrace.getValue() || 
 				AnalysisManager.getInstance().getAnalysis(
@@ -126,7 +128,7 @@ public class CPAAlgorithm implements Algorithm {
 	}
 
 	/**
-	 * Returns whether the algorithm had to make unsound assumptions. Always
+	 * Returns whether the algorithm had to make unsound assumptions. Alwaysoptions
 	 * true for analyses on complete CFAs.
 	 * 
 	 * @return true if the analysis required unsound assumptions. 
@@ -165,7 +167,6 @@ public class CPAAlgorithm implements Algorithm {
 		LinkedList<AbstractState> unresolvedStates = new LinkedList<>();
 		LinkedList<AbstractState> tops = new LinkedList<>();
 		Set<CFAEdge> DSEedges = new HashSet<>();
-		boolean	resolveAllTops = true;//Can be set to false for increased speed at the cost of precision
 		boolean reachedFixpoint = false;
 		while ((!worklist.isEmpty()) && !stop && (!failFast || isSound())) {
 			statesVisited++;
@@ -331,7 +332,7 @@ public class CPAAlgorithm implements Algorithm {
 
 				unresolvedStatesToSend.addAll(unresolvedStates);
 
-				if (resolveAllTops){//if resolve tops again
+				if (!this.DSEOnlyOnce){
 					for(AbstractState as : tops){
 						unresolved.add(as.getLocation().getAddress());
 						logger.info("Unresolved:"+as.getLocation().getAddress());
@@ -355,7 +356,7 @@ public class CPAAlgorithm implements Algorithm {
 				transformerFactory.saveDSEEdges(DSEedges);
 				logger.info("Size of CFA after adding DSE edges: " + transformerFactory.getCFA().size());
 
-				if (resolveAllTops){
+				if (!this.DSEOnlyOnce){
 					tops.addAll(unresolvedStates);
 					for (AbstractState as : tops){
 						worklist.add(as);
