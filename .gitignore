@@ -1,16 +1,16 @@
 #Ignore input binaries
-/input/*
-!/input/*.*
-!/input/*/
-/input/Synthetic/Small/*
-!/input/Synthetic/Small/*.*
-!/input/Synthetic/Small/*/
-/input/Synthetic/Small/DSEDebug/*
-!/input/Synthetic/Small/DSEDebug/*.*
-/input/Synthetic/Small/Intervals/*
-!/input/Synthetic/Small/Intervals/*.*
-/input/Synthetic/Medium/*
-!/input/Synthetic/Medium/*.*
+/Input/*
+!/Input/*.*
+!/Input/*/
+/Input/Synthetic/Small/*
+!/Input/Synthetic/Small/*.*
+!/Input/Synthetic/Small/*/
+/Input/Synthetic/Small/DSEDebug/*
+!/Input/Synthetic/Small/DSEDebug/*.*
+/Input/Synthetic/Small/Intervals/*
+!/Input/Synthetic/Small/Intervals/*.*
+/Input/Synthetic/Medium/*
+!/Input/Synthetic/Medium/*.*
 
 #Other ignores
 /Jakstab/bin/
