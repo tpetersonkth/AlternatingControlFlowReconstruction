@@ -1,6 +1,6 @@
 ;cpa c: can not resolve jmp eax
 ;cpa i: can not resolve jmp eax
-;DSE: Determines the successor of jmp eax to be 0x0 but that the path ending in 0x0 is infeasible
+;DSE: Determines the successor of jmp eax to be exit
 ;Example: Capabilities of DSE to help jakstab
 
 
@@ -18,7 +18,7 @@ _start:
         mov  eax, 3             ; sys_read
         int  80h                ; perform syscall
 
-        movzx eax, dword [buf]  ; x = T
+        movzx eax, word [buf]   ; x = T
         mov ebx, eax            ; y = x
         sub eax, ebx            ; z = x-y = 0
         add eax, exit

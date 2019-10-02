@@ -1,3 +1,7 @@
+CPA c: Determines successors of jmp ebx to be "mov ebx, 0" but not "nop"
+CPA I: Determines successors of jmp ebx to be both "mov ebx, 0" and "nop"
+; Example: Can be a good example for when interval analysis is good in practice
+
 SECTION .bss
 buf      resb 1
 
