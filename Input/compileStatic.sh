@@ -16,12 +16,15 @@ fi
 filecpp="${file}.cpp"
 if test -f "$filecpp"; then
         echo "Compiling $filecpp"
-        g++ -m32 "$filecpp" -o "$file"
+        g++ -m32 --static "$filecpp" -o "$file"
 fi
 
 filec="${file}.c"
 if test -f "$filec"; then
         echo "Compiling $filec"
-        gcc -m32 -fno-stack-protector -O0 --static "$filec" -o "$file"
-fi
+        gcc -m32 -O0 --static "$filec" -o "$file"
 
+        #Not yet working(Dead code elimination)
+        #gcc -m32 -O0 --entry main -fdata-sections -Wl,--gc-sections "$filec" -o "$file"
+        #ld -m elf_i386 -e main --print-gc-sections -o "$file" "$file.o"
+fi
