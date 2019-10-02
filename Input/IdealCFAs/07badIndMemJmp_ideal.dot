@@ -1,0 +1,6 @@
+digraph G {
+node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
+bgcolor="transparent"
+graph [label="Jakstab v0.8.4-devel   Tue Oct 01 20:56:35 CEST 2019\n-m ../Input/Synthetic/Small/07badIndMemJmp --cpa i", labelloc=t, fontsize=35, pad=30]
+"0x08048060"[label="0x08048060\n",fillcolor="red"];
+}

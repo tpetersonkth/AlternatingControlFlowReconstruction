@@ -1,0 +1,55 @@
+digraph G {
+node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
+bgcolor="transparent"
+graph [label="Jakstab v0.8.4-devel   Tue Oct 01 22:15:11 CEST 2019\n-m 00xyz --cpa i", labelloc=t, fontsize=35, pad=30]"0x0804809f_5"[label="0x0804809f_5"];
+"0x0804809f_0"[label="0x0804809f_0"];
+"0x080480a1_2"[label="0x080480a1_2"];
+"0x080480a1_1"[label="0x080480a1_1"];
+"0x08048080_0"[label="0x08048080_0"];
+"0x080480a1_0"[label="0x080480a1_0"];
+"0x0804809f_4"[label="0x0804809f_4"];
+"0x0804809f_3"[label="0x0804809f_3"];
+"0x080480a1_5"[label="0x080480a1_5"];
+"0x0804809d_0"[label="0x0804809d_0"];
+"0x0804809f_2"[label="0x0804809f_2"];
+"0x080480a1_4"[label="0x080480a1_4"];
+"0x0804809f_1"[label="0x0804809f_1"];
+"0x080480a1_3"[label="0x080480a1_3"];
+"0x08048085_0"[label="0x08048085_0"];
+"0x080480a6_0"[label="0x080480a6_0",fillcolor="red"];
+"0x0804808f_0"[label="0x0804808f_0"];
+"0x08048094_0"[label="0x08048094_0"];
+"0x08048096_0"[label="0x08048096_0"];
+"0xface0000_0"[label="0xface0000_0",fillcolor="lightgrey",color="green",style="filled,bold"];
+"0xface0000_1"[label="0xface0000_1",fillcolor="lightgrey",color="lightgrey"];
+"0x0804808a_0"[label="0x0804808a_0"];
+"0xface0000_4"[label="0xface0000_4",fillcolor="lightgrey",color="lightgrey"];
+"0xface0000_5"[label="0xface0000_5",fillcolor="lightgrey",color="lightgrey"];
+"0xface0000_2"[label="0xface0000_2",fillcolor="lightgrey",color="lightgrey"];
+"0xface0000_3"[label="0xface0000_3",fillcolor="lightgrey",color="lightgrey"];
+"0x0804809f_0" -> "0x0804809f_1" [color="#000000",label="tmp1 := eax"];
+"0x0804809f_3" -> "0x0804809f_4" [color="#000000",label="OF := (((0 < eax) & (tmp1 < 0) & (! (ebx < 0))) | ((eax < 0) & (! (tmp1 < 0)) & (ebx < 0)))"];
+"0x08048096_0" -> "0x0804809d_0" [color="#000000",label="eax := zero_fill(16, 31, mem16[0x80490b4<32>])"];
+"0x080480a1_0" -> "0x080480a1_1" [color="#000000",label="tmp1 := eax"];
+"0x080480a1_1" -> "0x080480a1_2" [color="#000000",label="eax := (eax + 134512808)"];
+"0x0804808f_0" -> "0x08048094_0" [color="#000000",label="eax := 3"];
+"0xface0000_4" -> "0xface0000_5" [color="#000000",label="mem32[esp] := -18415616"];
+"0xface0000_3" -> "0xface0000_4" [color="#000000",label="esp := (esp + -4)"];
+"0x080480a1_2" -> "0x080480a1_3" [color="#000000",label="CF := ((! (eax < 0)) & (tmp1 < 0))"];
+"0x08048094_0" -> "0x08048096_0" [color="#000000",label="skip"];
+"0x08048080_0" -> "0x08048085_0" [color="#000000",label="edx := 1"];
+"0x0804809f_2" -> "0x0804809f_3" [color="#000000",label="CF := (tmp1 u< ebx)"];
+"0x080480a1_5" -> "0x080480a6_0" [color="#000000",label="ZF := (eax == 0)"];
+"0x0804809f_1" -> "0x0804809f_2" [color="#000000",label="eax := (eax + (- ebx))"];
+"0x0804809f_5" -> "0x080480a1_0" [color="#000000",label="ZF := (tmp1 == ebx)"];
+"0x0804809d_0" -> "0x0804809f_0" [color="#000000",label="ebx := eax"];
+"0x080480a1_3" -> "0x080480a1_4" [color="#000000",label="OF := ((eax < 0) & (! (tmp1 < 0)))"];
+"0xface0000_1" -> "0xface0000_2" [color="#000000",label="esp := alloc()"];
+"0x080480a1_4" -> "0x080480a1_5" [color="#000000",label="SF := (eax < 0)"];
+"0x08048085_0" -> "0x0804808a_0" [color="#000000",label="ecx := 134516916"];
+"0xface0000_2" -> "0xface0000_3" [color="#000000",label="gs := alloc()"];
+"0xface0000_0" -> "0xface0000_1" [color="#000000",label="DF := false"];
+"0xface0000_5" -> "0x08048080_0" [color="#000000",label="assume true"];
+"0x0804808a_0" -> "0x0804808f_0" [color="#000000",label="ebx := 0"];
+"0x0804809f_4" -> "0x0804809f_5" [color="#000000",label="SF := (eax < 0)"];
+}
