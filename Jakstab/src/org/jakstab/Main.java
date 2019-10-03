@@ -248,29 +248,35 @@ public class Main {
 			}*/
 
 			int indirectBranches = program.countIndirectBranches();
+			long totaltime = overallEndTime - overallStartTime;
+			long otherTime = totaltime - CPAAlgorithm.getOverApxTime() - CPAAlgorithm.getDFSTime() - CPAAlgorithm.getDSETime();
 
-			logger.error(Characters.DOUBLE_LINE_FULL_WIDTH);
-			logger.error( "   Statistics for Control Flow Reconstruction");
-			logger.error(Characters.DOUBLE_LINE_FULL_WIDTH);
-			logger.error( "   Total time:                          " + String.format("%8dms", (overallEndTime - overallStartTime)));
-			logger.error( "   CPA time:                            " + String.format("%8dms", CPAAlgorithm.getOverApxTime()));
-			logger.error( "   DFS time:                            " + String.format("%8dms", CPAAlgorithm.getDFSTime()));
-			logger.error( "   DSE time:                            " + String.format("%8dms", CPAAlgorithm.getDSETime()));
-			logger.error( "   Other time:                          " + String.format("%8dms", (overallEndTime - overallStartTime) - CPAAlgorithm.getOverApxTime() - CPAAlgorithm.getDFSTime() - CPAAlgorithm.getDSETime()));
-			logger.error( "   Instructions:                        " + String.format("%8d", program.getInstructionCount()));
-			logger.error( "   RTL Statements:                      " + String.format("%8d", program.getStatementCount()));
-			logger.error( "   CFA Edges:                           " + String.format("%8d", program.getCFG().numEdges()));
-			logger.error( "   States visited:                      " + String.format("%8d", cfr.getNumberOfStatesVisited()));
-			logger.error( "   Final state space:                   " + String.format("%8d", stateCount));
-			logger.error( "   Finished normally:                   " + String.format("%8b", cfr.isCompleted()));
-			logger.error( "   Analysis result:                     " + cfr.getStatus());
-			//				logger.error( "   Sound:                               " + String.format("%8b", cfr.isSound()));
-			logger.error( "   Indirect Branches (no import calls): " + String.format("%8d", indirectBranches));
-			logger.error( "   Tops:                                " + String.format("%8d", program.getUnresolvedBranches().size()));
-			logger.error( "   Unresolved Tops:                     " + String.format("%8d", program.getUnresolvedBranches().size()-program.getResolvedTops().size()));
-			logger.debug("   FastSet conversions:                 " + String.format("%8d", FastSet.getConversionCount()));
-			logger.debug("   Variable count:                      " + String.format("%8d", ExpressionFactory.getVariableCount()));
-			logger.error(Characters.DOUBLE_LINE_FULL_WIDTH);
+			StringBuilder sb = new StringBuilder();
+			sb.append(Characters.DOUBLE_LINE_FULL_WIDTH+"\n");
+			sb.append( "   Statistics for Control Flow Reconstruction"+"\n");
+			sb.append(Characters.DOUBLE_LINE_FULL_WIDTH+"\n");
+			sb.append( "   Total time:                          " + String.format("%8dms", totaltime)+"\n");
+			sb.append( "   CPA time:                            " + String.format("%8dms", CPAAlgorithm.getOverApxTime())+"\n");
+			sb.append( "   DFS time:                            " + String.format("%8dms", CPAAlgorithm.getDFSTime())+"\n");
+			sb.append( "   DSE time:                            " + String.format("%8dms", CPAAlgorithm.getDSETime())+"\n");
+			sb.append( "   Other time:                          " + String.format("%8dms", otherTime)+"\n");
+			sb.append( "   Instructions:                        " + String.format("%8d", program.getInstructionCount())+"\n");
+			sb.append( "   RTL Statements:                      " + String.format("%8d", program.getStatementCount())+"\n");
+			sb.append( "   CFA Edges:                           " + String.format("%8d", program.getCFG().numEdges())+"\n");
+			sb.append( "   States visited:                      " + String.format("%8d", cfr.getNumberOfStatesVisited())+"\n");
+			sb.append( "   Final state space:                   " + String.format("%8d", stateCount)+"\n");
+			sb.append( "   Finished normally:                   " + String.format("%8b", cfr.isCompleted())+"\n");
+			sb.append( "   Analysis result:                     " + cfr.getStatus()+"\n");
+			//				sb.append( "   Sound:                               " + String.format("%8b", cfr.isSound())+"\n");
+			sb.append( "   Indirect Branches (no import calls): " + String.format("%8d", indirectBranches)+"\n");
+			sb.append( "   Tops:                                " + String.format("%8d", program.getUnresolvedBranches().size())+"\n");
+			sb.append( "   Unresolved Tops:                     " + String.format("%8d", program.getUnresolvedBranches().size()-program.getResolvedTops().size())+"\n");
+			//logger.debug("   FastSet conversions:                 " + String.format("%8d", FastSet.getConversionCount()));
+			//logger.debug("   Variable count:                      " + String.format("%8d", ExpressionFactory.getVariableCount()));
+			sb.append(Characters.DOUBLE_LINE_FULL_WIDTH+"\n");
+
+			String statsSummary = sb.toString();
+			logger.error(statsSummary);
 
 			stats.record(program.getInstructionCount());
 			stats.record(program.getStatementCount());
@@ -290,6 +296,16 @@ public class Main {
 			stats.record(BasedNumberValuation.OverAppPrintfArgs);
 			
 			stats.print();
+
+			//Export stats to file
+			try{
+				FileWriter fw = new FileWriter(baseFileName+"_stats.dat");
+				fw.write(statsSummary);
+				fw.close();
+			}
+			catch(IOException e){
+				logger.error("Could not export stats to file. ",e);
+			}
 
 			ProgramGraphWriter graphWriter = new ProgramGraphWriter(program);
 			
