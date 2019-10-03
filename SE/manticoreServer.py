@@ -4,7 +4,7 @@ Year: 2019
 """
 
 #Built in modules
-import sys, logging, socket
+import sys, logging, socket, time
 
 #Custom modules
 import symbolicExecutor, pathsObject, pathObject, communication
@@ -44,6 +44,8 @@ class Server():
                 except Exception as inst:
                     print("Exception:"+str(inst))
                     break
+
+                milliseconds = round(time.monotonic() * 1000) #Get time in milliseconds
                 request = request.split("\n")
                 program = request[0]
                 paths = formatPaths(request[1:])
@@ -55,6 +57,8 @@ class Server():
 
                 response = formatResponse(paths,targets)
 
+                milliseconds = round(time.monotonic() * 1000) - milliseconds
+                logger.info("Symbolic execution took: "+str(milliseconds))
                 logger.info("Sending: " + response)
 
                 self.connection.sendAnswer(response)

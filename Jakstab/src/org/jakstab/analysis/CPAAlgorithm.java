@@ -54,7 +54,12 @@ public class CPAAlgorithm implements Algorithm {
 	private long statesVisited;
 	private boolean completed = false;
 	private volatile boolean stop = false;
-	
+
+	//Stats
+	private static long overApxTime = 0;
+	private static long DFSTime = 0;
+	private static long DSETime = 0;
+
 	/**
 	 * Instantiates a new CPA algorithm with a forward location analysis, a default
 	 * forward transformer factory and worklist suitable for an analysis of a complete 
@@ -101,6 +106,30 @@ public class CPAAlgorithm implements Algorithm {
 		else
 			art = null;
 		reached = new ReachedSet();
+	}
+
+	public static long getOverApxTime() {
+		return overApxTime;
+	}
+
+	public static long getDFSTime() {
+		return DFSTime;
+	}
+
+	public static long getDSETime() {
+		return DSETime;
+	}
+
+	public static void setOverApxTime(long overApxTime) {
+		CPAAlgorithm.overApxTime = overApxTime;
+	}
+
+	public static void setDFSTime(long DFSTime) {
+		CPAAlgorithm.DFSTime = DFSTime;
+	}
+
+	public static void setDSETime(long DSETime) {
+		CPAAlgorithm.DSETime = DSETime;
 	}
 
 	/**
@@ -168,6 +197,7 @@ public class CPAAlgorithm implements Algorithm {
 		LinkedList<AbstractState> tops = new LinkedList<>();
 		Set<CFAEdge> DSEedges = new HashSet<>();
 		boolean reachedFixpoint = false;
+		long worklistEmptyAt = System.currentTimeMillis();
 		while ((!worklist.isEmpty()) && !stop && (!failFast || isSound())) {
 			statesVisited++;
 			if (++steps == stepThreshold) {
@@ -306,6 +336,11 @@ public class CPAAlgorithm implements Algorithm {
 					}
 					// end for each outgoing edge
 				}
+				if (worklist.isEmpty()){
+					//Log time taken to empty the worklist
+					long now = System.currentTimeMillis();
+					overApxTime += now - worklistEmptyAt;
+				}
 			} catch (StateException e) {
 				// Fill in state for disassembly and unknownpointer exceptions
 				if (e.getState() == null) {
@@ -341,16 +376,17 @@ public class CPAAlgorithm implements Algorithm {
 				//Search for paths towards the locations of the unresolved states
 				logger.info("Searching for paths to the unresolved locations");
 				Pair<Integer, AbsoluteAddress> startPair = new Pair<Integer, AbsoluteAddress>(addressToId.get(Harness.prologueAddress),Harness.prologueAddress);
-				long startTimeDSE = System.currentTimeMillis();
+				long startTimeDFS = System.currentTimeMillis();
 				Set<LinkedList<AbsoluteAddress>> paths = DSE.LDFSIterative(adjList, startPair, unresolved, 200);
-				logger.info("Iterative path search took: "+Long.toString(System.currentTimeMillis() - startTimeDSE)+" milliseconds and found " + paths.size() + " paths");
+				long diffDFS = System.currentTimeMillis() - startTimeDFS;
+				DFSTime += diffDFS;
+				logger.info("Iterative path search took: "+Long.toString(diffDFS)+" milliseconds and found " + paths.size() + " paths");
 
-				//Create empty lists and pass them by reference to DSE
+				//Create an empty list and pass them by reference to DSE.execute to have it filled by this function
 				logger.info("Sending request for Directed Symbolic Execution");
 				LinkedList<AbstractState> toExploreAgain = new LinkedList<AbstractState>();
 				DSEedges = DSE.execute(unresolvedStatesToSend, Options.mainFilename, paths, toExploreAgain);
-				logger.info("Received response from DSE containing "+DSEedges.size()+" new edges");
-
+				logger.info("DSE resulted in "+DSEedges.size()+" new edges");
 				//For statistics
 				Set<RTLLabel> resolvedTops = program.getResolvedTops();
 				for (AbstractState as: toExploreAgain){
@@ -379,6 +415,9 @@ public class CPAAlgorithm implements Algorithm {
 				}
 
 				unresolvedStates = new LinkedList<>();
+
+				//Benchmark the time of emptying the worklist
+				worklistEmptyAt = System.currentTimeMillis();
 			}
 		}
 		long endTime = System.currentTimeMillis();

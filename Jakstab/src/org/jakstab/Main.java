@@ -252,7 +252,11 @@ public class Main {
 			logger.error(Characters.DOUBLE_LINE_FULL_WIDTH);
 			logger.error( "   Statistics for Control Flow Reconstruction");
 			logger.error(Characters.DOUBLE_LINE_FULL_WIDTH);
-			logger.error( "   Runtime:                     " + String.format("%8dms", (overallEndTime - overallStartTime)));
+			logger.error( "   Total time:                          " + String.format("%8dms", (overallEndTime - overallStartTime)));
+			logger.error( "   CPA time:                            " + String.format("%8dms", CPAAlgorithm.getOverApxTime()));
+			logger.error( "   DFS time:                            " + String.format("%8dms", CPAAlgorithm.getDFSTime()));
+			logger.error( "   DSE time:                            " + String.format("%8dms", CPAAlgorithm.getDSETime()));
+			logger.error( "   Other time:                          " + String.format("%8dms", (overallEndTime - overallStartTime) - CPAAlgorithm.getOverApxTime() - CPAAlgorithm.getDFSTime() - CPAAlgorithm.getDSETime()));
 			logger.error( "   Instructions:                        " + String.format("%8d", program.getInstructionCount()));
 			logger.error( "   RTL Statements:                      " + String.format("%8d", program.getStatementCount()));
 			logger.error( "   CFA Edges:                           " + String.format("%8d", program.getCFG().numEdges()));
@@ -268,7 +272,6 @@ public class Main {
 			logger.debug("   Variable count:                      " + String.format("%8d", ExpressionFactory.getVariableCount()));
 			logger.error(Characters.DOUBLE_LINE_FULL_WIDTH);
 
-			
 			stats.record(program.getInstructionCount());
 			stats.record(program.getStatementCount());
 			stats.record(program.getCFG().numEdges());

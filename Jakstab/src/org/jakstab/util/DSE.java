@@ -21,6 +21,7 @@ import java.util.*;
 
 import org.jakstab.Program;
 import org.jakstab.analysis.AbstractState;
+import org.jakstab.analysis.CPAAlgorithm;
 import org.jakstab.asm.AbsoluteAddress;
 import org.jakstab.cfa.CFAEdge;
 import org.jakstab.cfa.Location;
@@ -193,11 +194,21 @@ public class DSE {
         if(paths.isEmpty()){
             return new HashSet<CFAEdge>();
         }
+
+
         String formattedPaths = formatPaths(paths);
         File f = new File(mainfile);
+
+        long startTimeDSE = System.currentTimeMillis();
         String Response = sendRequest("START"+f.getAbsolutePath()+"\n"+formattedPaths+"END");
+        long diffDSE = System.currentTimeMillis() - startTimeDSE;
+
+        CPAAlgorithm.setDSETime(CPAAlgorithm.getDSETime() + diffDSE);
+        logger.info("DSE took " + Long.toString(diffDSE) + "milliseconds");
         logger.debug("Response from DSE: "+Response);
-        return extractEdges(unresolvedStates,Response,toExploreAgain);
+
+        Set<CFAEdge> extracted = extractEdges(unresolvedStates,Response,toExploreAgain);
+        return extracted;
     }
 
     public static Set<CFAEdge> extractEdges(LinkedList<AbstractState> unresolvedStates, String formattedString, LinkedList<AbstractState> toExploreAgain){
@@ -249,14 +260,14 @@ public class DSE {
 
 
     public static String formatPaths(Set<LinkedList<AbsoluteAddress>> paths){
-        String out = "";
+        StringBuilder out = new StringBuilder();
 
         //Format output
         boolean firstPath = true;
         for (LinkedList<AbsoluteAddress> path : paths) {
 
             if (!firstPath) {
-                out += "\n";
+                out.append("\n");
             }
 
             boolean firstAddr = true;
@@ -269,9 +280,9 @@ public class DSE {
                 }
 
                 if (!firstAddr){
-                    out += ",";
+                    out.append(",");
                 }
-                out += addr;
+                out.append(addr);
 
                 firstAddr = false;
             }
@@ -291,7 +302,7 @@ public class DSE {
             logger.error("Could not export paths to file. ",e);
         }
         */
-        return out;
+        return out.toString();
     }
 
     public static void exportPathsOLD(String mainfile, Set<LinkedList<RTLLabel>> paths){
