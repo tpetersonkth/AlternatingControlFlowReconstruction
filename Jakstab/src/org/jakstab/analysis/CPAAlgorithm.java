@@ -160,7 +160,7 @@ public class CPAAlgorithm implements Algorithm {
 
 		int steps = 0;
 		statesVisited = 0;
-		final int stepThreshold = 1000;
+		final int stepThreshold = 10;
 		long startTime = System.currentTimeMillis();
 		long lastSteps = 0;
 		long lastTime = 0;
@@ -194,7 +194,7 @@ public class CPAAlgorithm implements Algorithm {
 
 				steps = 0;
 
-				//StatsPlotter.plot((now - startTime) + "\t" + statesVisited  +"\t" + program.getInstructionCount() + "\t" + gcTime + "\t" + speed);
+				StatsPlotter.plot((now - startTime) + "\t" + statesVisited  +"\t" + program.getInstructionCount() + "\t" + gcTime + "\t" + speed);
 
 				lastSteps = statesVisited;
 				lastTime = now;
@@ -327,7 +327,6 @@ public class CPAAlgorithm implements Algorithm {
 				Set<AbsoluteAddress> unresolved = new HashSet<AbsoluteAddress>();
 				for(AbstractState as : unresolvedStates){
 					unresolved.add(as.getLocation().getAddress());
-					logger.info("Unresolved:"+as.getLocation().getAddress());
 				}
 
 				unresolvedStatesToSend.addAll(unresolvedStates);
@@ -335,7 +334,6 @@ public class CPAAlgorithm implements Algorithm {
 				if (!this.DSEOnlyOnce){
 					for(AbstractState as : tops){
 						unresolved.add(as.getLocation().getAddress());
-						logger.info("Unresolved:"+as.getLocation().getAddress());
 					}
 					unresolvedStatesToSend.addAll(tops);
 				}
@@ -348,13 +346,20 @@ public class CPAAlgorithm implements Algorithm {
 				logger.info("Iterative path search took: "+Long.toString(System.currentTimeMillis() - startTimeDSE)+" milliseconds and found " + paths.size() + " paths");
 
 				//Create empty lists and pass them by reference to DSE
+				logger.info("Sending request for Directed Symbolic Execution");
 				LinkedList<AbstractState> toExploreAgain = new LinkedList<AbstractState>();
 				DSEedges = DSE.execute(unresolvedStatesToSend, Options.mainFilename, paths, toExploreAgain);
-				logger.info("Size of toExploreAgain: "+toExploreAgain.size());
-				logger.info("Size of CFA before adding DSE edges: " + transformerFactory.getCFA().size());
+				logger.info("Received response from DSE containing "+DSEedges.size()+" new edges");
+
+				//For statistics
+				Set<RTLLabel> resolvedTops = program.getResolvedTops();
+				for (AbstractState as: toExploreAgain){
+					resolvedTops.add(as.getLocation().getLabel());
+				}
+				program.setResolvedTops(resolvedTops);
+
 				int oldCFASize = transformerFactory.getCFA().size();
 				transformerFactory.saveDSEEdges(DSEedges);
-				logger.info("Size of CFA after adding DSE edges: " + transformerFactory.getCFA().size());
 
 				if (!this.DSEOnlyOnce){
 					tops.addAll(unresolvedStates);

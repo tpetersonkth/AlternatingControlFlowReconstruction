@@ -42,7 +42,8 @@ class Communication():
             if self.isValidRequest(data):
                 break
             else:
-                logger.info("Waiting for more data: "+str(data))
+                pass
+                #logger.info("Waiting for more data: "+str(data))
         return self.formatRequest(data).decode(self.encoding)
 
     def sendAnswer(self,answer):

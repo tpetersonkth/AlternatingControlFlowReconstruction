@@ -36,7 +36,7 @@ class ExtractorPlugin(Plugin):
 
             #Log our results!
             out += ",".join(targets)
-            logger.info(out)
+            logger.debug(out)
 
 #A plugin to extract the successor instructions of a given instruction and to direct execution along a set of predefined paths
 class DirectedExtractorPlugin(Plugin):
@@ -68,10 +68,10 @@ class DirectedExtractorPlugin(Plugin):
 
         state.context['pathIDs'] = newPathIDS
 
-        logger.info("keeping: " + ",".join(keeping))
+        logger.debug("keeping: " + ",".join(keeping))
 
         if (not state.context['pathIDs']):  # No path includes the state state
-            logger.info("Abandoning state with RIP=" + hex(state.cpu.RIP) + " PCCounter=" + str(PCCounter))
+            logger.debug("Abandoning state with RIP=" + hex(state.cpu.RIP) + " PCCounter=" + str(PCCounter))
             state.abandon()
 
 
@@ -104,7 +104,7 @@ class DirectedExtractorPlugin(Plugin):
 
             #Log our results!
             out += ",".join([str(i) for i in targets[i]])
-            logger.info(out)
+            logger.debug(out)
 
         # Put the results in the global context so that they can be accessed later
         with self.manticore.locked_context() as context:

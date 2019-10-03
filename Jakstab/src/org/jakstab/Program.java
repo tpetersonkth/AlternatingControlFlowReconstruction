@@ -83,7 +83,8 @@ public final class Program {
 	private ControlFlowGraph cfg;
 	private final Map<String, ExportedSymbol> exportedSymbols;
 	private final Set<UnresolvedSymbol> unresolvedSymbols;
-	private Set<RTLLabel> unresolvedBranches;
+	private Set<RTLLabel> unresolvedBranches;//=Tops
+	private Set<RTLLabel> resolvedTops;
 	private StubProvider stubLibrary;
 	private Harness harness;
 	
@@ -101,6 +102,7 @@ public final class Program {
 		unresolvedSymbols = new FastSet<UnresolvedSymbol>();
 		
 		unresolvedBranches = new FastSet<RTLLabel>();
+		resolvedTops = new FastSet<RTLLabel>();
 	}
 	
 	/**
@@ -485,8 +487,16 @@ public final class Program {
 		return unresolvedBranches;
 	}
 
+	public Set<RTLLabel> getResolvedTops() {
+		return resolvedTops;
+	}
+
 	public void setUnresolvedBranches(Set<RTLLabel> unresolvedBranches) {
 		this.unresolvedBranches = unresolvedBranches;
+	}
+
+	public void setResolvedTops(Set<RTLLabel> resolvedTops) {
+		this.resolvedTops = resolvedTops;
 	}
 
 	/**

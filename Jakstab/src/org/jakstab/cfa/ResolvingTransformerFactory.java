@@ -41,7 +41,8 @@ public abstract class ResolvingTransformerFactory implements StateTransformerFac
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ResolvingTransformerFactory.class);
 
-	protected final Set<RTLLabel> unresolvedBranches = new FastSet<RTLLabel>();
+	protected final Set<RTLLabel> unresolvedBranches = new FastSet<RTLLabel>();//=Tops
+	protected final Set<RTLLabel> resolvedTops = new FastSet<RTLLabel>();
 	protected boolean sound = true;
 	protected SetMultimap<RTLLabel,CFAEdge> outEdges = HashMultimap.create();
 
@@ -51,6 +52,10 @@ public abstract class ResolvingTransformerFactory implements StateTransformerFac
 
 	public Set<RTLLabel> getUnresolvedBranches() {
 		return unresolvedBranches;
+	}
+
+	public Set<RTLLabel> getResolvedTops() {
+		return resolvedTops;
 	}
 
 	@Override

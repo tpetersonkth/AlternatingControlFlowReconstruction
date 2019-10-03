@@ -48,7 +48,6 @@ class Server():
                 program = request[0]
                 paths = formatPaths(request[1:])
 
-                logger.info(request)
                 logger.info("Program: "+program)
                 logger.info("Number of paths received: " + str(paths.pathsLen))
 

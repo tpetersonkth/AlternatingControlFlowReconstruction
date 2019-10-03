@@ -150,8 +150,8 @@ public class Main {
 		stats.record(version);
 
 
-		//StatsPlotter.create(baseFileName + "_states.dat");
-		//StatsPlotter.plot("#Time(ms)\tStates\tInstructions\tGC Time\tSpeed(st/s)");		
+		StatsPlotter.create(baseFileName + "_states.dat");
+		StatsPlotter.plot("#Time(ms)\tStates\tInstructions\tGC Time\tSpeed(st/s)");
 		
 		// Catches control-c and System.exit
 		Thread shutdownThread = new Thread() {
@@ -262,7 +262,8 @@ public class Main {
 			logger.error( "   Analysis result:                     " + cfr.getStatus());
 			//				logger.error( "   Sound:                               " + String.format("%8b", cfr.isSound()));
 			logger.error( "   Indirect Branches (no import calls): " + String.format("%8d", indirectBranches));
-			logger.error( "   Unresolved Branches:                 " + String.format("%8d", program.getUnresolvedBranches().size()));
+			logger.error( "   Tops:                                " + String.format("%8d", program.getUnresolvedBranches().size()));
+			logger.error( "   Unresolved Tops:                     " + String.format("%8d", program.getUnresolvedBranches().size()-program.getResolvedTops().size()));
 			logger.debug("   FastSet conversions:                 " + String.format("%8d", FastSet.getConversionCount()));
 			logger.debug("   Variable count:                      " + String.format("%8d", ExpressionFactory.getVariableCount()));
 			logger.error(Characters.DOUBLE_LINE_FULL_WIDTH);

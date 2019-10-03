@@ -58,6 +58,7 @@ public class DSE {
         return paths;
     }
 
+    //Deprecated, use LDFSIterative instead
     private static  Set<LinkedList<RTLLabel>> LDFSRec(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long depth, Stack<RTLLabel> stack) {
         Set<LinkedList<RTLLabel>> paths = new HashSet<>();
         if (depth > 0){
@@ -76,7 +77,7 @@ public class DSE {
                 paths.add(path);
             }
 
-            //Perform DFS on all children recursively //TODO: Store CFA in an optimized fashion
+            //Perform DFS on all children recursively
             for(CFAEdge edge : graph){
                 if (edge.getSource().getLabel().equals(start)){
                     Set<LinkedList<RTLLabel>> newpaths = LDFSRec(graph, edge.getTarget().getLabel(), targets,depth-1,stack);
@@ -141,18 +142,9 @@ public class DSE {
                 paths.add(path);
             }
 
-            /*
-            for(CFAEdge e : cfa){
-                boolean same = e.getSource().getAddress().equals(e.getTarget().getAddress());
-                if (e.getSource().getAddress().equals(current.address) && !same){
-                    stack.push(new Node(0,e.getTarget().getAddress(),current,current.depth-1));
-                }
-            }
-            */
-
             int currId = current.id;
             for(Pair<Integer,AbsoluteAddress> target : adjList.get(currId)){
-                logger.info("DFS: "+current.address + "->" + target.getRight());
+                //logger.info("DFS: "+current.address + "->" + target.getRight());
                 stack.push(new Node(target.getLeft(),target.getRight(),current,current.depth-1));
             }
 
@@ -160,57 +152,6 @@ public class DSE {
 
         return paths;
 
-    }
-
-    public static  Set<LinkedList<RTLLabel>> LDFSIterativeOLD(Set<CFAEdge>  graph, RTLLabel start, Set<RTLLabel> targets, long maxDepth) {
-        class Node {
-            public RTLLabel label;
-            public Node prev;
-            public long depth;
-            Node(RTLLabel label, Node prev, long depth){
-                this.label = label;
-                this.prev = prev;
-                this.depth = depth;
-            }
-        }
-
-        Stack<Node> stack = new Stack<Node>();
-        Node startNode = new Node(start, null, maxDepth);
-        stack.push(startNode);
-
-        Set<LinkedList<RTLLabel>> paths = new HashSet<>();
-
-        while(!stack.empty()){
-            Node current =  stack.pop();
-
-            if (current.depth <= 0){
-                continue;
-            }
-
-            //Start is the current node
-            if (targets.contains(current.label)){
-                AbsoluteAddress lastAddress = null;
-                LinkedList<RTLLabel> path = new LinkedList<RTLLabel>();
-
-                Node curr = current;
-                while(curr != null){
-                    if (curr.label.getAddress() != lastAddress){
-                        path.add(0, curr.label);//Doubly linked list => O(1) to append element
-                    }
-                    lastAddress = curr.label.getAddress();
-                    curr = curr.prev;
-                }
-                paths.add(path);
-            }
-
-            for(CFAEdge edge : graph){
-                if (edge.getSource().getLabel().equals(current.label)){
-                    stack.push(new Node(edge.getTarget().getLabel(),current,current.depth-1));
-                }
-            }
-
-        }
-        return paths;
     }
 
     public static Pair<ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>,Map<AbsoluteAddress, Integer>> getAdjList(Set<CFAEdge> cfa){
@@ -241,7 +182,6 @@ public class DSE {
             int to = addressToId.get(edge.getTarget().getAddress());
 
             if(from!=to){
-                logger.info("Ajdlist adding: "+edge.getSource().getAddress()+"->"+edge.getTarget().getAddress());
                 Pair<Integer,AbsoluteAddress> P = new Pair<Integer,AbsoluteAddress>(to,edge.getTarget().getAddress());
                 adjList.get(from).add(P);
             }
@@ -256,14 +196,13 @@ public class DSE {
         String formattedPaths = formatPaths(paths);
         File f = new File(mainfile);
         String Response = sendRequest("START"+f.getAbsolutePath()+"\n"+formattedPaths+"END");
-        logger.info("Received from DSE: "+Response);
+        logger.debug("Response from DSE: "+Response);
         return extractEdges(unresolvedStates,Response,toExploreAgain);
     }
 
     public static Set<CFAEdge> extractEdges(LinkedList<AbstractState> unresolvedStates, String formattedString, LinkedList<AbstractState> toExploreAgain){
         assert(formattedString.startsWith("START") && formattedString.endsWith("END"));
         formattedString = formattedString.substring(5,formattedString.length()-3);
-        System.out.println("Formatted string:" + formattedString);
         String pairs[] = formattedString.split(":");
 
         // If no successors were received
@@ -275,13 +214,9 @@ public class DSE {
         for (String pair : pairs){
             String addresses[] = pair.split(",");
 
-            System.out.println(Arrays.toString(addresses));
-            System.out.println(addresses[0]);
-
             AbsoluteAddress fromAdr = new AbsoluteAddress(Long.decode(addresses[0]));
             RTLLabel fromLabel = null;
             for (AbstractState a : unresolvedStates){
-                System.out.println("Checking:"+a.getLocation().getAddress() + "=?="+fromAdr);
                 if (a.getLocation().getAddress().equals(fromAdr)){
                     fromLabel = a.getLocation().getLabel();
                     toExploreAgain.add(a);

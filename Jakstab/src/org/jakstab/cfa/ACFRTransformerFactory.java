@@ -89,7 +89,6 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
 
             @Override
             public Set<CFAEdge> visit(RTLGoto stmt) {
-                logger.debug("[*] ACFR goto");
 
                 //Assert that this is in fact a goto statement
                 assert stmt.getCondition() != null;
@@ -100,7 +99,7 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
                 //The set of edges which will contain the resulting edges
                 Set<CFAEdge> results = new FastSet<CFAEdge>();
 
-                //Optimistic mode //TODO keep or not?
+                //Optimistic mode
                 if (Options.procedureAbstraction.getValue() == 2) {
                     if (stmt.getType() == RTLGoto.Type.CALL) {
                         //Add fall-through edge
@@ -131,9 +130,6 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
                     RTLNumber conditionValue = pair.get(0);
                     RTLNumber targetValue = pair.get(1);
                     RTLLabel nextLabel;
-                    logger.debug("[*] jump:" + stmt.getLabel());
-                    logger.debug("[*] Info: " + stmt.getDefinedVariables() + ":" + stmt.getUsedVariables() + ":" + stmt.getUsedMemoryLocations() + ":" + stmt.getAddress());
-                    logger.debug("State is: " + a);
 
                     // Start building the assume expression: assume correct condition case
                     assert conditionValue != null;
@@ -141,13 +137,10 @@ public class ACFRTransformerFactory extends ResolvingTransformerFactory {
 
                     if (conditionValue.equals(ExpressionFactory.FALSE)) {
                         // assume (condition = false), and set next statement to fallthrough
-                        logger.debug("[*] ACFR Condition is false");
                         nextLabel = stmt.getNextLabel();
                     } else {
-                        logger.debug("[*] ACFR Condition is true. Jump pointing to: 0x" + Integer.toHexString(targetValue == null ? 0 : targetValue.intValue()));
                         if (targetValue == null) {
                             // If the target of the jump can not be determined
-                            logger.warn("[*] ACFR unresolved jump:" + stmt.getLabel());
                             sound = false;
 
                             unresolvedBranches.add(stmt.getLabel());//Used for statistics

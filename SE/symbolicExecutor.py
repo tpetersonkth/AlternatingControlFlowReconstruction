@@ -54,7 +54,7 @@ def executeDirected(program, pathsObject):
 
     for i in pathsObject.paths:
         l = [hex(j) for j in i.path]
-        logger.info(",".join(l))
+        logger.debug(",".join(l))
 
     m.run()
     with m.locked_context() as context:
@@ -69,10 +69,10 @@ def executeDirected(program, pathsObject):
                 pathsObject.lastAddresses[pathID]) + " has the following successors " +
                   ",".join([str(i) for i in targets[pathID]]))
         else:
-            logger.info("Path " + str(pathID) + "[len=" + str(sortedPaths[i].pathLen) + "]" + " is infeasible")
+            logger.debug("Path " + str(pathID) + "[len=" + str(sortedPaths[i].pathLen) + "]" + " is infeasible")
 
     return targets
 
 #Logs the RIP of a state
 def log_rip(state):
-    logger.info(hex(state.cpu.RIP))
+    logger.debug(hex(state.cpu.RIP))

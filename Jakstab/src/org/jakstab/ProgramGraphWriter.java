@@ -536,8 +536,8 @@ public class ProgramGraphWriter {
 
 		try {
 			for (AbsoluteAddress node : cfg.getNodes()) {
-				if (node.equals(Harness.prologueAddress)){
-					continue; //Skip the fictional nodes from the prologue
+				if (node.equals(Harness.prologueAddress) || node.equals(Harness.epilogueAddress)){
+					continue; //Skip the fictional nodes from the prologue/epilogue
 				}
 
 				String nodeName = node.toString();
@@ -549,8 +549,9 @@ public class ProgramGraphWriter {
 			}
 
 			for (ConcreteCFAEdge e : cfg.getEdges()) {
-				if (e.getSource().equals(Harness.prologueAddress) || e.getTarget().equals(Harness.prologueAddress)){
-					continue; //Skip the fictional nodes from the prologue
+				if (e.getSource().equals(Harness.prologueAddress) || e.getTarget().equals(Harness.prologueAddress) ||
+						e.getSource().equals(Harness.epilogueAddress) || e.getTarget().equals(Harness.epilogueAddress)){
+					continue; //Skip the fictional edges connected to the prologue/epilogue
 				}
 				gwriter.writeEdge(e.getSource().toString(),
 						e.getTarget().toString(),
