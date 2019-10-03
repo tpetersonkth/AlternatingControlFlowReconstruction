@@ -26,6 +26,7 @@ mcore_*/
 *.pdf
 *.swp
 *.png
+*.dat
 
 #IDA output
 *.i64
