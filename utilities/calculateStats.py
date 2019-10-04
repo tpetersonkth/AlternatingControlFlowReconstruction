@@ -10,10 +10,23 @@ def main(idealGraphFile, generatedGraphFile):
     GGraph = load(generatedGraphFile)
 
     coverage, soundness, precision, precisionError = calculateStats(IGraph,GGraph)
-    print("Coverage: "+percentage(coverage))
-    print("soundness: "+percentage(soundness))
-    print("Precision: "+percentage(precision))
-    print("Precision error: "+percentage(precisionError))
+
+    #Build output
+    out = ""
+    out+="Coverage: "+percentage(coverage)+"\n"
+    out+="soundness: "+percentage(soundness)+"\n"
+    out+="Precision: "+percentage(precision)+"\n"
+    out+="Precision error: "+percentage(precisionError)+"\n"
+
+    #Print stats to stdout
+    print(out)
+
+    #Write states to a file
+    filename = generatedGraphFile.split(".")[0]
+    fid = open(filename + "_graph_stats.dat","w")
+    fid.write(out)
+    fid.close()
+    
 
 def load(filename):
     graph = networkx.drawing.nx_pydot.read_dot(filename)
