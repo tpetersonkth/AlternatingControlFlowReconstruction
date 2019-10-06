@@ -2,7 +2,9 @@
 
 #Compile to x86 executable:
 file="$1"
-if [[ $file == *"."* ]]; then
+filename=$(basename "$file")
+
+if [[ $filename == *"."* ]]; then
         file=${file::-4}
 fi
 
