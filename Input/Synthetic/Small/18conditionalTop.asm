@@ -17,7 +17,7 @@ _start:
         mov  eax, 3             ; sys_read
         int  80h                ; perform syscall
 
-        mov eax, dword [buf]   ; x = T (Assume eax is x)
+        mov eax, dword [buf]    ; x = T (Assume eax is x)
         and eax, 0x00A00000     ; x = [0,10mb]1mb (However, only happens in theory..)
         cmp eax, 0
         je jump

@@ -1,4 +1,4 @@
-;CPA c and i: Can not resolve jmp eax.. (Because assumes that eax=Top)
+;CPA c and i: Can not resolve jmp eax.. (Because they assume that eax=Top initially)
 
 SECTION .bss
 buf      resb 1
