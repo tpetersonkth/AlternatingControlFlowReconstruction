@@ -10,6 +10,7 @@ _start:
         mov esp, 0xFFFFFFFF
         sub esp, 4
         mov DWORD[esp],retLocation
+        call function
 
 retLocation:
         jmp exit

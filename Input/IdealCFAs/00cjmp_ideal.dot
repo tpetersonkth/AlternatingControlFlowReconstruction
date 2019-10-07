@@ -1,7 +1,8 @@
 digraph G {
 node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
 bgcolor="transparent"
-graph [label="Jakstab v0.8.4-devel   Tue Oct 01 19:47:36 CEST 2019\n-m 00cjmp --cpa i", labelloc=t, fontsize=35, pad=30]"0x08048065"[label="0x08048065\n"];
+graph [label="Jakstab v0.8.4-devel   Tue Oct 01 19:47:36 CEST 2019\n-m 00cjmp --cpa i", labelloc=t, fontsize=35, pad=30]
+"0x08048065"[label="0x08048065\n"];
 "0x08048084"[label="0x08048084\n"];
 "0x0804806f"[label="0x0804806f\n"];
 "0x08048090"[label="0x08048090\n"];
