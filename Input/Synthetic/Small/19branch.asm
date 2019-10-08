@@ -1,9 +1,9 @@
-CPA c: Determines successors of jmp ebx to be "mov ebx, 0" but not "nop"
-CPA I: Determines successors of jmp ebx to be both "mov ebx, 0" and "nop"
+;CPA c: Determines successors of jmp ebx to be "mov ebx, 0" but not "nop"
+;CPA I: Determines successors of jmp ebx to be both "mov ebx, 0" and "nop"
 ; Example: Can be a good example for when interval analysis is good in practice
 
 SECTION .bss
-buf      resb 1
+buf      resb 4
 
 SECTION .text
 
@@ -14,16 +14,14 @@ increment:
         jmp continue
 
 _start:
-        mov  edx, 1             ; max length
+        mov  edx, 4             ; length of buffer
         mov  ecx, buf           ; pointer to buffer
         mov  ebx, 0             ; stdin
         mov  eax, 3             ; sys_read
         int  80h                ; perform syscall
 
-        movzx eax, word [buf]   ; x = T (Assume eax is x)
-
+        mov eax, dword [buf]   ; x = T (Assume eax is x)
         mov ebx,0
-
         cmp eax,1
         je increment
 continue:

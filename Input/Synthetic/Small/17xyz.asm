@@ -16,7 +16,7 @@ _start:
         mov  ecx, buf           ; pointer to buffer
         mov  ebx, 0             ; stdin
         mov  eax, 3             ; sys_read
-        int  80h                ; perform syscall
+        int  0x80                ; perform syscall
 
         movzx eax, word [buf]   ; x = T
         mov ebx, eax            ; y = x

@@ -1,4 +1,6 @@
-;Ret instruction is unresolvable in constant propagation even though it is resolved. It is resolved and considered resolved in interval analysis.
+;CPA c/i: Can resolve all
+;Note: Ret instruction is marked as unresolvable in constant propagation even though it is resolved. It is resolved and considered resolved in the interval analysis.
+;Exclude?
 
 SECTION .text
 
@@ -8,6 +10,7 @@ _start:
         mov esp, 0xFFFFFFFF
         sub esp, 4
         mov DWORD[esp],retLocation
+        call function
 
 retLocation:
         jmp exit

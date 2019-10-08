@@ -49,7 +49,7 @@ public class GraphvizWriter implements GraphWriter {
 		out.write(" {\n");
 		out.write("node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]\n");
 		out.write("bgcolor=\"transparent\"\n");
-		out.write("graph [label=\"Jakstab v" + Main.version + "   " + (new Date()) + "\\n" + Options.arguments + "\", labelloc=t, fontsize=35, pad=30]");
+		out.write("graph [label=\"Jakstab v" + Main.version + "   " + (new Date()) + "\\n" + Options.arguments + "\", labelloc=t, fontsize=35, pad=30]\n");
 
 	}
 
