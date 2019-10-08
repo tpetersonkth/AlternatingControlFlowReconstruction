@@ -38,20 +38,23 @@ def calculateStats(idealGraph, graph):
 
     #Calculate coverage and soundnes
     intersecting = float(len(GE.intersection(IGE)))
-    coverage = intersecting/len(IGE)
-    soundness = intersecting/len(GE)
-
+    coverage = intersecting/len(IGE) if len(IGE) != 0 else None
+    soundness = intersecting/len(GE) if len(GE) != 0 else None
+    
     #Calculate precision
-    precision = 1/2*(intersecting/len(IGE) + intersecting/len(GE))
+    precision = 1/2*(intersecting/len(IGE) + intersecting/len(GE)) if (len(GE) != 0 and len(IGE) != 0) else None
 
     #Calculate precision error
     IminG = IGE - GE
     GminI = GE - IGE 
-    precisionError = 1/2*(len(IminG)/len(IGE) + len(GminI)/len(GE))
+    precisionError = 1/2*(len(IminG)/len(IGE) + len(GminI)/len(GE)) if (len(GE) != 0 and len(IGE) != 0) else None
 
     return (coverage, soundness, precision, precisionError)
 
 def percentage(decimalForm):
+    if (decimalForm == None):
+        return "-"
+
     return str(round(100*decimalForm,2))+"%"
 
 if __name__ == "__main__":
