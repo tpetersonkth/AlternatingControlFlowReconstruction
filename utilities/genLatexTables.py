@@ -1,26 +1,53 @@
+'''
+Author: Thomas Peterson
+Year: 2019
+'''
+
 # This is a file to generate latex tables from result files of the genResults.sh script(Files ending with .dat).
 
 import os, sys
 
 def main():
     stats = dirToStats(sys.argv[1])
-    t1 = generateTable(stats,["Coverage","Precision","soundness","Unresolved Tops","Tops"])
-    t2 = generateTable(stats,["Total time", "CPA time","DFS time", "DSE time"])
-
+    
+    # AccuracyTable
+    accuracyFields = ["Instructions","Coverage","Precision","soundness","Unresolved Tops","Tops"]
+    fieldSwap1 = {"soundness":"Soundness","Unresolved Tops":"uTops"}
+    t1 = generateTable(stats, accuracyFields, fieldSwap1)
     print(t1)
+
+    # Benchmarking table
+    timeFields = ["CPA time","DFS time", "DSE time", "Other time"]
+    fieldSwap2 = {"CPA time":"$T_{CPA}$", "DFS time":"$T_{DFS}$", "DSE time":"$T_{DSE}$", "Other time":"$T_{Other}$"}
+    t2 = generateTable(stats,timeFields, fieldSwap2)
     print(t2)
 
-def generateTable(stats, fields):
+    # Combined table
+    fieldSwap = {}
+    fieldSwap.update(fieldSwap1)
+    fieldSwap.update(fieldSwap2)
+    fields = accuracyFields + timeFields
+    t2 = generateTable(stats, fields, fieldSwap)
+    print(t2)
+
+'''
+generateTable(stats, fields, fieldSwap={}) - Generates a latex table given a statistics dictionrary and a list of desired columns
+Params: 
+    stats - The statistic dictionary
+    fields - The desired columns of the table
+    fieldSwap(opt) - Dictionary mapping actual field name to desired field name 
+'''
+def generateTable(stats, fields, fieldSwap={}):
     columns = len(fields) + 2# + 2 for name of binary and mode
     out = ""
     out += "\\begin{table}[ht]\n"
     out += "\\centering\n"
-    out += "\scalebox{0.7}{\n"
+    out += "\scalebox{0.5}{\n"
     out += "\\begin{tabular}{"+"l".join("|"*(columns+2))+"}\n"
     out += "\\hline\n"
 
     bfFields = ["\\textbf{File}","\\textbf{Mode}"]
-    bfFields = bfFields + ["\\textbf{"+field+"}" for field in fields]
+    bfFields = bfFields + ["\\textbf{"+field+"}" if field not in fieldSwap.keys() else "\\textbf{"+fieldSwap[field]+"}" for field in fields]
     out += " & ".join(bfFields) + "\\\\ \hline \n"
 
     sortedValues = []
