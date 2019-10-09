@@ -7,7 +7,7 @@
 #   path to a binary
 #   path to directory containing ideal ccfa:s
 #   directory to store results
-#   port number of DSE(TODO)
+#   port number of DSE
 analyzeBinary () {
     # Rename parameters for readability
     fullpath=$1
