@@ -13,6 +13,7 @@
 !/Input/Synthetic/Medium/*.*
 
 #Other ignores
+/logs/
 /Jakstab/bin/
 mcore_*/
 /SE/x86
@@ -21,12 +22,13 @@ mcore_*/
 *.idea/
 *.o
 *.dot
-!/Input/IdealCFAs/*.dot
 *_jak.asm
 *.pdf
 *.swp
 *.png
 *.dat
+!/Input/IdealCFAs/*.dot
+!/results/**/*
 
 #IDA output
 *.i64

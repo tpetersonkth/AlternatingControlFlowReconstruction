@@ -1,0 +1,4 @@
+#Time(ms)	States	Instructions	GC Time	Speed(st/s)
+322	10	1	52	0
+460	20	5	22	72
+486	30	6	23	384
