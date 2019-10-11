@@ -189,7 +189,7 @@ public class CPAAlgorithm implements Algorithm {
 
 		int steps = 0;
 		statesVisited = 0;
-		final int stepThreshold = 10;
+		final int stepThreshold = 50;
 		long startTime = System.currentTimeMillis();
 		long lastSteps = 0;
 		long lastTime = 0;

@@ -133,7 +133,7 @@ public class IntervalElement implements AbstractDomainElement, BitVectorType, It
 	}
 	
 	/**
-	 * Widening by extending the interval bounds infinitely into the direction of 
+	 * Widening by extending the interval bounds into the direction of
 	 * the parameter. Takes care to preserve singleton-property of top elements.
 	 * 
 	 * @param towards the target towards which this element should be widened.
@@ -142,33 +142,12 @@ public class IntervalElement implements AbstractDomainElement, BitVectorType, It
 	 */
 	public IntervalElement widen(IntervalElement towards) {
 		assert towards.bitWidth == bitWidth;
-		IntervalElement result;
+
 		IntervalElement top = getTop(bitWidth);
 		if (region != towards.region) return top;
+
 		long newStride = joinStride(towards);
-		
-		if (towards.left < left) {
-			if (towards.right > right || rightOpen()) {
-				result = top;
-			} else {
-				result = new IntervalElement(region, top.getLeft() + (right - top.getLeft()) % newStride, right, newStride, bitWidth);
-			}
-		} else {
-			if (towards.right > right) {
-				if (leftOpen()) {
-					result = top; 
-				} else {
-					result = new IntervalElement(region, left, top.getRight() - (top.getRight() - left) % newStride, newStride, bitWidth);
-				}
-			} else {
-				if (newStride > stride)
-					result = new IntervalElement(region, left, right, newStride, bitWidth);
-				else
-					result = this;
-			}
-		}
-		// if (this != result) logger.debug("Widening " + this + " to " + result);
-		return result;
+		return new IntervalElement(region, Math.min(left,towards.left), Math.max(right,towards.right), newStride, bitWidth);
 	}
 
 	/*
