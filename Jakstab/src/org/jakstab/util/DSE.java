@@ -104,11 +104,15 @@ public class DSE {
             }
         }
 
+        Set<LinkedList<AbsoluteAddress>> paths = new HashSet<>();
+        if (targets.isEmpty()){
+            return paths;
+        }
+
         Stack<Node> stack = new Stack<Node>();
         Node startNode = new Node(start.getLeft(),start.getRight(), null, maxDepth);
         stack.push(startNode);
 
-        Set<LinkedList<AbsoluteAddress>> paths = new HashSet<>();
         long sinceLast = System.currentTimeMillis();
         while(!stack.empty()){
             Node current = stack.pop();
@@ -116,11 +120,13 @@ public class DSE {
             if (System.currentTimeMillis()-sinceLast >= 1000){
                 sinceLast = System.currentTimeMillis();
 
-                System.out.println("Queued nodes to explore: "+stack.size()+" depth of the current elements: ");
-                int max = 0;
+                logger.info("Queued nodes to explore: "+stack.size()+" depth of the current elements: ");
+                StringBuilder out = new StringBuilder();
                 for(Node n : stack){
-                    System.out.printf(n.depth+",");
+                    out.append(n.depth+",");
                 }
+                logger.info(out);
+
             }
 
             if (current.depth <= 0){

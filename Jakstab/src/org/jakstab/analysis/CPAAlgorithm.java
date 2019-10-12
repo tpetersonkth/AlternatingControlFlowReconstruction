@@ -30,6 +30,8 @@ import org.jakstab.analysis.location.LocationAnalysis;
 import org.jakstab.asm.AbsoluteAddress;
 import org.jakstab.cfa.*;
 import org.jakstab.loader.Harness;
+import org.jakstab.rtl.statements.RTLHalt;
+import org.jakstab.rtl.statements.RTLStatement;
 import org.jakstab.util.*;
 
 /**
@@ -258,7 +260,10 @@ public class CPAAlgorithm implements Algorithm {
 				transformers.addAll(transformerFactory.getTransformers(a));
 				transformers.addAll(DSE.getTransformers(DSEedges,a));
 				if (transformers.isEmpty()){
-					unresolvedStates.add(a);
+					RTLStatement stmt = Program.getProgram().getStatement((RTLLabel)a.getLocation());
+					if (!(stmt instanceof RTLHalt)){//Halt statements don't have any successors
+						unresolvedStates.add(a);
+					}
 				}
 				// For each outgoing edge
 				for (CFAEdge cfaEdge : transformers) {
