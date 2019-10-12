@@ -1,0 +1,19 @@
+=======================================================================
+   Statistics for Control Flow Reconstruction
+=======================================================================
+   Total time:                              2274ms
+   CPA time:                                 273ms
+   DFS time:                                   0ms
+   DSE time:                                1791ms
+   Other time:                               210ms
+   Instructions:                              11
+   RTL Statements:                            37
+   CFA Edges:                                 36
+   States visited:                            39
+   Final state space:                         36
+   Finished normally:                       true
+   Analysis result:                     OK
+   Indirect Branches (no import calls):        1
+   Tops:                                       1
+   Unresolved Tops:                            0
+=======================================================================

@@ -46,7 +46,7 @@ def generateTable(stats, fields, fieldSwap={}):
     out += "\\begin{tabular}{"+"l".join("|"*(columns+2))+"}\n"
     out += "\\hline\n"
 
-    bfFields = ["\\textbf{File}","\\textbf{Mode}"]
+    bfFields = ["\\textbf{Binary}","\\textbf{Mode}"]
     bfFields = bfFields + ["\\textbf{"+field+"}" if field not in fieldSwap.keys() else "\\textbf{"+fieldSwap[field]+"}" for field in fields]
     out += " & ".join(bfFields) + "\\\\ \hline \n"
 
