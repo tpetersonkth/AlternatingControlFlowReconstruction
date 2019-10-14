@@ -1,0 +1,20 @@
+digraph G {
+node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
+bgcolor="transparent"
+graph [label="Jakstab v0.8.4-devel   Fri Oct 11 16:19:37 CEST 2019\n-m /home/thomas/Alternating-Control-Flow-Reconstruction/Input/Synthetic/Small/03badCall -b -v 1 --cpa c --dse 65301", labelloc=t, fontsize=35, pad=30]
+"0x08048076"[label="0x08048076\n"];
+"0x08048066"[label="0x08048066\n"];
+"0x08048067"[label="0x08048067\n"];
+"0x08048078"[label="0x08048078\n"];
+"0x08048061"[label="0x08048061\n"];
+"0x08048071"[label="0x08048071\n"];
+"0x08048060"[label="0x08048060\n",fillcolor="red"];
+"0x0804806c"[label="0x0804806c\n"];
+"0x08048066" -> "0x08048067" [color="#000000"];
+"0x08048067" -> "0x08048060" [color="#000000"];
+"0x08048071" -> "0x08048076" [color="#000000"];
+"0x08048060" -> "0x0804806c" [color="#000000"];
+"0x0804806c" -> "0x08048071" [color="#000000"];
+"0x08048076" -> "0x08048078" [color="#000000"];
+"0x08048061" -> "0x08048066" [color="#000000"];
+}

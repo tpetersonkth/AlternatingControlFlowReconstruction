@@ -1,0 +1,35 @@
+digraph G {
+node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
+bgcolor="transparent"
+graph [label="Jakstab v0.8.4-devel   Sat Oct 12 04:49:02 CEST 2019\n-m /home/thomas/Alternating-Control-Flow-Reconstruction/Input/Synthetic/Small/12longRegisterEquals -b -v 1 --cpa i", labelloc=t, fontsize=35, pad=30]
+"0x08048066"[label="0x08048066\n"];
+"0x08048086"[label="0x08048086\n"];
+"0x08048082"[label="0x08048082\n"];
+"0x08048062"[label="0x08048062\n"];
+"0x08048064"[label="0x08048064\n"];
+"0x08048084"[label="0x08048084\n",fillcolor="red"];
+"0x08048090"[label="0x08048090\n"];
+"0x08048070"[label="0x08048070\n"];
+"0x0804808b"[label="0x0804808b\n"];
+"0x0804806b"[label="0x0804806b\n"];
+"0x08048075"[label="0x08048075\n"];
+"0x08048092"[label="0x08048092\n"];
+"0x08048060"[label="0x08048060\n"];
+"0x0804807a"[label="0x0804807a\n"];
+"0x0804807c"[label="0x0804807c\n"];
+"0x08048062" -> "0x08048064" [color="#000000"];
+"0x08048070" -> "0x08048075" [color="#000000"];
+"0x08048066" -> "0x0804806b" [color="#000000"];
+"0x08048090" -> "0x08048092" [color="#000000"];
+"0x08048064" -> "0x08048070" [color="#000000"];
+"0x08048064" -> "0x08048066" [color="#000000"];
+"0x08048075" -> "0x0804807a" [color="#000000"];
+"0x0804806b" -> "0x0804807a" [color="#000000"];
+"0x0804807c" -> "0x08048082" [color="#000000"];
+"0x0804807a" -> "0x0804807c" [color="#000000"];
+"0x08048060" -> "0x08048062" [color="#000000"];
+"0x08048086" -> "0x0804808b" [color="#000000"];
+"0x0804808b" -> "0x08048090" [color="#000000"];
+"0x08048082" -> "0x08048084" [color="#000000"];
+"0x08048082" -> "0x08048086" [color="#000000"];
+}

@@ -1,0 +1,18 @@
+digraph G {
+node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
+bgcolor="transparent"
+graph [label="Jakstab v0.8.4-devel   Sat Oct 12 04:47:21 CEST 2019\n-m /home/thomas/Alternating-Control-Flow-Reconstruction/Input/Synthetic/Small/06indMemJmp -b -v 1 --cpa i", labelloc=t, fontsize=35, pad=30]
+"0x08048095"[label="0x08048095\n"];
+"0x080480a1"[label="0x080480a1\n"];
+"0x0804809f"[label="0x0804809f\n"];
+"0x08048090"[label="0x08048090\n"];
+"0x08048080"[label="0x08048080\n"];
+"0x0804809a"[label="0x0804809a\n"];
+"0x0804808a"[label="0x0804808a\n"];
+"0x0804808a" -> "0x08048090" [color="#000000"];
+"0x08048090" -> "0x08048095" [color="#000000"];
+"0x08048095" -> "0x0804809a" [color="#000000"];
+"0x0804809a" -> "0x0804809f" [color="#000000"];
+"0x08048080" -> "0x0804808a" [color="#000000"];
+"0x0804809f" -> "0x080480a1" [color="#000000"];
+}
