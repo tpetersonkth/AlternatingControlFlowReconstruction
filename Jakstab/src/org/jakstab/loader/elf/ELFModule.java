@@ -47,7 +47,6 @@ public class ELFModule implements ExecutableImage {
 	public static final long ELF_LOAD_ADDRESS = 0x8048000L;
 
 	private static final Logger logger = Logger.getLogger(ELFModule.class);
-
 	private Elf elf;
 	private BinaryFileInputBuffer inBuf;
 	private Disassembler disassembler;
@@ -457,4 +456,9 @@ public class ELFModule implements ExecutableImage {
 		// Section not found
 		return false;
 	}
+
+	public Elf getElf() {
+		return elf;
+	}
+
 }

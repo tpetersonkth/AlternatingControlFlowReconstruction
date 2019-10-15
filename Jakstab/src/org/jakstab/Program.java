@@ -543,7 +543,11 @@ public final class Program {
 	public RTLLabel getStart() {
 		return start;
 	}
-	
+
+	public List<ExecutableImage> getModules() {
+		return modules;
+	}
+
 	public int countIndirectBranches() {
 		int res = 0;
 		for (Map.Entry<AbsoluteAddress, Instruction> entry : assemblyMap.entrySet()) {

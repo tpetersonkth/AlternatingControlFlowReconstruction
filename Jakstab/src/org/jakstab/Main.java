@@ -19,8 +19,11 @@
 package org.jakstab;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.util.*;
 
+import org.jakstab.loader.elf.ELFModule;
+import org.jakstab.loader.elf.Elf;
 import org.jakstab.transformation.DeadCodeElimination;
 import org.jakstab.transformation.ExpressionSubstitution;
 import org.jakstab.util.*;
@@ -271,12 +274,26 @@ public class Main {
 			sb.append( "   Indirect Branches (no import calls): " + String.format("%8d", indirectBranches)+"\n");
 			sb.append( "   Tops:                                " + String.format("%8d", program.getUnresolvedBranches().size())+"\n");
 			sb.append( "   Unresolved Tops:                     " + String.format("%8d", program.getUnresolvedBranches().size()-program.getResolvedTops().size())+"\n");
+
 			//logger.debug("   FastSet conversions:                 " + String.format("%8d", FastSet.getConversionCount()));
 			//logger.debug("   Variable count:                      " + String.format("%8d", ExpressionFactory.getVariableCount()));
 			sb.append(Characters.DOUBLE_LINE_FULL_WIDTH+"\n");
+			logger.error(sb.toString());
 
-			String statsSummary = sb.toString();
-			logger.error(statsSummary);
+			// Extended summary continues here(Only for the log files)
+			if (program.getTargetOS() == Program.TargetOS.LINUX){
+				sb.append("Identified binary sections\n");
+				sb.append(Characters.DOUBLE_LINE_FULL_WIDTH+"\n");
+
+				ELFModule elfModule = (ELFModule) program.getModules().get(0);
+				for(Elf.Section s : elfModule.getElf().getSections()){
+					if (!s.toString().equals("") && !s.sh_addr.getValue().equals(BigInteger.ZERO)){
+						sb.append( "Section " + s.toString() + " start: 0x" + String.format("%x", s.sh_addr.getValue())+"\n");
+						sb.append( "Section " + s.toString() + " size: 0x" + String.format("%x", s.sh_size)+"\n");
+					}
+				}
+				sb.append(Characters.DOUBLE_LINE_FULL_WIDTH+"\n");
+			}
 
 			stats.record(program.getInstructionCount());
 			stats.record(program.getStatementCount());
@@ -300,7 +317,7 @@ public class Main {
 			//Export stats to file
 			try{
 				FileWriter fw = new FileWriter(baseFileName+"_stats.dat");
-				fw.write(statsSummary);
+				fw.write(sb.toString());
 				fw.close();
 			}
 			catch(IOException e){
