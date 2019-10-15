@@ -3,22 +3,34 @@ Author: Thomas Peterson
 year: 2019
 This script loads two graphs and calculates the coverage, soundness and precision based on these.
 '''
-import sys, networkx
+import sys, os, networkx
 
-def main(idealGraphFile, generatedGraphFile):
+from presentStats import addStats
+
+def main(idealGraphFile, generatedGraphFile, statsfile):
     IGraph = load(idealGraphFile)
     GGraph = load(generatedGraphFile)
 
-    RICoverage, RISoundness, RIPrecision, TRICoverage, TRISoundness, TRIPrecision = calculateStats(IGraph,GGraph)
+    stats = {}
+    addStats(stats,statsfile)
+
+    basename = os.path.basename(statsfile)
+    basename = basename.split("_")
+    analysisType = basename[1]
+    basename = basename[0]
+
+    textSectionSize = int(stats[basename][analysisType]['Section .text size'],16)
+
+    Coverage, Soundness, Precision, TFCoverage, TFSoundness, TFPrecision = calculateStats(IGraph,GGraph,textSectionSize)
 
     #Build output
     out = ""
-    out+="RI coverage: "+percentage(RICoverage)+"\n"
-    out+="RI Soundness: "+percentage(RISoundness)+"\n"
-    out+="RI Precision: "+percentage(RIPrecision)+"\n"
-    out+="TRI Coverage: "+percentage(TRICoverage)+"\n"
-    out+="TRI Soundness: "+percentage(TRISoundness)+"\n"
-    out+="TRI Precision: "+percentage(TRIPrecision)+"\n"
+    out+="Coverage: "+percentage(Coverage)+"\n"
+    out+="Soundness: "+percentage(Soundness)+"\n"
+    out+="Precision: "+percentage(Precision)+"\n"
+    out+="Top free coverage: "+percentage(TFCoverage)+"\n"
+    out+="Top free soundness: "+percentage(TFSoundness)+"\n"
+    out+="Top free precision: "+percentage(TFPrecision)+"\n"
 
     #Print stats to stdout
     print(out)
@@ -40,58 +52,56 @@ def isTopNode(graph, node):
         return True
     return False
 
-def calculateStats(idealGraph, graph):
-    SizeOfTextSection=2**10#TODO: Load real size
-
-    #Create reduced ideal graph
-    reducedIdealGraph = networkx.MultiDiGraph()
-    topEdgesCount = 0
+def getTopFreeGraph(graph, providedTopNodes=[]):
+    topFreeGraph = networkx.MultiDiGraph()  # Top free has the same nodes as the ideal graph but without top edges
     topNodes = []
     for node in graph.nodes:
-        if node in idealGraph.nodes:
-            reducedIdealGraph.add_node(node)
-            # If top add all top edges to the counter
-            if isTopNode(graph,node):
-                topNodes.append(node)
-                topEdgesCount += SizeOfTextSection
+        topFreeGraph.add_node(node)
+        # If top add all top edges to the counter
+        if isTopNode(graph, node):
+            topNodes.append(node)
 
-    #Add edges to reduced ideal graph and reduced top-free ideal graph
-    topFreeReducedIdealGraph = reducedIdealGraph.copy()#Top free has the same nodes as the ideal graph but without top edges
+    topNodes = topNodes + providedTopNodes
+
     topEdges = []
-    for edge in idealGraph.edges:
-        if (edge[0] in reducedIdealGraph.nodes):
-            if(edge[1] in reducedIdealGraph.nodes):
-                reducedIdealGraph.add_edge(edge[0],edge[1])
-            if (edge[0] not in topNodes):
-                topFreeReducedIdealGraph.add_edge(edge[0],edge[1])
-            else:
-                topEdges.append(edge)
+    for edge in graph.edges:
 
-    #Add the targets of the top edges to the RIG
-    for edge in topEdges:
-        reducedIdealGraph.add_node(edge[1])
-        reducedIdealGraph.add_edge(edge[0],edge[1])
+        # If this edge is not a top edge
+        if (edge[0] not in topNodes):
+            topFreeGraph.add_edge(edge[0], edge[1])
+        else:
+            topEdges.append(edge)
 
-    GE = set(graph.edges)
-    RIGE = set(reducedIdealGraph.edges)
-    TRIGE = set(topFreeReducedIdealGraph.edges)
+    return topFreeGraph, topNodes, topEdges
 
-    # Calculate coverage, soundness and precision with respect to the reduced ideal graph
-    intersecting = float(len(GE.intersection(RIGE)))
-    RICoverage = intersecting / len(RIGE) if len(RIGE) != 0 else None
-    RISoundness = intersecting / len(GE) if len(GE) != 0 else None
-    RIPrecision = 1 / 2 * (intersecting / len(RIGE) + intersecting / len(GE)) if (len(GE) != 0 and len(RIGE) != 0) else None
+# Calculate coverage, soundness and precision with respect to the ideal graph
+def calculateStats(idealGraph, graph, SizeOfTextSection):
 
-    # Calculate coverage, soundness and precision with respect to the reduced top-free ideal graph
-    intersecting = float(len(GE.intersection(TRIGE)))
-    TRICoverage = intersecting / len(TRIGE) if len(TRIGE) != 0 else None
-    TRISoundness = intersecting / len(GE) if len(GE) != 0 else None
-    TRIPrecision = 1 / 2 * (intersecting / len(TRIGE) + intersecting / len(GE)) if (len(GE) != 0 and len(TRIGE) != 0) else None
+    topFreeGraph, topNodes, _ = getTopFreeGraph(graph)
+    topFreeIdealGraph, _, idealTopEdges = getTopFreeGraph(idealGraph, providedTopNodes=topNodes)
 
-    return (RICoverage, RISoundness, RIPrecision, TRICoverage, TRISoundness, TRIPrecision)
+    # Convert to sets to perform set operations in the calculations
+    TFGE = set(topFreeGraph.edges)
+    TFIGE = set(topFreeIdealGraph.edges)
+    idealTopEdges = set(idealTopEdges)
+    numberOfTopEdgesOfGraph = SizeOfTextSection*len(topNodes)
+
+    #Every edge from a top node in the ideal graph is covered since a top node points to every byte in the .text section
+    intersectingTopEdges = len(idealTopEdges)
+    intersecting = float(len(TFGE.intersection(TFIGE))+intersectingTopEdges)
+
+    #Calculate metrics
+    Coverage = intersecting / len(idealGraph.edges) if len(idealGraph.edges) != 0 else None
+    Soundness = intersecting / (len(TFGE)+numberOfTopEdgesOfGraph) if (len(TFGE)+numberOfTopEdgesOfGraph) != 0 else None
+    Precision = 1 / 2 * (Soundness + Coverage) if (Coverage != None and Soundness != None) else None
+
+    # Top free graphs can be handled as regular graphs
+    TFCoverage, TFSoundness, TFPrecision = calculateStatsRaw(idealGraph,topFreeGraph)
+
+    return (Coverage, Soundness, Precision, TFCoverage, TFSoundness, TFPrecision)
 
 '''
-Calculate coverage, soundness, precision and precision error without compensating for tops or only considering the subgraph of the ideal graph
+Calculate coverage, soundness, precision and precision error without compensating for tops
 '''
 def calculateStatsRaw(idealGraph, graph):
     GE = set(graph.edges)
@@ -106,11 +116,11 @@ def calculateStatsRaw(idealGraph, graph):
     precision = 1/2*(intersecting/len(IGE) + intersecting/len(GE)) if (len(GE) != 0 and len(IGE) != 0) else None
 
     #Calculate precision error
-    IminG = IGE - GE
-    GminI = GE - IGE 
-    precisionError = 1/2*(len(IminG)/len(IGE) + len(GminI)/len(GE)) if (len(GE) != 0 and len(IGE) != 0) else None
+    #IminG = IGE - GE
+    #GminI = GE - IGE
+    #precisionError = 1/2*(len(IminG)/len(IGE) + len(GminI)/len(GE)) if (len(GE) != 0 and len(IGE) != 0) else None
 
-    return (coverage, soundness, precision, precisionError)
+    return (coverage, soundness, precision)
 
 def percentage(decimalForm):
     if (decimalForm == None):
@@ -119,9 +129,9 @@ def percentage(decimalForm):
     return str(round(100*decimalForm,2))+"%"
 
 if __name__ == "__main__":
-    if (len(sys.argv) < 3):
-        print("Usage: Python3 calculateStats [Path to ideal graph] [Path to generated graph]")
+    if (len(sys.argv) < 4):
+        print("Usage: Python3 calculateStats [Path to ideal graph] [Path to generated graph] [Path to statsfile]")
     else:
-        main(sys.argv[1],sys.argv[2])
+        main(sys.argv[1],sys.argv[2],sys.argv[3])
         
     

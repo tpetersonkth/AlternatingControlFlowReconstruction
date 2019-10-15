@@ -63,7 +63,7 @@ analyzeBinarySub(){
         mv "$pathToBin"'_ccfa.dot' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_ccfa.dot')
         mv "$pathToBin"'_states.dat' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_states.dat')
         mv "$pathToBin"'_stats.dat' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_stats.dat')
-        python3 calculateStats.py $(realpath "$idealDir/$fileNoExt"'_ideal.dot') $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_ccfa.dot')
+        python3 calculateStats.py $(realpath "$idealDir/$fileNoExt"'_ideal.dot') $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_ccfa.dot') $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_stats.dat')
     else
         echo "Analysis timed out at $seconds seconds for $file"
     fi
