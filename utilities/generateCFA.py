@@ -1,4 +1,5 @@
 import os, sys, networkx, angr
+import queue
 
 from angr.knowledge_plugins.cfg.cfg_node import CFGENode
 from angrutils import plot_cfg
@@ -10,7 +11,7 @@ def main(file,outputDirectory):
     cfgEmulated = p.analyses.CFGEmulated()
 
     print("Converting the BBG to a CFA")
-    
+
     #Create a CFA from the BBG provided obtained with angr
     CFA = networkx.DiGraph()
     for node in list(cfgEmulated.graph.nodes.keys()):
@@ -49,12 +50,19 @@ def main(file,outputDirectory):
 #Returns the set of all successors that are not simprocedures
 #Note that it skips every simprocedure node until a non-simprocedure node is found
 def getNonSimprocedureSuccessors(node):
+    visited = [node.addr]
     answer = []
-    for s in node.successors:
-        if not s.is_simprocedure:
-            answer.append(s)
-        else:
-            answer += getNonSimprocedureSuccessors(s)
+    worklist = queue.Queue()
+    worklist.put(node)
+    while not worklist.empty():
+        node = worklist.get()
+        for s in node.successors:
+            if not s.is_simprocedure:
+                answer.append(s)
+            else:
+                if(s.addr not in visited):
+                    visited.append(s.addr)
+                    worklist.put(s)
     return answer
 
 if __name__ == "__main__":
