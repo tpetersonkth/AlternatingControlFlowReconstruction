@@ -10,6 +10,11 @@ def main(file,outputDirectory):
     print("Loading BBG from angr..")
     cfgEmulated = p.analyses.CFGEmulated()
 
+    # Output resulting graph in a .dot file
+    print("Outputting raw BBG")
+    basename = os.path.basename(file)
+    networkx.drawing.nx_pydot.write_dot(cfgEmulated.graph, outputDirectory + "/" + basename + "_cfg_angr.dot")
+
     print("Converting the BBG to a CFA")
 
     #Create a CFA from the BBG provided obtained with angr
@@ -38,11 +43,12 @@ def main(file,outputDirectory):
             CFA.add_edge(hex(last),hex(successor.addr))
 
     #Output resulting graph in a .dot file
+    print("Outputting CFA")
     basename = os.path.basename(file)
     networkx.drawing.nx_pydot.write_dot(CFA, outputDirectory + "/" + basename + "_ccfa_angr.dot")
 
     #Illustrate the BBG as a PNG
-    plot_cfg(cfgEmulated, os.path.abspath(outputDirectory+"/"+basename))
+    #plot_cfg(cfgEmulated, os.path.abspath(outputDirectory+"/"+basename))
 
     #Export the CFA as a networkx edgelist
     #networkx.readwrite.edgelist.write_weighted_edgelist(CFA, os.path.abspath(outputDirectory+"/"+basename+".nx"), delimiter=",")
