@@ -198,7 +198,6 @@ public class CPAAlgorithm implements Algorithm {
 		LinkedList<AbstractState> unresolvedStates = new LinkedList<>();
 		LinkedList<AbstractState> tops = new LinkedList<>();
 		Set<CFAEdge> DSEedges = new HashSet<>();
-		boolean reachedFixpoint = false;
 		long worklistEmptyAt = System.currentTimeMillis();
 		while ((!worklist.isEmpty()) && !stop && (!failFast || isSound())) {
 			statesVisited++;
@@ -353,7 +352,7 @@ public class CPAAlgorithm implements Algorithm {
 				}
 				throw e;
 			}
-			if(worklist.isEmpty() && !reachedFixpoint && addedDSE){
+			if(worklist.isEmpty() && addedDSE){
 				//Export the paths to the unresolved branches to DSE
 				logger.info("Formatting graph for efficient path extraction");
 				ResolvingTransformerFactory transformerFactory = (ResolvingTransformerFactory) this.transformerFactory;
@@ -402,21 +401,20 @@ public class CPAAlgorithm implements Algorithm {
 				int oldCFASize = transformerFactory.getCFA().size();
 				transformerFactory.saveDSEEdges(DSEedges);
 
-				if (!this.DSEOnlyOnce){
-					tops.addAll(unresolvedStates);
-					for (AbstractState as : tops){
-						worklist.add(as);
+				boolean reachedFixpoint = (oldCFASize == transformerFactory.getCFA().size());
+				if (!reachedFixpoint){
+					//Re add abstract states to worklist
+					if (!this.DSEOnlyOnce){
+						tops.addAll(unresolvedStates);
+						for (AbstractState as : tops){
+							worklist.add(as);
+						}
 					}
-				}
-				else{
-					for (AbstractState as : toExploreAgain){
-						worklist.add(as);
+					else{
+						for (AbstractState as : toExploreAgain){
+							worklist.add(as);
+						}
 					}
-				}
-
-				reachedFixpoint = false;
-				if (oldCFASize == transformerFactory.getCFA().size()){
-					reachedFixpoint = true;
 				}
 
 				unresolvedStates = new LinkedList<>();
