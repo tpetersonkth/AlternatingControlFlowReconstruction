@@ -5,7 +5,7 @@
 
 
 SECTION .bss
-buf      resb 1
+buf      resb 4
 
 SECTION .text
 
@@ -16,9 +16,9 @@ _start:
         mov  ecx, buf           ; pointer to buffer
         mov  ebx, 0             ; stdin
         mov  eax, 3             ; sys_read
-        int  0x80                ; perform syscall
+        int  0x80               ; perform syscall
 
-        movzx eax, word [buf]   ; x = T
+        mov eax, dword [buf]   ; x = T
         mov ebx, eax            ; y = x
         sub eax, ebx            ; z = x-y = 0
         add eax, exit

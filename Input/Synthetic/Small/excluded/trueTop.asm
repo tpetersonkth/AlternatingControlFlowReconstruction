@@ -1,7 +1,7 @@
 ;Jumps to _start + user input
 ;Example: A true top for DSE. However, DSE will suggest possible successors.
 SECTION .bss
-buf      resb 1
+buf      resb 4
 
 SECTION .text
 
@@ -14,7 +14,7 @@ _start:
         mov  eax, 3             ; sys_read
         int  80h                ; perform syscall
 
-        movzx eax, word [buf]
+        mov eax, dword [buf]
         add eax, _start
         jmp eax
 

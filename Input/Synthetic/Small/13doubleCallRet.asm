@@ -1,7 +1,7 @@
 ;DSE(Executed with cpa c) can resolve both ret instructions correctly
 
 SECTION .bss
-buf      resb 1
+buf      resb 4
 
 SECTION .text
 
@@ -14,7 +14,7 @@ _start:
         mov  eax, 3             ; sys_read
         int  80h                ; perform syscall
 
-        movzx eax, byte [buf]
+        mov eax, dword [buf]
         cmp eax, 70
         jle echo
 
