@@ -15,6 +15,5 @@ _start:
         int  80h                ; perform syscall
 
         mov eax, dword [buf]
-        add eax, _start
         jmp eax
 

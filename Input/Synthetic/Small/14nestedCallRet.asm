@@ -10,7 +10,6 @@ _start:
 
 function1:
         call function2
-        mov eax, 2
         ret
 
 function2:
