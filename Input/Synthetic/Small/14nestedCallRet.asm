@@ -5,10 +5,10 @@ SECTION .text
 global _start
 
 _start:
-        call function
+        call function1
         jmp exit
 
-function:
+function1:
         call function2
         mov eax, 2
         ret
