@@ -12,13 +12,13 @@ SECTION .text
 global _start
 
 _start:
-        mov  edx, 1             ; max length
+        mov  edx, 4             ; max length
         mov  ecx, buf           ; pointer to buffer
         mov  ebx, 0             ; stdin
         mov  eax, 3             ; sys_read
         int  0x80               ; perform syscall
 
-        mov eax, dword [buf]   ; x = T
+        mov eax, dword [buf]    ; x = T
         mov ebx, eax            ; y = x
         sub eax, ebx            ; z = x-y = 0
         add eax, exit

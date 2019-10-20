@@ -8,7 +8,7 @@ SECTION .text
 global _start
 
 _start:
-        mov  edx, 1             ; max length
+        mov  edx, 4             ; max length
         mov  ecx, buf           ; pointer to buffer
         mov  ebx, 0             ; stdin
         mov  eax, 3             ; sys_read
