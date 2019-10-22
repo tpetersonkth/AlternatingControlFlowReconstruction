@@ -11,14 +11,14 @@ def main():
     stats = dirToStats(sys.argv[1])
     
     # AccuracyTable
-    accuracyFields = ["Instructions","Coverage","Precision","soundness","Unresolved Tops","Tops"]
-    fieldSwap1 = {"soundness":"Soundness","Unresolved Tops":"uTops"}
+    accuracyFields = ["Instructions","Coverage","Precision","Soundness","Unresolved Tops","Tops"]
+    fieldSwap1 = {"Unresolved Tops":"uTops"}
     t1 = generateTable(stats, accuracyFields, fieldSwap1)
     print(t1)
 
     # Benchmarking table
-    timeFields = ["CPA time","DFS time", "DSE time", "Other time"]
-    fieldSwap2 = {"CPA time":"$T_{CPA}$", "DFS time":"$T_{DFS}$", "DSE time":"$T_{DSE}$", "Other time":"$T_{Other}$"}
+    timeFields = ["CPA Time","DFS Time", "DSE Time", "Other Time"]
+    fieldSwap2 = {"CPA Time":"$T_{CPA}$", "DFS Time":"$T_{DFS}$", "DSE Time":"$T_{DSE}$", "Other Time":"$T_{Other}$"}
     t2 = generateTable(stats,timeFields, fieldSwap2)
     print(t2)
 
