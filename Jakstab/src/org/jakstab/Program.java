@@ -87,7 +87,8 @@ public final class Program {
 	private Set<RTLLabel> resolvedTops;
 	private StubProvider stubLibrary;
 	private Harness harness;
-	
+	private int DSERequests = 0;
+
 	public enum TargetOS {WINDOWS, LINUX, UNKNOWN};
 	private TargetOS targetOS;
 	
@@ -574,5 +575,13 @@ public final class Program {
 			}
 		}
 		return res;
+	}
+
+	public int getDSERequests() {
+		return DSERequests;
+	}
+
+	public void increaseDSERequests(){
+		this.DSERequests = this.DSERequests + 1;
 	}
 }

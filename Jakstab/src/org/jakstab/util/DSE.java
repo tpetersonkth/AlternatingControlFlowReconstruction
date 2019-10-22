@@ -196,10 +196,11 @@ public class DSE {
         return new Pair<ArrayList<LinkedList<Pair<Integer,AbsoluteAddress>>>,Map<AbsoluteAddress, Integer>>(adjList,addressToId);
     }
 
-    public static Set<CFAEdge> execute(LinkedList<AbstractState> unresolvedStates, String mainfile, Set<LinkedList<AbsoluteAddress>> paths, LinkedList<AbstractState> toExploreAgain){
+    public static Set<CFAEdge> execute(Program program, LinkedList<AbstractState> unresolvedStates, String mainfile, Set<LinkedList<AbsoluteAddress>> paths, LinkedList<AbstractState> toExploreAgain){
         if(paths.isEmpty()){
             return new HashSet<CFAEdge>();
         }
+        program.increaseDSERequests();
 
 
         String formattedPaths = formatPaths(paths);

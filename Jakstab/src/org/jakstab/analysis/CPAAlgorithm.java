@@ -389,7 +389,7 @@ public class CPAAlgorithm implements Algorithm {
 				//Create an empty list and pass them by reference to DSE.execute to have it filled by this function
 				logger.info("Sending request for Directed Symbolic Execution");
 				LinkedList<AbstractState> toExploreAgain = new LinkedList<AbstractState>();
-				DSEedges = DSE.execute(unresolvedStatesToSend, Options.mainFilename, paths, toExploreAgain);
+				DSEedges = DSE.execute(program, unresolvedStatesToSend, Options.mainFilename, paths, toExploreAgain);
 				logger.info("DSE resulted in "+DSEedges.size()+" new edges");
 				//For statistics
 				Set<RTLLabel> resolvedTops = program.getResolvedTops();

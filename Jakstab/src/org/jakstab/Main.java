@@ -274,6 +274,7 @@ public class Main {
 			sb.append( "   Indirect Branches (no import calls): " + String.format("%8d", indirectBranches)+"\n");
 			sb.append( "   Tops:                                " + String.format("%8d", program.getUnresolvedBranches().size())+"\n");
 			sb.append( "   Unresolved Tops:                     " + String.format("%8d", program.getUnresolvedBranches().size()-program.getResolvedTops().size())+"\n");
+			sb.append( "   DSE Requests:                        " + String.format("%8d", program.getDSERequests())+"\n");
 
 			//logger.debug("   FastSet conversions:                 " + String.format("%8d", FastSet.getConversionCount()));
 			//logger.debug("   Variable count:                      " + String.format("%8d", ExpressionFactory.getVariableCount()));
