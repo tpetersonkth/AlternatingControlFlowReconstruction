@@ -19,10 +19,7 @@ package org.jakstab.analysis;
 
 import java.util.*;
 
-import org.jakstab.AnalysisManager;
-import org.jakstab.Options;
-import org.jakstab.Program;
-import org.jakstab.Algorithm;
+import org.jakstab.*;
 import org.jakstab.analysis.composite.CompositeProgramAnalysis;
 import org.jakstab.analysis.composite.CompositeState;
 import org.jakstab.analysis.location.BackwardLocationAnalysis;
@@ -193,12 +190,14 @@ public class CPAAlgorithm implements Algorithm {
 		statesVisited = 0;
 		final int stepThreshold = 50;
 		long startTime = System.currentTimeMillis();
+		long outputTime = System.currentTimeMillis();//Last time the CFA and stats were outputted
+		long outputDelta = 60000;//CFA and stats are outputted once every outputDelta milliseconds
 		long lastSteps = 0;
 		long lastTime = 0;
 		LinkedList<AbstractState> unresolvedStates = new LinkedList<>();
 		LinkedList<AbstractState> tops = new LinkedList<>();
 		Set<CFAEdge> DSEedges = new HashSet<>();
-		long worklistEmptyAt = System.currentTimeMillis();
+		long startTimeOverApx = System.currentTimeMillis();
 		while ((!worklist.isEmpty()) && !stop && (!failFast || isSound())) {
 			statesVisited++;
 			if (++steps == stepThreshold) {
@@ -234,6 +233,24 @@ public class CPAAlgorithm implements Algorithm {
 					logger.error("Timeout after " + Options.timeout.getValue() + "s!");
 					stop = true;
 				}
+			}
+
+			if (System.currentTimeMillis() - outputTime > outputDelta){
+				//Ensure that time is correct before performing output
+				long now = System.currentTimeMillis();
+				Main.setOverallEndTime(now);
+				overApxTime += now - startTimeOverApx;
+				startTimeOverApx = now;
+
+				//Update CFA nodes and edges
+				Main.updateCFA();
+
+				//Output stats and CFA
+				Main.outputStats();
+				Main.outputGraphs(new ProgramGraphWriter(program));
+
+				//Update outputime to delay next output by outputDelta
+				outputTime = System.currentTimeMillis();
 			}
 
 			// We need the state before precision refinement for building the ART
@@ -343,7 +360,7 @@ public class CPAAlgorithm implements Algorithm {
 				if (worklist.isEmpty()){
 					//Log time taken to empty the worklist
 					long now = System.currentTimeMillis();
-					overApxTime += now - worklistEmptyAt;
+					overApxTime += now - startTimeOverApx;
 				}
 			} catch (StateException e) {
 				// Fill in state for disassembly and unknownpointer exceptions
@@ -420,7 +437,7 @@ public class CPAAlgorithm implements Algorithm {
 				unresolvedStates = new LinkedList<>();
 
 				//Benchmark the time of emptying the worklist
-				worklistEmptyAt = System.currentTimeMillis();
+				startTimeOverApx = System.currentTimeMillis();
 			}
 		}
 		long endTime = System.currentTimeMillis();
