@@ -54,10 +54,11 @@ public class CPAAlgorithm implements Algorithm {
 	private boolean completed = false;
 	private volatile boolean stop = false;
 
-	//Stats
+	//Stats (Static to be cumulative over multiple cpa analyses of the same binary)
 	private static long overApxTime = 0;
 	private static long DFSTime = 0;
 	private static long DSETime = 0;
+	private static Map<AbsoluteAddress,Long> locationCount = new HashMap<AbsoluteAddress, Long>();;
 
 	/**
 	 * Instantiates a new CPA algorithm with a forward location analysis, a default
@@ -117,6 +118,26 @@ public class CPAAlgorithm implements Algorithm {
 
 	public static long getDSETime() {
 		return DSETime;
+	}
+
+	public static Map<AbsoluteAddress, Long> getLocationCount() {
+		return locationCount;
+	}
+
+	public static List<Map.Entry<AbsoluteAddress,Long>> getSortedLocationCount(){
+		List<Map.Entry<AbsoluteAddress,Long>> entries = new ArrayList<Map.Entry<AbsoluteAddress,Long>>(
+				locationCount.entrySet()
+		);
+		Collections.sort(
+				entries
+				,   new Comparator<Map.Entry<AbsoluteAddress,Long>>() {
+					public int compare(Map.Entry<AbsoluteAddress,Long> a, Map.Entry<AbsoluteAddress,Long> b) {
+						return Long.compare(b.getValue(), a.getValue());
+					}
+				}
+		);
+
+		return entries;
 	}
 
 	public static void setOverApxTime(long overApxTime) {
@@ -255,6 +276,13 @@ public class CPAAlgorithm implements Algorithm {
 
 			// We need the state before precision refinement for building the ART
 			AbstractState unadjustedState = worklist.pick();
+
+			//update locationCount(For stats)
+			AbsoluteAddress address = unadjustedState.getLocation().getAddress();
+			if (!locationCount.containsKey(address))
+				locationCount.put(address, (long)1);
+			else
+				locationCount.put(address, locationCount.get(address)+1);
 
 			// Prefix everything by current location for easier debugging
 			//Logger.setGlobalPrefix(unadjustedState.getLocation().toString());

@@ -452,11 +452,28 @@ public class Main {
 				logger.error("Could not export stats to file. ",e);
 			}
 
+			//Output sorted location count
+			List<Map.Entry<AbsoluteAddress,Long>> locationCount = CPAAlgorithm.getSortedLocationCount();
+			sb = new StringBuilder();
+			for (Map.Entry<AbsoluteAddress,Long> entry: locationCount){
+				sb.append(entry.getKey().toString()+":"+entry.getValue().toString()+"\n");
+			}
+
+			try{
+				FileWriter fw = new FileWriter(baseFileName+"_location_count.dat");
+				fw.write(sb.toString());
+				fw.close();
+			}
+			catch(IOException e){
+				logger.error("Could not export location count to file. ",e);
+			}
+
 		}
 		catch(Throwable e){
 			System.out.flush();
 			e.printStackTrace();
 		}
+
 		return statsSummary;
 	}
 
