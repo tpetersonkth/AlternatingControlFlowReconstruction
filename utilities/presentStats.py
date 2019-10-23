@@ -9,7 +9,7 @@ import os, sys
 
 def main():
     stats = dirToStats(sys.argv[1])
-    
+
     # AccuracyTable
     accuracyFields = ["Instructions","Coverage","Precision","Soundness","Unresolved Tops","Tops","Top free coverage","Top free precision","Top free soundness"]
     fieldSwap1 = {"Soundness":"$\mathcal{S}_{E_I,E_G}$","Coverage":"$\mathcal{C}_{E_I,E_G}$","Precision":"$\mathcal{P}_{E_I,E_G}$","Unresolved Tops":"uTops","Top free soundness":"$\mathcal{S}_{E_I,E_{TF}}$","Top free coverage":"$\mathcal{C}_{E_I,E_{TF}}$","Top free precision":"$\mathcal{P}_{E_I,E_{TF}}$"}
@@ -17,8 +17,8 @@ def main():
     print(t1)
 
     # Benchmarking table
-    timeFields = ["CPA time","DFS time", "DSE time", "Other time"]
-    fieldSwap2 = {"CPA time":"$T_{CPA}$", "DFS time":"$T_{DFS}$", "DSE time":"$T_{DSE}$", "Other time":"$T_{Other}$"}
+    timeFields = ["CPA Time","DFS Time", "DSE Time", "Other Time"]
+    fieldSwap2 = {"CPA Time":"$T_{CPA}$", "DFS Time":"$T_{DFS}$", "DSE Time":"$T_{DSE}$", "Other Time":"$T_{Other}$"}
     t2 = generateTable(stats,timeFields, fieldSwap2)
     print(t2)
 

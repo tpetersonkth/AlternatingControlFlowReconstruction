@@ -379,9 +379,13 @@ public class ControlFlowReconstruction implements Algorithm {
 			if (addedDSE){
 				DSE.close();
 			}
-			program.setCFA(transformerFactory.getCFA());
-			program.setUnresolvedBranches(transformerFactory.getUnresolvedBranches());
+			updateCFA();
 		}
+	}
+
+	public void updateCFA(){
+		program.setCFA(transformerFactory.getCFA());
+		program.setUnresolvedBranches(transformerFactory.getUnresolvedBranches());
 	}
 	
 	public void stop() {

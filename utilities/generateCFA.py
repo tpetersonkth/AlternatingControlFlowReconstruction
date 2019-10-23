@@ -6,13 +6,26 @@ from angrutils import plot_cfg
 
 def main(file,outputDirectory):
     p = angr.Project(file,load_options={'auto_load_libs': False})
+    basename = os.path.basename(file)
 
     print("Loading BBG from angr..")
     cfgEmulated = p.analyses.CFGEmulated()
 
+    print("Outputting raw BBG manually in dot format")
+    fid = open(outputDirectory + "/" + basename + "_cfg_manually.dot", "w")
+    fid.write("digraph G {\nnode[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]\nbgcolor=\"transparent\"\ngraph [label=\"CFG from angr for " + basename + "\", labelloc=t, fontsize=35, pad=30]\n")
+
+    for node in cfgEmulated.graph.nodes:
+        fid.write("\"0x"+hex(node.addr)+"\"[label = \"0x"+hex(node.addr)+"\"];\n")
+
+    for edge in cfgEmulated.graph.edges:
+        fid.write("\"0x" + hex(edge[0].addr) + "\" -> \"0x" + hex(edge[1].addr) + "\"[collor = \"#000000\"];\n")
+
+    fid.write("}\n")
+    fid.close()
+
     # Output resulting graph in a .dot file
-    print("Outputting raw BBG")
-    basename = os.path.basename(file)
+    print("Outputting raw BBG using networkx")
     networkx.drawing.nx_pydot.write_dot(cfgEmulated.graph, outputDirectory + "/" + basename + "_cfg_angr.dot")
 
     print("Converting the BBG to a CFA")

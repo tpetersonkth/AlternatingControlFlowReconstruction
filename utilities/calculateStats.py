@@ -28,9 +28,9 @@ def main(idealGraphFile, generatedGraphFile, statsfile):
     out+="Coverage: "+percentage(Coverage)+"\n"
     out+="Soundness: "+percentage(Soundness)+"\n"
     out+="Precision: "+percentage(Precision)+"\n"
-    out+="Top free coverage: "+percentage(TFCoverage)+"\n"
-    out+="Top free soundness: "+percentage(TFSoundness)+"\n"
-    out+="Top free precision: "+percentage(TFPrecision)+"\n"
+    out+="Top Free Coverage: "+percentage(TFCoverage)+"\n"
+    out+="Top Free Soundness: "+percentage(TFSoundness)+"\n"
+    out+="Top Free Precision: "+percentage(TFPrecision)+"\n"
 
     #Print stats to stdout
     print(out)

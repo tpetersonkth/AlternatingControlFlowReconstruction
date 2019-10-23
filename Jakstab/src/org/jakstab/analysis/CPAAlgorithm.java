@@ -19,10 +19,7 @@ package org.jakstab.analysis;
 
 import java.util.*;
 
-import org.jakstab.AnalysisManager;
-import org.jakstab.Options;
-import org.jakstab.Program;
-import org.jakstab.Algorithm;
+import org.jakstab.*;
 import org.jakstab.analysis.composite.CompositeProgramAnalysis;
 import org.jakstab.analysis.composite.CompositeState;
 import org.jakstab.analysis.location.BackwardLocationAnalysis;
@@ -57,10 +54,12 @@ public class CPAAlgorithm implements Algorithm {
 	private boolean completed = false;
 	private volatile boolean stop = false;
 
-	//Stats
+	//Stats (Static to be cumulative over multiple cpa analyses of the same binary)
 	private static long overApxTime = 0;
 	private static long DFSTime = 0;
 	private static long DSETime = 0;
+	private static Map<AbsoluteAddress,Long> locationCount = new HashMap<AbsoluteAddress, Long>();
+	private static Set<CFAEdge> allDSEedges = new HashSet<CFAEdge>();
 
 	/**
 	 * Instantiates a new CPA algorithm with a forward location analysis, a default
@@ -122,6 +121,26 @@ public class CPAAlgorithm implements Algorithm {
 		return DSETime;
 	}
 
+	public static Map<AbsoluteAddress, Long> getLocationCount() {
+		return locationCount;
+	}
+
+	public static List<Map.Entry<AbsoluteAddress,Long>> getSortedLocationCount(){
+		List<Map.Entry<AbsoluteAddress,Long>> entries = new ArrayList<Map.Entry<AbsoluteAddress,Long>>(
+				locationCount.entrySet()
+		);
+		Collections.sort(
+				entries
+				,   new Comparator<Map.Entry<AbsoluteAddress,Long>>() {
+					public int compare(Map.Entry<AbsoluteAddress,Long> a, Map.Entry<AbsoluteAddress,Long> b) {
+						return Long.compare(b.getValue(), a.getValue());
+					}
+				}
+		);
+
+		return entries;
+	}
+
 	public static void setOverApxTime(long overApxTime) {
 		CPAAlgorithm.overApxTime = overApxTime;
 	}
@@ -149,6 +168,13 @@ public class CPAAlgorithm implements Algorithm {
 	
 	public long getNumberOfStatesVisited() {
 		return statesVisited;
+	}
+
+	public static long getNumberOfUniqueDSEEdges(){
+		for (CFAEdge e: allDSEedges){
+			System.out.println(e);
+		}
+		return allDSEedges.size();
 	}
 
 	/**
@@ -193,12 +219,14 @@ public class CPAAlgorithm implements Algorithm {
 		statesVisited = 0;
 		final int stepThreshold = 50;
 		long startTime = System.currentTimeMillis();
+		long outputTime = System.currentTimeMillis();//Last time the CFA and stats were outputted
+		long outputDelta = 60000;//CFA and stats are outputted once every outputDelta milliseconds
 		long lastSteps = 0;
 		long lastTime = 0;
 		LinkedList<AbstractState> unresolvedStates = new LinkedList<>();
 		LinkedList<AbstractState> tops = new LinkedList<>();
 		Set<CFAEdge> DSEedges = new HashSet<>();
-		long worklistEmptyAt = System.currentTimeMillis();
+		long startTimeOverApx = System.currentTimeMillis();
 		while ((!worklist.isEmpty()) && !stop && (!failFast || isSound())) {
 			statesVisited++;
 			if (++steps == stepThreshold) {
@@ -236,8 +264,33 @@ public class CPAAlgorithm implements Algorithm {
 				}
 			}
 
+			if (System.currentTimeMillis() - outputTime > outputDelta){
+				//Ensure that time is correct before performing output
+				long now = System.currentTimeMillis();
+				Main.setOverallEndTime(now);
+				overApxTime += now - startTimeOverApx;
+				startTimeOverApx = now;
+
+				//Update CFA nodes and edges
+				Main.updateCFA();
+
+				//Output stats and CFA
+				Main.outputStats();
+				Main.outputGraphs(new ProgramGraphWriter(program));
+
+				//Update outputime to delay next output by outputDelta
+				outputTime = System.currentTimeMillis();
+			}
+
 			// We need the state before precision refinement for building the ART
 			AbstractState unadjustedState = worklist.pick();
+
+			//update locationCount(For stats)
+			AbsoluteAddress address = unadjustedState.getLocation().getAddress();
+			if (!locationCount.containsKey(address))
+				locationCount.put(address, (long)1);
+			else
+				locationCount.put(address, locationCount.get(address)+1);
 
 			// Prefix everything by current location for easier debugging
 			//Logger.setGlobalPrefix(unadjustedState.getLocation().toString());
@@ -343,7 +396,7 @@ public class CPAAlgorithm implements Algorithm {
 				if (worklist.isEmpty()){
 					//Log time taken to empty the worklist
 					long now = System.currentTimeMillis();
-					overApxTime += now - worklistEmptyAt;
+					overApxTime += now - startTimeOverApx;
 				}
 			} catch (StateException e) {
 				// Fill in state for disassembly and unknownpointer exceptions
@@ -389,8 +442,12 @@ public class CPAAlgorithm implements Algorithm {
 				//Create an empty list and pass them by reference to DSE.execute to have it filled by this function
 				logger.info("Sending request for Directed Symbolic Execution");
 				LinkedList<AbstractState> toExploreAgain = new LinkedList<AbstractState>();
-				DSEedges = DSE.execute(unresolvedStatesToSend, Options.mainFilename, paths, toExploreAgain);
+				DSEedges = DSE.execute(program, unresolvedStatesToSend, Options.mainFilename, paths, toExploreAgain);
+				allDSEedges.addAll(DSEedges);
 				logger.info("DSE resulted in "+DSEedges.size()+" new edges");
+				for (CFAEdge e: DSEedges){
+					System.out.println(e);
+				}
 				//For statistics
 				Set<RTLLabel> resolvedTops = program.getResolvedTops();
 				for (AbstractState as: toExploreAgain){
@@ -420,7 +477,7 @@ public class CPAAlgorithm implements Algorithm {
 				unresolvedStates = new LinkedList<>();
 
 				//Benchmark the time of emptying the worklist
-				worklistEmptyAt = System.currentTimeMillis();
+				startTimeOverApx = System.currentTimeMillis();
 			}
 		}
 		long endTime = System.currentTimeMillis();

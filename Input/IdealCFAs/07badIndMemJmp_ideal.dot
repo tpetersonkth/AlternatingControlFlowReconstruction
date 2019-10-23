@@ -1,6 +1,15 @@
 digraph G {
 node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
 bgcolor="transparent"
-graph [label="Jakstab v0.8.4-devel   Tue Oct 01 20:56:35 CEST 2019\n-m ../Input/Synthetic/Small/07badIndMemJmp --cpa i", labelloc=t, fontsize=35, pad=30]
-"0x08048060"[label="0x08048060\n",fillcolor="red"];
+graph [label="", labelloc=t, fontsize=35, pad=30]
+"0x08048060"[label="0x08048060\n"];
+"0x08048066"[label="0x08048066\n"];
+"0x0804806b"[label="0x0804806b\n"];
+"0x08048070"[label="0x08048070\n"];
+"0x08048060" -> "0x08048060" [color="#000000"];
+"0x08048060" -> "0x08048066" [color="#000000"];
+"0x08048060" -> "0x0804806b" [color="#000000"];
+"0x08048060" -> "0x08048070" [color="#000000"];
+"0x08048066" -> "0x0804806b" [color="#000000"];
+"0x0804806b" -> "0x08048070" [color="#000000"];
 }
