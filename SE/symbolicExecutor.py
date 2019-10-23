@@ -15,6 +15,8 @@ import logging
 logger = logging.getLogger(__name__)
 logger.setLevel('INFO')
 
+
+# Obsolete
 def execute(program, address):
     #m = Manticore(program, pure_symbolic=True)
     m = Manticore(program, pure_symbolic=False)
@@ -35,10 +37,10 @@ def execute(program, address):
     logger.info("Run finished")
     logger.info("Determined that the instruction at " + hex(address) + " can jump to the following addresses: " + ",".join(targets))
 
-def executeDirected(program, pathsObject):
+def executeDirected(program, pathsObject,args=""):
     #m = Manticore(program, pure_symbolic=True)
     workplace_url = "/tmp/mcore_tmp"
-    m = Manticore(program, workspace_url=workplace_url, pure_symbolic=False)
+    m = Manticore(program, argv=args.split(" "), workspace_url=workplace_url, pure_symbolic=False)
     consts = config.get_group("core")
     consts.__setattr__("procs", 1)
 
