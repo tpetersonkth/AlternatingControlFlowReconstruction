@@ -58,7 +58,8 @@ public class CPAAlgorithm implements Algorithm {
 	private static long overApxTime = 0;
 	private static long DFSTime = 0;
 	private static long DSETime = 0;
-	private static Map<AbsoluteAddress,Long> locationCount = new HashMap<AbsoluteAddress, Long>();;
+	private static Map<AbsoluteAddress,Long> locationCount = new HashMap<AbsoluteAddress, Long>();
+	private static Set<CFAEdge> allDSEedges = new HashSet<CFAEdge>();
 
 	/**
 	 * Instantiates a new CPA algorithm with a forward location analysis, a default
@@ -167,6 +168,13 @@ public class CPAAlgorithm implements Algorithm {
 	
 	public long getNumberOfStatesVisited() {
 		return statesVisited;
+	}
+
+	public static long getNumberOfUniqueDSEEdges(){
+		for (CFAEdge e: allDSEedges){
+			System.out.println(e);
+		}
+		return allDSEedges.size();
 	}
 
 	/**
@@ -435,7 +443,11 @@ public class CPAAlgorithm implements Algorithm {
 				logger.info("Sending request for Directed Symbolic Execution");
 				LinkedList<AbstractState> toExploreAgain = new LinkedList<AbstractState>();
 				DSEedges = DSE.execute(program, unresolvedStatesToSend, Options.mainFilename, paths, toExploreAgain);
+				allDSEedges.addAll(DSEedges);
 				logger.info("DSE resulted in "+DSEedges.size()+" new edges");
+				for (CFAEdge e: DSEedges){
+					System.out.println(e);
+				}
 				//For statistics
 				Set<RTLLabel> resolvedTops = program.getResolvedTops();
 				for (AbstractState as: toExploreAgain){

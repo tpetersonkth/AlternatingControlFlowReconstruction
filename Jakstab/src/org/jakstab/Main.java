@@ -420,6 +420,7 @@ public class Main {
 			sb.append( "   Tops:                                " + String.format("%8d", program.getUnresolvedBranches().size())+"\n");
 			sb.append( "   Unresolved Tops:                     " + String.format("%8d", program.getUnresolvedBranches().size()-program.getResolvedTops().size())+"\n");
 			sb.append( "   DSE Requests:                        " + String.format("%8d", program.getDSERequests())+"\n");
+			sb.append( "   DSE Edges:                           " + String.format("%8d", CPAAlgorithm.getNumberOfUniqueDSEEdges())+"\n");
 
 			//logger.debug("   FastSet conversions:                 " + String.format("%8d", FastSet.getConversionCount()));
 			//logger.debug("   Variable count:                      " + String.format("%8d", ExpressionFactory.getVariableCount()));

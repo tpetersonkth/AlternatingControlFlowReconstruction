@@ -140,5 +140,20 @@ public class CFAEdge implements Comparable<CFAEdge> {
 		if (this.transformer.equals(o.transformer)) return 0;
 		return 1;
 	}
+
+	@Override
+	public int hashCode() {
+		//TODO: might not be uniform to cast to int(this can not affect correctness, only performance)
+		return (int)source.getAddress().getValue();
+	}
+
+	@Override
+	public boolean equals(Object other){
+		if (!(other instanceof CFAEdge)){
+			return false;
+		}
+		CFAEdge otherEdge = (CFAEdge) other;
+		return otherEdge.getSource().equals(this.getSource()) && otherEdge.getTarget().equals(this.getTarget());
+	}
 	
 }
