@@ -11,9 +11,9 @@ def main():
     stats = dirToStats(sys.argv[1])
     
     # AccuracyTable
-    accuracyFields = ["Instructions","Coverage","Precision","soundness","Unresolved Tops","Tops"]
-    fieldSwap1 = {"soundness":"Soundness","Unresolved Tops":"uTops"}
-    t1 = generateTable(stats, accuracyFields, fieldSwap1)
+    accuracyFields = ["Instructions","Coverage","Precision","Soundness","Unresolved Tops","Tops","Top free coverage","Top free precision","Top free soundness"]
+    fieldSwap1 = {"Soundness":"$\mathcal{S}_{E_I,E_G}$","Coverage":"$\mathcal{C}_{E_I,E_G}$","Precision":"$\mathcal{P}_{E_I,E_G}$","Unresolved Tops":"uTops","Top free soundness":"$\mathcal{S}_{E_I,E_{TF}}$","Top free coverage":"$\mathcal{C}_{E_I,E_{TF}}$","Top free precision":"$\mathcal{P}_{E_I,E_{TF}}$"}
+    t1 = generateTable(stats, accuracyFields, fieldSwap1,"?l|l|l?l|l|l?l|l?l|l|l?l|l|l|l|l?")
     print(t1)
 
     # Benchmarking table
@@ -37,13 +37,15 @@ Params:
     fields - The desired columns of the table
     fieldSwap(opt) - Dictionary mapping actual field name to desired field name 
 '''
-def generateTable(stats, fields, fieldSwap={}):
+def generateTable(stats, fields, fieldSwap={}, columnstyle=""):
+    if columnStyle == "":
+        columnStyle="l".join("|"*(columns+2))
     columns = len(fields) + 2# + 2 for name of binary and mode
     out = ""
     out += "\\begin{table}[ht]\n"
     out += "\\centering\n"
     out += "\scalebox{0.5}{\n"
-    out += "\\begin{tabular}{"+"l".join("|"*(columns+2))+"}\n"
+    out += "\\begin{tabular}{"+columnstyle+"}\n"
     out += "\\hline\n"
 
     bfFields = ["\\textbf{Binary}","\\textbf{Mode}"]
