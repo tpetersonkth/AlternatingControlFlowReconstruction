@@ -53,7 +53,8 @@ class Server():
                 logger.info("Program: "+program)
                 logger.info("Number of paths received: " + str(paths.pathsLen))
 
-                targets = symbolicExecutor.executeDirected(program, paths)
+                args = ["+"*20]*3
+                targets = symbolicExecutor.executeDirected(program, paths, args=args)
 
                 response = formatResponse(paths,targets)
 
