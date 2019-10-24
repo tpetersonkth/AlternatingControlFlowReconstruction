@@ -1,0 +1,1425 @@
+
+start:
+0x08048730:	xorl	%ebp, %ebp
+0x08048732:	popl	%esi
+0x08048733:	movl	%esp, %ecx
+0x08048735:	andl	$0xfffffff0, %esp
+0x08048738:	pushl	%eax
+0x08048739:	pushl	%esp
+0x0804873a:	pushl	%edx
+0x0804873b:	call	0x08048763	; targets: 0x08048763(MAY)
+0x08048740:	addl	$0x9f8c0, %ebx	; from: 0x08048766(MAY)
+0x08048746:	leal	-621424(%ebx), %eax
+0x0804874c:	pushl	%eax
+0x0804874d:	leal	-621584(%ebx), %eax
+0x08048753:	pushl	%eax
+0x08048754:	pushl	%ecx
+0x08048755:	pushl	%esi
+0x08048756:	movl	$0x804a36c, %eax
+0x0804875c:	pushl	%eax
+0x0804875d:	call	__libc_start_main	; targets: 0x0804f990(MAY)
+0x08048763:	movl	(%esp), %ebx	; from: 0x0804873b(MAY)
+0x08048766:	ret	; targets: 0x08048740(MAY)
+
+
+_dl_relocate_static_pie:
+0x08048770:	repz ret	; targets: 0x0804f9c8(MAY)	; from: 0x0804f9c3(MAY)
+
+
+__x86.get_pc_thunk.bx:
+0x08048780:	movl	(%esp), %ebx	; from: 0x080a5e64(MAY), 0x08052b11(MAY), 0x0807d812(MAY), 0x0807d8f4(MAY)
+0x08048783:	ret	; targets: 0x080a5e69(MAY), 0x0807d817(MAY)
+
+
+__x86.get_pc_thunk.ax:
+0x0804a97b:	movl	(%esp), %eax	; from: 0x0804f990(MAY)
+0x0804a97e:	ret	; targets: 0x0804f995(MAY)
+
+
+__x86.get_pc_thunk.dx:
+0x0804a97f:	movl	(%esp), %edx	; from: 0x0807e700(MAY), 0x0809d5ea(MAY), 0x0807ca97(MAY)
+0x0804a982:	ret	; targets: 0x0809d5ef(MAY), 0x0807ca9c(MAY)
+
+
+__x86.get_pc_thunk.cx:
+0x0804a983:	movl	(%esp), %ecx	; from: 0x0807cb14(MAY)
+0x0804a986:	ret	; targets: 0x0807cb19(MAY)
+
+
+get_common_indeces.constprop.1:
+0x0804f720:	pushl	%ebp	; from: 0x0804fd89(MAY), 0x0804faac(MAY), 0x0804feef(MAY)
+0x0804f721:	pushl	%edi
+0x0804f722:	pushl	%esi
+0x0804f723:	pushl	%ebx
+0x0804f724:	call	__x86.get_pc_thunk.bp	; targets: 0x08050092(MAY)
+0x0804f729:	addl	$0x988d7, %ebp	; from: 0x08050095(MAY)
+0x0804f72f:	subl	$0x108, %esp
+0x0804f735:	testl	%eax, %eax
+0x0804f737:	movl	%ecx, (%esp)
+0x0804f73a:	je	0x0804f908	; targets: 0x0804f740(MAY), 0x0804f908(MAY)
+0x0804f740:	movl	$0x80e9c60, %ebp	; from: 0x0804f73a(MAY)
+0x0804f746:	movl	%eax, %esi
+0x0804f748:	movl	%edx, %edi
+0x0804f74a:	movl	$0x1, %eax
+0x0804f74f:	cpuid	
+0x0804f751:	movl	%edx, 0x14(%ebp)
+0x0804f754:	movl	%eax, %edx
+0x0804f756:	movl	%ecx, 0x10(%ebp)
+0x0804f759:	shrl	$0x8, %edx
+0x0804f75c:	movl	%ebx, 0xc(%ebp)
+0x0804f75f:	movl	%eax, 0x8(%ebp)
+0x0804f762:	andl	$0xf, %edx
+0x0804f765:	movl	(%esp), %ecx
+0x0804f768:	movl	%edx, (%esi)
+0x0804f76a:	movl	%eax, %edx
+0x0804f76c:	shrl	$0x4, %edx
+0x0804f76f:	andl	$0xf, %edx
+0x0804f772:	movl	%edx, (%edi)
+0x0804f774:	movl	%eax, %edx
+0x0804f776:	shrl	$0xc, %edx
+0x0804f779:	andl	$0xf0, %edx
+0x0804f77f:	movl	%edx, (%ecx)
+0x0804f781:	movl	0x11c(%esp), %edx
+0x0804f788:	movl	%eax, %ecx
+0x0804f78a:	andl	$0xf, %ecx
+0x0804f78d:	movl	%ecx, (%edx)
+0x0804f78f:	cmpl	$0xf, (%esi)
+0x0804f792:	je	0x0804f8f1	; targets: 0x0804f8f1(MAY), 0x0804f798(MAY)
+0x0804f798:	cmpl	$0x6, 0x4(%ebp)	; from: 0x0804f903(MAY), 0x0804f90e(MAY), 0x0804f792(MAY)
+0x0804f79c:	jle	0x0804f7b3	; targets: 0x0804f7b3(MAY), 0x0804f79e(MAY)
+0x0804f79e:	movl	$0x7, %eax	; from: 0x0804f79c(MAY)
+0x0804f7a3:	xorl	%ecx, %ecx
+0x0804f7a5:	cpuid	
+0x0804f7a7:	movl	%eax, 0x18(%ebp)
+0x0804f7aa:	movl	%ebx, 0x1c(%ebp)
+0x0804f7ad:	movl	%ecx, 0x20(%ebp)
+0x0804f7b0:	movl	%edx, 0x24(%ebp)
+0x0804f7b3:	movl	0x10(%ebp), %ebx	; from: 0x0804f79c(MAY)
+0x0804f7b6:	testl	$0x8000000, %ebx
+0x0804f7bc:	je	0x0804f8e6	; targets: 0x0804f7c2(MAY), 0x0804f8e6(MAY)
+0x0804f7c2:	xorl	%ecx, %ecx	; from: 0x0804f7bc(MAY)
+0x0804f7c4:	lgdt	%ax
+0x0804f7c7:	movl	%eax, %edx
+0x0804f7c9:	andl	$0x6, %edx
+0x0804f7cc:	cmpl	$0x6, %edx
+0x0804f7cf:	je	0x0804f913	; targets: 0x0804f913(MAY), 0x0804f7d5(MAY)
+0x0804f7d5:	cmpl	$0xc, 0x4(%ebp)	; from: 0x0804f970(MAY), 0x0804f953(MAY), 0x0804f944(MAY), 0x0804f7cf(MAY)
+0x0804f7d9:	jle	0x0804f8e6	; targets: 0x0804f7df(MAY), 0x0804f8e6(MAY)
+0x0804f7df:	movl	$0xd, %esi	; from: 0x0804f7d9(MAY)
+0x0804f7e4:	xorl	%ecx, %ecx
+0x0804f7e6:	movl	%esi, %eax
+0x0804f7e8:	cpuid	
+0x0804f7ea:	testl	%ebx, %ebx
+0x0804f7ec:	je	0x0804f8e6	; targets: 0x0804f7f2(MAY), 0x0804f8e6(MAY)
+0x0804f7f2:	addl	$0x7f, %ebx	; from: 0x0804f7ec(MAY)
+0x0804f7f5:	movl	%esi, %eax
+0x0804f7f7:	movl	$0x1, %ecx
+0x0804f7fc:	andl	$0xffffffc0, %ebx
+0x0804f7ff:	movl	%ebx, 0x40(%ebp)
+0x0804f802:	movl	%ebx, 0x44(%ebp)
+0x0804f805:	cpuid	
+0x0804f807:	testb	$0x2, %al
+0x0804f809:	je	0x0804f8e6	; targets: 0x0804f8e6(MAY), 0x0804f80f(MAY)
+0x0804f80f:	leal	0x8(%esp), %ecx	; from: 0x0804f809(MAY)
+0x0804f813:	movl	$0x3, %eax
+0x0804f818:	movl	%ebp, 0x4(%esp)
+0x0804f81c:	movl	$0x0, 0x8(%esp)
+0x0804f824:	movl	$0xa0, 0xc(%esp)
+0x0804f82c:	movl	$0x2, %esi
+0x0804f831:	movl	$0x240, 0x10(%esp)
+0x0804f839:	movl	$0xa0, 0x88(%esp)
+0x0804f844:	leal	0x88(%esp), %edi
+0x0804f84b:	movl	$0x100, 0x8c(%esp)
+0x0804f856:	movl	%ecx, (%esp)
+0x0804f859:	movl	%eax, %ebp
+0x0804f85b:	jmp	0x0804f89c	; targets: 0x0804f89c(MAY)
+0x0804f860:	movl	$0xd, %eax	; from: 0x0804f8a4(MAY)
+0x0804f865:	movl	%esi, %ecx
+0x0804f867:	cpuid	
+0x0804f869:	cmpl	$0x2, %esi
+0x0804f86c:	movl	%eax, (%edi,%esi,4)
+0x0804f86f:	je	0x0804f896	; targets: 0x0804f871(MAY), 0x0804f896(MAY)
+0x0804f871:	movl	(%esp), %ebx	; from: 0x0804f86f(MAY)
+0x0804f874:	movl	-4(%edi,%esi,4), %eax
+0x0804f878:	addl	-4(%ebx,%esi,4), %eax
+0x0804f87c:	andl	$0x2, %ecx
+0x0804f87f:	je	0x0804f97e	; targets: 0x0804f97e(MAY), 0x0804f885(MAY)
+0x0804f885:	movl	(%esp), %ecx	; from: 0x0804f87f(MAY)
+0x0804f888:	addl	$0x3f, %eax
+0x0804f88b:	andl	$0xffffffc0, %eax
+0x0804f88e:	movl	%eax, (%ecx,%esi,4)
+0x0804f891:	cmpl	$0x20, %ebp	; from: 0x0804f981(MAY), 0x0804f8c0(MAY)
+0x0804f894:	je	0x0804f8c2	; targets: 0x0804f8c2(MAY), 0x0804f896(MAY)
+0x0804f896:	addl	$0x1, %esi	; from: 0x0804f86f(MAY), 0x0804f894(MAY), 0x0804f8b0(MAY)
+0x0804f899:	addl	$0x1, %ebp
+0x0804f89c:	movl	$0xee, %eax	; from: 0x0804f85b(MAY)
+0x0804f8a1:	btl	%esi, %eax
+0x0804f8a4:	jb	0x0804f860	; targets: 0x0804f860(MAY), 0x0804f8a6(MAY)
+0x0804f8a6:	cmpl	$0x2, %esi	; from: 0x0804f8a4(MAY)
+0x0804f8a9:	movl	$0x0, (%edi,%esi,4)
+0x0804f8b0:	je	0x0804f896	; targets: 0x0804f8b2(MAY), 0x0804f896(MAY)
+0x0804f8b2:	movl	(%esp), %ebx	; from: 0x0804f8b0(MAY)
+0x0804f8b5:	movl	-4(%edi,%esi,4), %eax
+0x0804f8b9:	addl	-4(%ebx,%esi,4), %eax
+0x0804f8bd:	movl	%eax, (%ebx,%esi,4)
+0x0804f8c0:	jmp	0x0804f891	; targets: 0x0804f891(MAY)
+0x0804f8c2:	movl	0x104(%esp), %eax	; from: 0x0804f894(MAY)
+0x0804f8c9:	addl	0x84(%esp), %eax
+0x0804f8d0:	movl	0x4(%esp), %ebp
+0x0804f8d4:	je	0x0804f8e6	; targets: 0x0804f8d6(MAY), 0x0804f8e6(MAY)
+0x0804f8d6:	orl	$0x400000, 0x48(%ebp)	; from: 0x0804f8d4(MAY)
+0x0804f8dd:	addl	$0x7f, %eax
+0x0804f8e0:	andl	$0xffffffc0, %eax
+0x0804f8e3:	movl	%eax, 0x40(%ebp)
+0x0804f8e6:	addl	$0x108, %esp	; from: 0x0804f809(MAY), 0x0804f7d9(MAY), 0x0804f8d4(MAY), 0x0804f7ec(MAY), 0x0804f7bc(MAY)
+0x0804f8ec:	popl	%ebx
+0x0804f8ed:	popl	%esi
+0x0804f8ee:	popl	%edi
+0x0804f8ef:	popl	%ebp
+0x0804f8f0:	ret	; targets: 0x0804fef4(MAY), 0x0804fab1(MAY)
+
+0x0804f8f1:	shrl	$0x14, %eax	; from: 0x0804f792(MAY)
+0x0804f8f4:	movzbl	%al, %eax
+0x0804f8f7:	addl	$0xf, %eax
+0x0804f8fa:	movl	%eax, (%esi)
+0x0804f8fc:	movl	(%esp), %eax
+0x0804f8ff:	movl	(%eax), %eax
+0x0804f901:	addl	%eax, (%edi)
+0x0804f903:	jmp	0x0804f798	; targets: 0x0804f798(MAY)
+0x0804f908:	movl	$0x80e9c60, %ebp	; from: 0x0804f73a(MAY)
+0x0804f90e:	jmp	0x0804f798	; targets: 0x0804f798(MAY)
+0x0804f913:	testl	$0x10000000, %ebx	; from: 0x0804f7cf(MAY)
+0x0804f919:	je	0x0804f93a	; targets: 0x0804f93a(MAY), 0x0804f91b(MAY)
+0x0804f91b:	movl	0x48(%ebp), %edx	; from: 0x0804f919(MAY)
+0x0804f91e:	movl	%edx, %ecx
+0x0804f920:	orl	$0x40, %ecx
+0x0804f923:	testb	$0x20, 0x1c(%ebp)
+0x0804f927:	movl	%ecx, 0x48(%ebp)
+0x0804f92a:	je	0x0804f935	; targets: 0x0804f935(MAY), 0x0804f92c(MAY)
+0x0804f92c:	orl	$0x440, %edx	; from: 0x0804f92a(MAY)
+0x0804f932:	movl	%edx, 0x48(%ebp)
+0x0804f935:	andb	$0x10, %bh	; from: 0x0804f92a(MAY)
+0x0804f938:	jne	0x0804f975	; targets: 0x0804f93a(MAY), 0x0804f975(MAY)
+0x0804f93a:	andl	$0xe0, %eax	; from: 0x0804f97c(MAY), 0x0804f919(MAY), 0x0804f938(MAY)
+0x0804f93f:	cmpl	$0xe0, %eax
+0x0804f944:	jne	0x0804f7d5	; targets: 0x0804f94a(MAY), 0x0804f7d5(MAY)
+0x0804f94a:	movl	0x1c(%ebp), %edx	; from: 0x0804f944(MAY)
+0x0804f94d:	testl	$0x10000, %edx
+0x0804f953:	je	0x0804f7d5	; targets: 0x0804f959(MAY), 0x0804f7d5(MAY)
+0x0804f959:	movl	0x48(%ebp), %eax	; from: 0x0804f953(MAY)
+0x0804f95c:	movl	%eax, %ecx
+0x0804f95e:	orb	$0x10, %ah
+0x0804f961:	orb	$0x30, %ch
+0x0804f964:	andl	$0x20000, %edx
+0x0804f96a:	cmovnel	%ecx, %eax
+0x0804f96d:	movl	%eax, 0x48(%ebp)
+0x0804f970:	jmp	0x0804f7d5	; targets: 0x0804f7d5(MAY)
+0x0804f975:	orl	$0x80, 0x48(%ebp)	; from: 0x0804f938(MAY)
+0x0804f97c:	jmp	0x0804f93a	; targets: 0x0804f93a(MAY)
+0x0804f97e:	movl	%eax, (%ebx,%esi,4)	; from: 0x0804f87f(MAY)
+0x0804f981:	jmp	0x0804f891	; targets: 0x0804f891(MAY)
+
+__libc_start_main:
+0x0804f990:	call	__x86.get_pc_thunk.ax	; targets: 0x0804a97b(MAY)	; from: 0x0804875d(MAY)
+0x0804f995:	addl	$0x9866b, %eax	; from: 0x0804a97e(MAY)
+0x0804f99a:	pushl	%edi
+0x0804f99b:	pushl	%esi
+0x0804f99c:	pushl	%ebx
+0x0804f99d:	subl	$0x70, %esp
+0x0804f9a0:	movl	$0x0, %edx
+0x0804f9a6:	movl	%eax, 0xc(%esp)
+0x0804f9aa:	xorl	%eax, %eax
+0x0804f9ac:	testl	%edx, %edx
+0x0804f9ae:	je	0x0804f9b9	; targets: 0x0804f9b9(MAY)
+0x0804f9b9:	movl	0xc(%esp), %edi	; from: 0x0804f9ae(MAY)
+0x0804f9bd:	movl	%eax, 0xe90(%edi)
+0x0804f9c3:	call	_dl_relocate_static_pie	; targets: 0x08048770(MAY)
+0x0804f9c8:	movl	0x88(%esp), %eax	; from: 0x08048770(MAY)
+0x0804f9cf:	movl	0x84(%esp), %esi
+0x0804f9d6:	movl	$0x80e9c24, %edx
+0x0804f9dc:	movl	0x98(%esp), %ecx
+0x0804f9e3:	leal	0x4(%eax,%esi,4), %eax
+0x0804f9e7:	movl	%eax, (%edx)
+0x0804f9e9:	movl	$0x80e7ec8, %edx
+0x0804f9ef:	movl	%ecx, (%edx)
+0x0804f9f1:	addl	$0x4, %eax	; from: 0x0804f9f9(MAY)
+0x0804f9f4:	movl	-4(%eax), %edx
+0x0804f9f7:	testl	%edx, %edx
+0x0804f9f9:	jne	0x0804f9f1	; targets: 0x0804f9fb(MAY), 0x0804f9f1(MAY)
+0x0804f9fb:	subl	$0xc, %esp	; from: 0x0804f9f9(MAY)
+0x0804f9fe:	pushl	%eax
+0x0804f9ff:	call	_dl_aux_init	; targets: 0x0807cb10(MAY)
+0x0804fa04:	addl	$0x10, %esp	; from: 0x0807cdb4(MAY)
+0x0804fa07:	movl	0xc(%esp), %esi
+0x0804fa0b:	movl	$0x80ea270, %eax
+0x0804fa11:	cmpl	$0x0, (%eax)
+0x0804fa14:	jne	0x0804fa42	; targets: 0x0804fa42(MAY), 0x0804fa16(MAY)
+0x0804fa16:	movl	$0x8048000, %edx	; from: 0x0804fa14(MAY)
+0x0804fa1c:	testl	%edx, %edx
+0x0804fa1e:	je	0x0804fa42	; targets: 0x0804fa20(MAY)
+0x0804fa20:	cmpw	$0x20, 0x2a(%edx)	; from: 0x0804fa1e(MAY)
+0x0804fa25:	jne	0x0804fe14	; targets: 0x0804fe14(MAY), 0x0804fa2b(MAY)
+0x0804fa2b:	movl	0x1c(%edx), %ecx	; from: 0x0804fa25(MAY)
+0x0804fa2e:	addl	%edx, %ecx
+0x0804fa30:	movzwl	0x2c(%edx), %edx
+0x0804fa34:	movl	%ecx, (%eax)
+0x0804fa36:	movl	0xc(%esp), %eax
+0x0804fa3a:	movl	$0x80ea290, %eax
+0x0804fa40:	movl	%edx, (%eax)
+0x0804fa42:	movl	0xc(%esp), %esi	; from: 0x0804fa14(MAY)
+0x0804fa46:	movl	%esi, %ebx
+0x0804fa48:	call	__libc_init_secure	; targets: 0x0807d810(MAY)
+0x0804fa4d:	movl	$0x80e9c24, %eax	; from: 0x0807d831(MAY)
+0x0804fa53:	subl	$0xc, %esp
+0x0804fa56:	pushl	(%eax)
+0x0804fa58:	call	__tunables_init	; targets: 0x0807c560(MAY)
+0x0804fa5d:	movl	$0x80e9c60, %esi	; from: 0x0807c6e6(MAY)
+0x0804fa63:	addl	$0x10, %esp
+0x0804fa66:	xorl	%eax, %eax
+0x0804fa68:	cpuid	
+0x0804fa6a:	cmpl	$0x756e6547, %ebx
+0x0804fa70:	movl	$0x0, 0x1c(%esp)
+0x0804fa78:	movl	$0x0, 0x20(%esp)
+0x0804fa80:	movl	%eax, 0x4(%esi)
+0x0804fa83:	jne	0x0804fd4f	; targets: 0x0804fd4f(MAY), 0x0804fa89(MAY)
+0x0804fa89:	cmpl	$0x6c65746e, %ecx	; from: 0x0804fa83(MAY)
+0x0804fa8f:	jne	0x0804fd4f	; targets: 0x0804fd4f(MAY), 0x0804fa95(MAY)
+0x0804fa95:	cmpl	$0x49656e69, %edx	; from: 0x0804fa8f(MAY)
+0x0804fa9b:	je	0x0804fedb	; targets: 0x0804faa1(MAY), 0x0804fedb(MAY)
+0x0804faa1:	subl	$0xc, %esp	; from: 0x0804fd63(MAY), 0x0804fa9b(MAY), 0x0804fd6f(MAY)
+0x0804faa4:	xorl	%eax, %eax
+0x0804faa6:	xorl	%ecx, %ecx
+0x0804faa8:	pushl	$0x0
+0x0804faaa:	xorl	%edx, %edx
+0x0804faac:	call	get_common_indeces.constprop.1	; targets: 0x0804f720(MAY)
+0x0804fab1:	addl	$0x10, %esp	; from: 0x0804f8f0(MAY)
+0x0804fab4:	movl	$0x3, %eax
+0x0804fab9:	movl	0xc(%esp), %ecx	; from: 0x0804ff42(MAY)
+0x0804fabd:	movl	$0x80e9c60, %edx
+0x0804fac3:	movl	0x14(%edx), %ecx
+0x0804fac6:	testb	$0x1, %ch
+0x0804fac9:	je	0x0804fad2	; targets: 0x0804fad2(MAY), 0x0804facb(MAY)
+0x0804facb:	orl	$0x4000, 0x48(%edx)	; from: 0x0804fac9(MAY)
+0x0804fad2:	andb	$0xffffff80, %ch	; from: 0x0804fac9(MAY)
+0x0804fad5:	je	0x0804fae8	; targets: 0x0804fae8(MAY), 0x0804fad7(MAY)
+0x0804fad7:	movl	0xc(%esp), %ecx	; from: 0x0804fad5(MAY)
+0x0804fadb:	movl	$0x80e9c60, %edx
+0x0804fae1:	orl	$0x8000, 0x48(%edx)
+0x0804fae8:	movl	0xc(%esp), %edi	; from: 0x0804fad5(MAY)
+0x0804faec:	movl	0x1c(%esp), %edx
+0x0804faf0:	movl	$0x80e9c60, %esi
+0x0804faf6:	movl	%edi, %ebx
+0x0804faf8:	movl	%edx, 0x38(%esi)
+0x0804fafb:	movl	0x20(%esp), %edx
+0x0804faff:	movl	%eax, (%esi)
+0x0804fb01:	movl	%edx, 0x3c(%esi)
+0x0804fb04:	pushl	%eax
+0x0804fb05:	leal	-435984(%edi), %eax
+0x0804fb0b:	pushl	%eax
+0x0804fb0c:	leal	0x3c(%esp), %eax
+0x0804fb10:	pushl	%eax
+0x0804fb11:	pushl	$0x0
+0x0804fb13:	call	__tunable_get_val	; targets: 0x0807ca90(MAY)
+0x0804fb18:	addl	$0xc, %esp	; from: 0x0807caeb(MAY)
+0x0804fb1b:	pushl	$0x0
+0x0804fb1d:	leal	0x40(%esp), %eax
+0x0804fb21:	pushl	%eax
+0x0804fb22:	pushl	$0xb
+0x0804fb24:	call	__tunable_get_val	; targets: 0x0807ca90(MAY)
+0x0804fd4f:	cmpl	$0x68747541, %ebx	; from: 0x0804fa8f(MAY), 0x0804fa83(MAY)
+0x0804fd55:	sete	%bl
+0x0804fd58:	cmpl	$0x444d4163, %ecx
+0x0804fd5e:	sete	%al
+0x0804fd61:	testb	%al, %bl
+0x0804fd63:	je	0x0804faa1	; targets: 0x0804faa1(MAY), 0x0804fd69(MAY)
+0x0804fd69:	cmpl	$0x69746e65, %edx	; from: 0x0804fd63(MAY)
+0x0804fd6f:	jne	0x0804faa1	; targets: 0x0804fd75(MAY), 0x0804faa1(MAY)
+0x0804fd75:	leal	0x2c(%esp), %ecx	; from: 0x0804fd6f(MAY)
+0x0804fd79:	leal	0x20(%esp), %edx
+0x0804fd7d:	leal	0x1c(%esp), %eax
+0x0804fd81:	subl	$0xc, %esp
+0x0804fd84:	leal	0x3c(%esp), %ebx
+0x0804fd88:	pushl	%ebx
+0x0804fd89:	call	get_common_indeces.constprop.1	; targets: 0x0804f720(MAY)
+0x0804fe14:	leal	-196692(%esi), %eax	; from: 0x0804fa25(MAY)
+0x0804fe1a:	movl	%esi, %ebx
+0x0804fe1c:	pushl	%eax
+0x0804fe1d:	leal	-196874(%esi), %eax
+0x0804fe23:	pushl	$0xb4
+0x0804fe28:	pushl	%eax
+0x0804fe29:	leal	-196820(%esi), %eax
+0x0804fe2f:	pushl	%eax
+0x0804fe30:	call	__assert_fail	; targets: 0x08052b10(MAY)
+0x0804fedb:	leal	0x20(%esp), %edx	; from: 0x0804fa9b(MAY)
+0x0804fedf:	leal	0x24(%esp), %ecx
+0x0804fee3:	leal	0x1c(%esp), %eax
+0x0804fee7:	subl	$0xc, %esp
+0x0804feea:	leal	0x34(%esp), %ebx
+0x0804feee:	pushl	%ebx
+0x0804feef:	call	get_common_indeces.constprop.1	; targets: 0x0804f720(MAY)
+0x0804fef4:	addl	$0x10, %esp	; from: 0x0804f8f0(MAY)
+0x0804fef7:	movl	0x48(%esi), %edx
+0x0804fefa:	cmpl	$0x6, 0x1c(%esp)
+0x0804feff:	je	0x0804ff47	; targets: 0x0804ff01(MAY)
+0x0804ff01:	movl	0xc(%esp), %eax	; from: 0x0804feff(MAY)
+0x0804ff05:	movl	$0x80e9c60, %edx
+0x0804ff0b:	movl	0x48(%edx), %eax
+0x0804ff0e:	testb	$0x4, %ah
+0x0804ff11:	je	0x0804ff19	; targets: 0x0804ff19(MAY), 0x0804ff13(MAY)
+0x0804ff13:	orb	$0x8, %ah	; from: 0x0804ff11(MAY)
+0x0804ff16:	movl	%eax, 0x48(%edx)
+0x0804ff19:	movl	0xc(%esp), %eax	; from: 0x0804ff11(MAY)
+0x0804ff1d:	movl	$0x80e9c60, %edx
+0x0804ff23:	movl	0x48(%edx), %eax
+0x0804ff26:	movl	%eax, %ecx
+0x0804ff28:	orl	$0x20000, %eax
+0x0804ff2d:	orl	$0x100000, %ecx
+0x0804ff33:	testb	$0x8, 0x1f(%edx)
+0x0804ff37:	cmovel	%ecx, %eax
+0x0804ff3a:	movl	%eax, 0x48(%edx)
+0x0804ff3d:	movl	$0x1, %eax
+0x0804ff42:	jmp	0x0804fab9	; targets: 0x0804fab9(MAY)
+
+__x86.get_pc_thunk.bp:
+0x08050092:	movl	(%esp), %ebp	; from: 0x0804f724(MAY)
+0x08050095:	ret	; targets: 0x0804f729(MAY)
+
+
+__x86.get_pc_thunk.si:
+0x080503e9:	movl	(%esp), %esi	; from: 0x0807a074(MAY)
+0x080503ec:	ret	; targets: 0x0807a079(MAY)
+
+
+__assert_fail:
+0x08052b10:	pushl	%ebx	; from: 0x0804fe30(MAY)
+0x08052b11:	call	__x86.get_pc_thunk.bx	; targets: 0x08048780(MAY)
+
+__x86.get_pc_thunk.di:
+0x080566f3:	movl	(%esp), %edi	; from: 0x0807c562(MAY)
+0x080566f6:	ret	; targets: 0x0807c567(MAY)
+
+
+__sbrk:
+0x0807a070:	pushl	%ebp	; from: 0x0807c802(MAY)
+0x0807a071:	pushl	%edi
+0x0807a072:	pushl	%esi
+0x0807a073:	pushl	%ebx
+0x0807a074:	call	__x86.get_pc_thunk.si	; targets: 0x080503e9(MAY)
+0x0807a079:	addl	$0x6df87, %esi	; from: 0x080503ec(MAY)
+0x0807a07f:	subl	$0xc, %esp
+0x0807a082:	movl	$0x80e9d0c, %ebp
+0x0807a088:	movl	0x20(%esp), %edi
+0x0807a08c:	movl	(%ebp), %ebx
+0x0807a08f:	testl	%ebx, %ebx
+0x0807a091:	je	0x0807a09d	; targets: 0x0807a093(MAY), 0x0807a09d(MAY)
+0x0807a093:	movl	0xe90(%esi), %eax	; from: 0x0807a091(MAY)
+0x0807a099:	testl	%eax, %eax
+0x0807a09b:	je	0x0807a0b1	; targets: 0x0807a0b1(MAY), 0x0807a09d(MAY)
+0x0807a09d:	subl	$0xc, %esp	; from: 0x0807a09b(MAY), 0x0807a091(MAY)
+0x0807a0a0:	pushl	$0x0
+0x0807a0a2:	call	brk	; targets: 0x0809d5e0(MAY)
+0x0807a0a7:	addl	$0x10, %esp	; from: 0x0809d604(MAY)
+0x0807a0aa:	testl	%eax, %eax
+0x0807a0ac:	js	0x0807a0d0	; targets: 0x0807a0d0(MAY), 0x0807a0ae(MAY)
+0x0807a0ae:	movl	(%ebp), %ebx	; from: 0x0807a0ac(MAY)
+0x0807a0b1:	cmpl	$0x0, %edi	; from: 0x0807a09b(MAY)
+0x0807a0b4:	je	0x0807a0d5	; targets: 0x0807a0d5(MAY), 0x0807a0b6(MAY)
+0x0807a0b6:	jle	0x0807a100	; targets: 0x0807a100(MAY), 0x0807a0b8(MAY)	; from: 0x0807a0b4(MAY)
+0x0807a0b8:	movl	%ebx, %eax	; from: 0x0807a0b6(MAY)
+0x0807a0ba:	addl	%edi, %eax
+0x0807a0bc:	setb	%al
+0x0807a0bf:	testb	%al, %al	; from: 0x0807a109(MAY)
+0x0807a0c1:	je	0x0807a0e0	; targets: 0x0807a0e0(MAY), 0x0807a0c3(MAY)
+0x0807a0c3:	movl	$0xffffffe0, %eax	; from: 0x0807a0c1(MAY)
+0x0807a0c9:	movl	$0xc, %gs:(%eax)
+0x0807a0d0:	movl	$0xffffffff, %ebx	; from: 0x0807a0f0(MAY), 0x0807a0ac(MAY)
+0x0807a0d5:	addl	$0xc, %esp	; from: 0x0807a0b4(MAY)
+0x0807a0d8:	movl	%ebx, %eax
+0x0807a0da:	popl	%ebx
+0x0807a0db:	popl	%esi
+0x0807a0dc:	popl	%edi
+0x0807a0dd:	popl	%ebp
+0x0807a0de:	ret	; targets: 0x0807c807(MAY)
+
+0x0807a0e0:	subl	$0xc, %esp	; from: 0x0807a0c1(MAY)
+0x0807a0e3:	addl	%ebx, %edi
+0x0807a0e5:	pushl	%edi
+0x0807a0e6:	call	brk	; targets: 0x0809d5e0(MAY)
+0x0807a0eb:	addl	$0x10, %esp	; from: 0x0809d604(MAY)
+0x0807a0ee:	testl	%eax, %eax
+0x0807a0f0:	js	0x0807a0d0	; targets: 0x0807a0d0(MAY), 0x0807a0f2(MAY)
+0x0807a0f2:	addl	$0xc, %esp	; from: 0x0807a0f0(MAY)
+0x0807a0f5:	movl	%ebx, %eax
+0x0807a0f7:	popl	%ebx
+0x0807a0f8:	popl	%esi
+0x0807a0f9:	popl	%edi
+0x0807a0fa:	popl	%ebp
+0x0807a0fb:	ret	; targets: 0x0807c807(MAY)
+
+0x0807a100:	movl	%edi, %eax	; from: 0x0807a0b6(MAY)
+0x0807a102:	negl	%eax
+0x0807a104:	cmpl	%ebx, %eax
+0x0807a106:	seta	%al
+0x0807a109:	jmp	0x0807a0bf	; targets: 0x0807a0bf(MAY)
+
+do_tunable_update_val:
+0x0807c480:	movl	0x4(%eax), %ecx	; from: 0x0807c52c(MAY), 0x0807c502(MAY)
+0x0807c483:	cmpl	$0x3, %ecx
+0x0807c486:	je	0x0807c4d0	; targets: 0x0807c4d0(MAY), 0x0807c488(MAY)
+0x0807c488:	cmpl	$0x1, %ecx	; from: 0x0807c486(MAY)
+0x0807c48b:	pushl	%ebx
+0x0807c48c:	movl	(%edx), %ebx
+0x0807c48e:	movl	0x4(%edx), %edx
+0x0807c491:	je	0x0807c4a8	; targets: 0x0807c4a8(MAY), 0x0807c493(MAY)
+0x0807c493:	jae	0x0807c4a8	; targets: 0x0807c495(MAY), 0x0807c4a8(MAY)	; from: 0x0807c491(MAY)
+0x0807c495:	cmpl	0xc(%eax), %edx	; from: 0x0807c493(MAY)
+0x0807c498:	jle	0x0807c4d8	; targets: 0x0807c49a(MAY), 0x0807c4d8(MAY)
+0x0807c49a:	cmpl	0x14(%eax), %edx	; from: 0x0807c498(MAY), 0x0807c4dd(MAY)
+0x0807c49d:	jl	0x0807c4c0	; targets: 0x0807c4c0(MAY), 0x0807c49f(MAY)
+0x0807c49f:	jle	0x0807c4bb	; targets: 0x0807c4bb(MAY), 0x0807c4a1(MAY)	; from: 0x0807c49d(MAY)
+0x0807c4a1:	popl	%ebx	; from: 0x0807c4be(MAY), 0x0807c4b9(MAY), 0x0807c4b2(MAY), 0x0807c4d8(MAY), 0x0807c49f(MAY), 0x0807c4ad(MAY)
+0x0807c4a2:	ret	; targets: 0x0807c531(MAY), 0x0807c507(MAY)
+
+0x0807c4a8:	cmpl	0xc(%eax), %edx	; from: 0x0807c491(MAY), 0x0807c493(MAY)
+0x0807c4ab:	ja	0x0807c4b4	; targets: 0x0807c4ad(MAY), 0x0807c4b4(MAY)
+0x0807c4ad:	jb	0x0807c4a1	; targets: 0x0807c4af(MAY), 0x0807c4a1(MAY)	; from: 0x0807c4ab(MAY)
+0x0807c4af:	cmpl	0x8(%eax), %ebx	; from: 0x0807c4ad(MAY)
+0x0807c4b2:	jb	0x0807c4a1	; targets: 0x0807c4a1(MAY), 0x0807c4b4(MAY)
+0x0807c4b4:	cmpl	0x14(%eax), %edx	; from: 0x0807c4ab(MAY), 0x0807c4b2(MAY)
+0x0807c4b7:	jb	0x0807c4c0	; targets: 0x0807c4c0(MAY), 0x0807c4b9(MAY)
+0x0807c4b9:	ja	0x0807c4a1	; targets: 0x0807c4a1(MAY), 0x0807c4bb(MAY)	; from: 0x0807c4b7(MAY)
+0x0807c4bb:	cmpl	0x10(%eax), %ebx	; from: 0x0807c49f(MAY), 0x0807c4b9(MAY)
+0x0807c4be:	ja	0x0807c4a1	; targets: 0x0807c4a1(MAY), 0x0807c4c0(MAY)
+0x0807c4c0:	movl	%ebx, 0x18(%eax)	; from: 0x0807c4b7(MAY), 0x0807c49d(MAY), 0x0807c4be(MAY)
+0x0807c4c3:	movl	%edx, 0x1c(%eax)
+0x0807c4c6:	movb	$0x1, 0x20(%eax)
+0x0807c4ca:	popl	%ebx
+0x0807c4cb:	ret	; targets: 0x0807c507(MAY), 0x0807c531(MAY)
+
+0x0807c4d0:	movl	%edx, 0x18(%eax)	; from: 0x0807c486(MAY)
+0x0807c4d3:	ret	; targets: 0x0807c531(MAY), 0x0807c507(MAY)
+
+0x0807c4d8:	jl	0x0807c4a1	; targets: 0x0807c4a1(MAY), 0x0807c4da(MAY)	; from: 0x0807c498(MAY)
+0x0807c4da:	cmpl	0x8(%eax), %ebx	; from: 0x0807c4d8(MAY)
+0x0807c4dd:	jae	0x0807c49a	; targets: 0x0807c4df(MAY), 0x0807c49a(MAY)
+0x0807c4df:	popl	%ebx	; from: 0x0807c4dd(MAY)
+0x0807c4e0:	ret	; targets: 0x0807c531(MAY), 0x0807c507(MAY)
+
+
+tunable_initialize:
+0x0807c4f0:	pushl	%ebx	; from: 0x0807c716(MAY), 0x0807c9f1(MAY)
+0x0807c4f1:	movl	%eax, %ebx
+0x0807c4f3:	subl	$0x18, %esp
+0x0807c4f6:	cmpl	$0x3, 0x4(%eax)
+0x0807c4fa:	jne	0x0807c510	; targets: 0x0807c510(MAY), 0x0807c4fc(MAY)
+0x0807c4fc:	movb	$0x1, 0x20(%eax)	; from: 0x0807c4fa(MAY)
+0x0807c500:	movl	%ebx, %eax
+0x0807c502:	call	do_tunable_update_val	; targets: 0x0807c480(MAY)
+0x0807c507:	addl	$0x18, %esp	; from: 0x0807c4d3(MAY), 0x0807c4a2(MAY), 0x0807c4cb(MAY), 0x0807c4e0(MAY)
+0x0807c50a:	popl	%ebx
+0x0807c50b:	ret	; targets: 0x0807c71b(MAY)
+
+0x0807c510:	subl	$0x8, %esp	; from: 0x0807c4fa(MAY)
+0x0807c513:	pushl	$0x0
+0x0807c515:	pushl	%edx
+0x0807c516:	call	_dl_strtoul	; targets: 0x080a5e60(MAY)
+0x0807c51b:	movl	%eax, 0x18(%esp)	; from: 0x080a5ecf(MAY), 0x080a5ffb(MAY)
+0x0807c51f:	movl	%edx, 0x1c(%esp)
+0x0807c523:	addl	$0x10, %esp
+0x0807c526:	leal	0x8(%esp), %edx
+0x0807c52a:	movl	%ebx, %eax
+0x0807c52c:	call	do_tunable_update_val	; targets: 0x0807c480(MAY)
+0x0807c531:	addl	$0x18, %esp	; from: 0x0807c4d3(MAY), 0x0807c4e0(MAY), 0x0807c4a2(MAY), 0x0807c4cb(MAY)
+0x0807c534:	popl	%ebx
+0x0807c535:	ret	; targets: 0x0807c71b(MAY)
+
+
+__tunables_init:
+0x0807c560:	pushl	%ebp	; from: 0x0804fa58(MAY)
+0x0807c561:	pushl	%edi
+0x0807c562:	call	__x86.get_pc_thunk.di	; targets: 0x080566f3(MAY)
+0x0807c567:	addl	$0x6ba99, %edi	; from: 0x080566f6(MAY)
+0x0807c56d:	pushl	%esi
+0x0807c56e:	pushl	%ebx
+0x0807c56f:	subl	$0x3c, %esp
+0x0807c572:	movl	$0x80e7ecc, %eax
+0x0807c578:	movl	%edi, 0xc(%esp)
+0x0807c57c:	movl	(%eax), %esi
+0x0807c57e:	movl	%eax, 0x18(%esp)
+0x0807c582:	testl	%esi, %esi
+0x0807c584:	je	0x0807c5a0	; targets: 0x0807c586(MAY), 0x0807c5a0(MAY)
+0x0807c586:	movl	$0x21, %eax	; from: 0x0807c584(MAY)
+0x0807c58b:	leal	-183785(%edi), %ebx
+0x0807c591:	xorl	%ecx, %ecx
+0x0807c593:	int	$0xffffff80
+0x0807c595:	cmpl	$0xfffff000, %eax
+0x0807c59a:	jbe	0x0807c8ab	; targets: 0x0807c5a0(MAY), 0x0807c8ab(MAY)
+0x0807c5a0:	movl	0x50(%esp), %eax	; from: 0x0807c59a(MAY), 0x0807c723(MAY), 0x0807c8b5(MAY), 0x0807c584(MAY), 0x0807c8a6(MAY)
+0x0807c5a4:	testl	%eax, %eax
+0x0807c5a6:	je	0x0807c6df	; targets: 0x0807c6df(MAY), 0x0807c5ac(MAY)
+0x0807c5ac:	movl	0x50(%esp), %eax	; from: 0x0807c6d9(MAY), 0x0807c5a6(MAY)
+0x0807c5b0:	movl	(%eax), %ebp
+0x0807c5b2:	testl	%ebp, %ebp
+0x0807c5b4:	je	0x0807c6df	; targets: 0x0807c6df(MAY), 0x0807c5ba(MAY)
+0x0807c5ba:	movzbl	(%ebp), %ecx	; from: 0x0807c5b4(MAY)
+0x0807c5be:	movl	0x50(%esp), %eax
+0x0807c5c2:	leal	0x4(%eax), %ebx
+0x0807c5c5:	cmpb	$0x3d, %cl
+0x0807c5c8:	je	0x0807c752	; targets: 0x0807c752(MAY), 0x0807c5ce(MAY)
+0x0807c5ce:	testb	%cl, %cl	; from: 0x0807c74c(MAY), 0x0807c5c8(MAY)
+0x0807c5d0:	je	0x0807c752	; targets: 0x0807c5d6(MAY), 0x0807c752(MAY)
+0x0807c5d6:	xorl	%eax, %eax	; from: 0x0807c5d0(MAY)
+0x0807c5d8:	jmp	0x0807c5e5	; targets: 0x0807c5e5(MAY)
+0x0807c5e0:	cmpb	$0x3d, %dl	; from: 0x0807c5f1(MAY)
+0x0807c5e3:	je	0x0807c5f3	; targets: 0x0807c5e5(MAY), 0x0807c5f3(MAY)
+0x0807c5e5:	addl	$0x1, %eax	; from: 0x0807c5d8(MAY), 0x0807c5e3(MAY)
+0x0807c5e8:	movzbl	(%ebp,%eax), %edx
+0x0807c5ed:	movl	%eax, %esi
+0x0807c5ef:	testb	%dl, %dl
+0x0807c5f1:	jne	0x0807c5e0	; targets: 0x0807c5f3(MAY), 0x0807c5e0(MAY)
+0x0807c5f3:	testb	%dl, %dl	; from: 0x0807c756(MAY), 0x0807c5f1(MAY), 0x0807c5e3(MAY)
+0x0807c5f5:	je	0x0807c730	; targets: 0x0807c730(MAY), 0x0807c5fb(MAY)
+0x0807c5fb:	addl	$0x1, %esi	; from: 0x0807c5f5(MAY)
+0x0807c5fe:	testl	%ebx, %ebx
+0x0807c600:	movl	%ebx, 0x8(%esp)
+0x0807c604:	leal	(%ebp,%esi), %eax
+0x0807c608:	movl	%ecx, %edi
+0x0807c60a:	movl	%eax, 0x14(%esp)
+0x0807c60e:	je	0x0807c6df	; targets: 0x0807c6df(MAY), 0x0807c614(MAY)
+0x0807c614:	cmpb	$0x47, %cl	; from: 0x0807c60e(MAY)
+0x0807c617:	jne	0x0807c651	; targets: 0x0807c619(MAY), 0x0807c651(MAY)
+0x0807c619:	movl	0xc(%esp), %ecx	; from: 0x0807c617(MAY)
+0x0807c61d:	leal	0x1(%ebp), %eax
+0x0807c620:	leal	-183799(%ecx), %ebx
+0x0807c626:	movl	$0x4c, %ecx
+0x0807c62b:	nop	
+0x0807c62c:	leal	(%esi), %esi
+0x0807c630:	movzbl	(%eax), %edx	; from: 0x0807c646(MAY)
+0x0807c633:	testb	%dl, %dl
+0x0807c635:	je	0x0807c651	; targets: 0x0807c637(MAY), 0x0807c651(MAY)
+0x0807c637:	cmpb	%cl, %dl	; from: 0x0807c635(MAY)
+0x0807c639:	jne	0x0807c651	; targets: 0x0807c651(MAY), 0x0807c63b(MAY)
+0x0807c63b:	addl	$0x1, %ebx	; from: 0x0807c639(MAY)
+0x0807c63e:	movzbl	(%ebx), %ecx
+0x0807c641:	addl	$0x1, %eax
+0x0807c644:	testb	%cl, %cl
+0x0807c646:	jne	0x0807c630	; targets: 0x0807c630(MAY), 0x0807c648(MAY)
+0x0807c648:	cmpb	$0x3d, (%eax)	; from: 0x0807c646(MAY)
+0x0807c64b:	je	0x0807c7df	; targets: 0x0807c7df(MAY), 0x0807c651(MAY)
+0x0807c651:	movl	0x18(%esp), %eax	; from: 0x0807c639(MAY), 0x0807c617(MAY), 0x0807c64b(MAY), 0x0807c635(MAY)
+0x0807c655:	xorl	%edi, %edi
+0x0807c657:	movl	%ebp, 0x4(%esp)
+0x0807c65b:	movl	(%eax), %eax
+0x0807c65d:	movl	%eax, 0x10(%esp)
+0x0807c661:	movl	0xc(%esp), %eax
+0x0807c665:	leal	-1344(%eax), %esi
+0x0807c66b:	nop	
+0x0807c66c:	leal	(%esi), %esi
+0x0807c670:	cmpb	$0x0, (%esi)	; from: 0x0807c6c9(MAY)
+0x0807c673:	jne	0x0807c6c0	; targets: 0x0807c6c0(MAY), 0x0807c675(MAY)
+0x0807c675:	movl	0x8(%esi), %ebp	; from: 0x0807c673(MAY)
+0x0807c678:	testl	%ebp, %ebp
+0x0807c67a:	je	0x0807c6c0	; targets: 0x0807c6c0(MAY), 0x0807c67c(MAY)
+0x0807c67c:	movzbl	(%ebp), %edx	; from: 0x0807c67a(MAY)
+0x0807c680:	movl	0x4(%esp), %ebx
+0x0807c684:	movzbl	(%ebx), %eax
+0x0807c687:	testb	%dl, %dl
+0x0807c689:	je	0x0807c6b8	; targets: 0x0807c68b(MAY), 0x0807c6b8(MAY)
+0x0807c68b:	testb	%al, %al	; from: 0x0807c689(MAY)
+0x0807c68d:	je	0x0807c6c0	; targets: 0x0807c6c0(MAY), 0x0807c68f(MAY)
+0x0807c68f:	cmpb	%al, %dl	; from: 0x0807c68d(MAY)
+0x0807c691:	jne	0x0807c6c0	; targets: 0x0807c693(MAY), 0x0807c6c0(MAY)
+0x0807c693:	movl	%ebp, %ecx	; from: 0x0807c691(MAY)
+0x0807c695:	movl	%ebx, %edx
+0x0807c697:	jmp	0x0807c6a8	; targets: 0x0807c6a8(MAY)
+0x0807c6a0:	cmpb	%al, %bl	; from: 0x0807c6b6(MAY)
+0x0807c6a2:	jne	0x0807c6c0	; targets: 0x0807c6c0(MAY), 0x0807c6a4(MAY)
+0x0807c6a4:	testb	%al, %al	; from: 0x0807c6a2(MAY)
+0x0807c6a6:	je	0x0807c6c0	; targets: 0x0807c6c0(MAY), 0x0807c6a8(MAY)
+0x0807c6a8:	addl	$0x1, %ecx	; from: 0x0807c697(MAY), 0x0807c6a6(MAY)
+0x0807c6ab:	movzbl	(%ecx), %ebx
+0x0807c6ae:	addl	$0x1, %edx
+0x0807c6b1:	movzbl	(%edx), %eax
+0x0807c6b4:	testb	%bl, %bl
+0x0807c6b6:	jne	0x0807c6a0	; targets: 0x0807c6a0(MAY), 0x0807c6b8(MAY)
+0x0807c6b8:	cmpb	$0x3d, %al	; from: 0x0807c6b6(MAY), 0x0807c689(MAY)
+0x0807c6ba:	je	0x0807c6f0	; targets: 0x0807c6f0(MAY), 0x0807c6bc(MAY)
+0x0807c6bc:	leal	(%esi), %esi	; from: 0x0807c6ba(MAY)
+0x0807c6c0:	addl	$0x1, %edi	; from: 0x0807c67a(MAY), 0x0807c6a2(MAY), 0x0807c673(MAY), 0x0807c6a6(MAY), 0x0807c68d(MAY), 0x0807c691(MAY), 0x0807c702(MAY)
+0x0807c6c3:	addl	$0x2c, %esi
+0x0807c6c6:	cmpl	$0x16, %edi
+0x0807c6c9:	jne	0x0807c670	; targets: 0x0807c6cb(MAY), 0x0807c670(MAY)
+0x0807c6cb:	movl	0x8(%esp), %eax	; from: 0x0807c6c9(MAY)
+0x0807c6cf:	movl	%eax, 0x50(%esp)
+0x0807c6d3:	movl	0x50(%esp), %eax
+0x0807c6d7:	testl	%eax, %eax
+0x0807c6d9:	jne	0x0807c5ac	; targets: 0x0807c5ac(MAY), 0x0807c6df(MAY)
+0x0807c6df:	addl	$0x3c, %esp	; from: 0x0807c5b4(MAY), 0x0807c6d9(MAY), 0x0807c60e(MAY), 0x0807c73c(MAY), 0x0807c732(MAY), 0x0807c5a6(MAY)
+0x0807c6e2:	popl	%ebx
+0x0807c6e3:	popl	%esi
+0x0807c6e4:	popl	%edi
+0x0807c6e5:	popl	%ebp
+0x0807c6e6:	ret	; targets: 0x0804fa5d(MAY)
+
+0x0807c6f0:	movl	0x10(%esp), %edx	; from: 0x0807c6ba(MAY)
+0x0807c6f4:	testl	%edx, %edx
+0x0807c6f6:	je	0x0807c704	; targets: 0x0807c704(MAY), 0x0807c6f8(MAY)
+0x0807c6f8:	movl	0x4(%esi), %eax	; from: 0x0807c6f6(MAY)
+0x0807c6fb:	testl	%eax, %eax
+0x0807c6fd:	je	0x0807c75b	; targets: 0x0807c6ff(MAY), 0x0807c75b(MAY)
+0x0807c6ff:	cmpl	$0x2, %eax	; from: 0x0807c6fd(MAY), 0x0807c7bf(MAY)
+0x0807c702:	jne	0x0807c6c0	; targets: 0x0807c704(MAY), 0x0807c6c0(MAY)
+0x0807c704:	imull	$0x2c, %edi, %eax	; from: 0x0807c6f6(MAY), 0x0807c702(MAY)
+0x0807c707:	movl	0xc(%esp), %edi
+0x0807c70b:	movl	0x14(%esp), %edx
+0x0807c70f:	leal	-1376(%edi,%eax), %eax
+0x0807c716:	call	tunable_initialize	; targets: 0x0807c4f0(MAY)
+0x0807c71b:	movl	0x8(%esp), %eax	; from: 0x0807c50b(MAY), 0x0807c535(MAY)
+0x0807c71f:	movl	%eax, 0x50(%esp)
+0x0807c723:	jmp	0x0807c5a0	; targets: 0x0807c5a0(MAY)
+0x0807c730:	testl	%ebx, %ebx	; from: 0x0807c5f5(MAY)
+0x0807c732:	je	0x0807c6df	; targets: 0x0807c734(MAY), 0x0807c6df(MAY)
+0x0807c734:	movl	(%ebx), %ebp	; from: 0x0807c732(MAY)
+0x0807c736:	movl	%ebx, 0x50(%esp)
+0x0807c73a:	testl	%ebp, %ebp
+0x0807c73c:	je	0x0807c6df	; targets: 0x0807c6df(MAY), 0x0807c73e(MAY)
+0x0807c73e:	movzbl	(%ebp), %ecx	; from: 0x0807c73c(MAY)
+0x0807c742:	movl	0x50(%esp), %eax
+0x0807c746:	leal	0x4(%eax), %ebx
+0x0807c749:	cmpb	$0x3d, %cl
+0x0807c74c:	jne	0x0807c5ce	; targets: 0x0807c5ce(MAY), 0x0807c752(MAY)
+0x0807c752:	movl	%ecx, %edx	; from: 0x0807c74c(MAY), 0x0807c5d0(MAY), 0x0807c5c8(MAY)
+0x0807c754:	xorl	%esi, %esi
+0x0807c756:	jmp	0x0807c5f3	; targets: 0x0807c5f3(MAY)
+0x0807c75b:	movl	0x50(%esp), %eax	; from: 0x0807c6fd(MAY)
+0x0807c75f:	movl	%eax, 0x8(%esp)
+0x0807c763:	movl	0x8(%esp), %eax	; from: 0x0807c7dd(MAY)
+0x0807c767:	movl	(%eax), %eax
+0x0807c769:	testl	%eax, %eax
+0x0807c76b:	je	0x0807c7b4	; targets: 0x0807c7b4(MAY), 0x0807c76d(MAY)
+0x0807c76d:	movzbl	(%ebp), %ecx	; from: 0x0807c7b2(MAY), 0x0807c76b(MAY)
+0x0807c771:	movzbl	(%eax), %edx
+0x0807c774:	testb	%cl, %cl
+0x0807c776:	je	0x0807c7a0	; targets: 0x0807c7a0(MAY), 0x0807c778(MAY)
+0x0807c778:	testb	%dl, %dl	; from: 0x0807c776(MAY)
+0x0807c77a:	je	0x0807c7a5	; targets: 0x0807c7a5(MAY), 0x0807c77c(MAY)
+0x0807c77c:	cmpb	%dl, %cl	; from: 0x0807c77a(MAY)
+0x0807c77e:	jne	0x0807c7a5	; targets: 0x0807c780(MAY), 0x0807c7a5(MAY)
+0x0807c780:	movl	%ebp, %ecx	; from: 0x0807c77e(MAY)
+0x0807c782:	jmp	0x0807c790	; targets: 0x0807c790(MAY)
+0x0807c788:	cmpb	%dl, %bl	; from: 0x0807c79e(MAY)
+0x0807c78a:	jne	0x0807c7a5	; targets: 0x0807c7a5(MAY), 0x0807c78c(MAY)
+0x0807c78c:	testb	%dl, %dl	; from: 0x0807c78a(MAY)
+0x0807c78e:	je	0x0807c7a5	; targets: 0x0807c790(MAY), 0x0807c7a5(MAY)
+0x0807c790:	addl	$0x1, %ecx	; from: 0x0807c78e(MAY), 0x0807c782(MAY)
+0x0807c793:	movzbl	(%ecx), %ebx
+0x0807c796:	addl	$0x1, %eax
+0x0807c799:	movzbl	(%eax), %edx
+0x0807c79c:	testb	%bl, %bl
+0x0807c79e:	jne	0x0807c788	; targets: 0x0807c7a0(MAY), 0x0807c788(MAY)
+0x0807c7a0:	cmpb	$0x3d, %dl	; from: 0x0807c79e(MAY), 0x0807c776(MAY)
+0x0807c7a3:	je	0x0807c7c4	; targets: 0x0807c7c4(MAY), 0x0807c7a5(MAY)
+0x0807c7a5:	addl	$0x4, 0x8(%esp)	; from: 0x0807c77a(MAY), 0x0807c7a3(MAY), 0x0807c78e(MAY), 0x0807c78a(MAY), 0x0807c77e(MAY)
+0x0807c7aa:	movl	0x8(%esp), %eax
+0x0807c7ae:	movl	(%eax), %eax
+0x0807c7b0:	testl	%eax, %eax
+0x0807c7b2:	jne	0x0807c76d	; targets: 0x0807c76d(MAY), 0x0807c7b4(MAY)
+0x0807c7b4:	movl	0x50(%esp), %ecx	; from: 0x0807c76b(MAY), 0x0807c7b2(MAY)
+0x0807c7b8:	movl	0x4(%esi), %eax
+0x0807c7bb:	movl	%ecx, 0x8(%esp)
+0x0807c7bf:	jmp	0x0807c6ff	; targets: 0x0807c6ff(MAY)
+0x0807c7c4:	movl	0x8(%esp), %eax	; from: 0x0807c7a3(MAY)
+0x0807c7c8:	nop	
+0x0807c7c9:	leal	(%esi), %esi
+0x0807c7d0:	movl	0x4(%eax), %edx	; from: 0x0807c7db(MAY)
+0x0807c7d3:	addl	$0x4, %eax
+0x0807c7d6:	movl	%edx, -4(%eax)
+0x0807c7d9:	testl	%edx, %edx
+0x0807c7db:	jne	0x0807c7d0	; targets: 0x0807c7dd(MAY), 0x0807c7d0(MAY)
+0x0807c7dd:	jmp	0x0807c763	; targets: 0x0807c763(MAY)	; from: 0x0807c7db(MAY)
+0x0807c7df:	xorl	%edx, %edx	; from: 0x0807c64b(MAY)
+0x0807c7e1:	movl	%edi, %ecx
+0x0807c7e3:	jmp	0x0807c7ef	; targets: 0x0807c7ef(MAY)
+0x0807c7e8:	movzbl	0x1(%ebp,%edx), %ecx	; from: 0x0807c7f4(MAY)
+0x0807c7ed:	movl	%eax, %edx
+0x0807c7ef:	testb	%cl, %cl	; from: 0x0807c7e3(MAY)
+0x0807c7f1:	leal	0x1(%edx), %eax
+0x0807c7f4:	jne	0x0807c7e8	; targets: 0x0807c7e8(MAY), 0x0807c7f6(MAY)
+0x0807c7f6:	movl	%edx, 0x4(%esp)	; from: 0x0807c7f4(MAY)
+0x0807c7fa:	subl	$0xc, %esp
+0x0807c7fd:	pushl	%eax
+0x0807c7fe:	movl	0x1c(%esp), %ebx
+0x0807c802:	call	__sbrk	; targets: 0x0807a070(MAY)
+0x0807c807:	movl	%eax, 0x34(%esp)	; from: 0x0807a0de(MAY), 0x0807a0fb(MAY)
+0x0807c80b:	addl	$0x10, %esp
+0x0807c80e:	cmpl	$0xffffffff, %eax
+0x0807c811:	movl	%eax, %ecx
+0x0807c813:	je	0x0807ca70	; targets: 0x0807ca70(MAY), 0x0807c819(MAY)
+0x0807c819:	movl	0x4(%esp), %edx	; from: 0x0807c813(MAY)
+0x0807c81d:	testl	%edx, %edx
+0x0807c81f:	leal	-1(%edx), %eax
+0x0807c822:	je	0x0807ca56	; targets: 0x0807ca56(MAY), 0x0807c828(MAY)
+0x0807c828:	nop		; from: 0x0807c822(MAY)
+0x0807c829:	leal	(%esi), %esi
+0x0807c830:	movzbl	(%ebp,%eax), %edx	; from: 0x0807c83e(MAY)
+0x0807c835:	movb	%dl, (%ecx,%eax)
+0x0807c838:	subl	$0x1, %eax
+0x0807c83b:	cmpl	$0xffffffff, %eax
+0x0807c83e:	jne	0x0807c830	; targets: 0x0807c840(MAY), 0x0807c830(MAY)
+0x0807c840:	addl	0x24(%esp), %esi	; from: 0x0807c83e(MAY), 0x0807ca62(MAY)
+0x0807c844:	movl	%esi, 0x2c(%esp)
+0x0807c848:	je	0x0807c894	; targets: 0x0807c894(MAY), 0x0807c84a(MAY)
+0x0807c84a:	movzbl	(%esi), %eax	; from: 0x0807c848(MAY)
+0x0807c84d:	movl	%esi, %ebp
+0x0807c84f:	testb	%al, %al
+0x0807c851:	movb	%al, 0x4(%esp)
+0x0807c855:	je	0x0807c894	; targets: 0x0807c894(MAY), 0x0807c857(MAY)
+0x0807c857:	movl	0xc(%esp), %eax	; from: 0x0807c855(MAY)
+0x0807c85b:	leal	-1376(%eax), %eax
+0x0807c861:	movl	%eax, 0x28(%esp)
+0x0807c865:	leal	(%esi), %esi
+0x0807c868:	movzbl	0x4(%esp), %eax	; from: 0x0807c986(MAY), 0x0807c9cd(MAY)
+0x0807c86d:	cmpb	$0x3d, %al
+0x0807c86f:	je	0x0807c8ba	; targets: 0x0807c871(MAY), 0x0807c8ba(MAY)
+0x0807c871:	cmpb	$0x3a, %al	; from: 0x0807c86f(MAY)
+0x0807c873:	je	0x0807c8ba	; targets: 0x0807c875(MAY), 0x0807c8ba(MAY)
+0x0807c875:	testb	%al, %al	; from: 0x0807c873(MAY)
+0x0807c877:	je	0x0807c894	; targets: 0x0807c894(MAY), 0x0807c879(MAY)
+0x0807c879:	xorl	%edx, %edx	; from: 0x0807c877(MAY)
+0x0807c87b:	nop	
+0x0807c87c:	leal	(%esi), %esi
+0x0807c880:	addl	$0x1, %edx	; from: 0x0807c892(MAY)
+0x0807c883:	movzbl	(%ebp,%edx), %eax
+0x0807c888:	cmpb	$0x3d, %al
+0x0807c88a:	je	0x0807c8c1	; targets: 0x0807c88c(MAY), 0x0807c8c1(MAY)
+0x0807c88c:	cmpb	$0x3a, %al	; from: 0x0807c88a(MAY)
+0x0807c88e:	je	0x0807c8c1	; targets: 0x0807c8c1(MAY), 0x0807c890(MAY)
+0x0807c890:	testb	%al, %al	; from: 0x0807c88e(MAY)
+0x0807c892:	jne	0x0807c880	; targets: 0x0807c894(MAY), 0x0807c880(MAY)
+0x0807c894:	movl	0x50(%esp), %eax	; from: 0x0807ca5c(MAY), 0x0807c848(MAY), 0x0807c855(MAY), 0x0807c892(MAY), 0x0807ca78(MAY), 0x0807c974(MAY), 0x0807ca81(MAY), 0x0807c877(MAY), 0x0807c8c3(MAY)
+0x0807c898:	movl	0x24(%esp), %edi
+0x0807c89c:	movl	%edi, (%eax)
+0x0807c89e:	movl	0x8(%esp), %eax
+0x0807c8a2:	movl	%eax, 0x50(%esp)
+0x0807c8a6:	jmp	0x0807c5a0	; targets: 0x0807c5a0(MAY)
+0x0807c8ab:	movl	$0x2, -416(%edi)	; from: 0x0807c59a(MAY)
+0x0807c8b5:	jmp	0x0807c5a0	; targets: 0x0807c5a0(MAY)
+0x0807c8ba:	movzbl	0x4(%esp), %eax	; from: 0x0807c86f(MAY), 0x0807c873(MAY)
+0x0807c8bf:	xorl	%edx, %edx
+0x0807c8c1:	testb	%al, %al	; from: 0x0807c88a(MAY), 0x0807c88e(MAY)
+0x0807c8c3:	je	0x0807c894	; targets: 0x0807c8c5(MAY), 0x0807c894(MAY)
+0x0807c8c5:	leal	0x1(%ebp,%edx), %ecx	; from: 0x0807c8c3(MAY)
+0x0807c8c9:	cmpb	$0x3a, %al
+0x0807c8cb:	movzbl	(%ecx), %ebx
+0x0807c8ce:	movl	%ecx, 0x10(%esp)
+0x0807c8d2:	movb	%bl, 0x1f(%esp)
+0x0807c8d6:	je	0x0807c9c0	; targets: 0x0807c8dc(MAY), 0x0807c9c0(MAY)
+0x0807c8dc:	testb	%bl, %bl	; from: 0x0807c8d6(MAY)
+0x0807c8de:	je	0x0807c9ff	; targets: 0x0807c9ff(MAY), 0x0807c8e4(MAY)
+0x0807c8e4:	cmpb	$0x3a, %bl	; from: 0x0807c8de(MAY)
+0x0807c8e7:	je	0x0807c9ff	; targets: 0x0807c8ed(MAY), 0x0807c9ff(MAY)
+0x0807c8ed:	xorl	%eax, %eax	; from: 0x0807c8e7(MAY)
+0x0807c8ef:	jmp	0x0807c8fc	; targets: 0x0807c8fc(MAY)
+0x0807c8f8:	testb	%dl, %dl	; from: 0x0807c906(MAY)
+0x0807c8fa:	je	0x0807c908	; targets: 0x0807c908(MAY), 0x0807c8fc(MAY)
+0x0807c8fc:	addl	$0x1, %eax	; from: 0x0807c8ef(MAY), 0x0807c8fa(MAY)
+0x0807c8ff:	movzbl	(%ecx,%eax), %edx
+0x0807c903:	cmpb	$0x3a, %dl
+0x0807c906:	jne	0x0807c8f8	; targets: 0x0807c8f8(MAY), 0x0807c908(MAY)
+0x0807c908:	movl	%eax, 0x20(%esp)	; from: 0x0807c8fa(MAY), 0x0807c906(MAY)
+0x0807c90c:	movb	%dl, 0x1f(%esp)
+0x0807c910:	movl	0x28(%esp), %edi	; from: 0x0807ca07(MAY)
+0x0807c914:	xorl	%esi, %esi
+0x0807c916:	leal	(%esi), %esi
+0x0807c919:	leal	(%edi), %edi
+0x0807c920:	movl	(%edi), %eax	; from: 0x0807c966(MAY)
+0x0807c922:	movzbl	(%eax), %edx
+0x0807c925:	testb	%dl, %dl
+0x0807c927:	je	0x0807c98b	; targets: 0x0807c98b(MAY), 0x0807c929(MAY)
+0x0807c929:	movzbl	0x4(%esp), %ecx	; from: 0x0807c927(MAY)
+0x0807c92e:	testb	%cl, %cl
+0x0807c930:	je	0x0807c95d	; targets: 0x0807c95d(MAY), 0x0807c932(MAY)
+0x0807c932:	cmpb	%cl, %dl	; from: 0x0807c930(MAY)
+0x0807c934:	jne	0x0807c95d	; targets: 0x0807c95d(MAY), 0x0807c936(MAY)
+0x0807c936:	movl	%ebp, %edx	; from: 0x0807c934(MAY)
+0x0807c938:	jmp	0x0807c948	; targets: 0x0807c948(MAY)
+0x0807c940:	cmpb	%bl, %cl	; from: 0x0807c956(MAY)
+0x0807c942:	jne	0x0807c95d	; targets: 0x0807c944(MAY), 0x0807c95d(MAY)
+0x0807c944:	testb	%bl, %bl	; from: 0x0807c942(MAY)
+0x0807c946:	je	0x0807c95d	; targets: 0x0807c948(MAY), 0x0807c95d(MAY)
+0x0807c948:	addl	$0x1, %eax	; from: 0x0807c946(MAY), 0x0807c938(MAY)
+0x0807c94b:	movzbl	(%eax), %ecx
+0x0807c94e:	addl	$0x1, %edx
+0x0807c951:	movzbl	(%edx), %ebx
+0x0807c954:	testb	%cl, %cl
+0x0807c956:	jne	0x0807c940	; targets: 0x0807c940(MAY), 0x0807c958(MAY)
+0x0807c958:	cmpb	$0x3d, %bl	; from: 0x0807c956(MAY)
+0x0807c95b:	je	0x0807c995	; targets: 0x0807c995(MAY), 0x0807c95d(MAY)
+0x0807c95d:	addl	$0x1, %esi	; from: 0x0807c930(MAY), 0x0807c934(MAY), 0x0807c946(MAY), 0x0807c993(MAY), 0x0807c942(MAY), 0x0807c95b(MAY)
+0x0807c960:	addl	$0x2c, %edi
+0x0807c963:	cmpl	$0x16, %esi
+0x0807c966:	jne	0x0807c920	; targets: 0x0807c920(MAY), 0x0807c968(MAY)
+0x0807c968:	movl	0x10(%esp), %eax	; from: 0x0807c9be(MAY), 0x0807c966(MAY)
+0x0807c96c:	movl	0x20(%esp), %edi
+0x0807c970:	cmpb	$0x0, (%eax,%edi)
+0x0807c974:	je	0x0807c894	; targets: 0x0807c97a(MAY), 0x0807c894(MAY)
+0x0807c97a:	leal	0x1(%eax,%edi), %ebp	; from: 0x0807c974(MAY)
+0x0807c97e:	movzbl	(%ebp), %eax
+0x0807c982:	movb	%al, 0x4(%esp)
+0x0807c986:	jmp	0x0807c868	; targets: 0x0807c868(MAY)
+0x0807c98b:	movzbl	0x4(%esp), %ebx	; from: 0x0807c927(MAY)
+0x0807c990:	cmpb	$0x3d, %bl
+0x0807c993:	jne	0x0807c95d	; targets: 0x0807c995(MAY), 0x0807c95d(MAY)
+0x0807c995:	movl	0x18(%esp), %eax	; from: 0x0807c993(MAY), 0x0807c95b(MAY)
+0x0807c999:	movl	(%eax), %ecx
+0x0807c99b:	testl	%ecx, %ecx
+0x0807c99d:	je	0x0807c9d2	; targets: 0x0807c9d2(MAY), 0x0807c99f(MAY)
+0x0807c99f:	imull	$0x2c, %esi, %eax	; from: 0x0807c99d(MAY)
+0x0807c9a2:	movl	0xc(%esp), %edi
+0x0807c9a6:	movl	-1340(%edi,%eax), %eax
+0x0807c9ad:	testl	%eax, %eax
+0x0807c9af:	je	0x0807ca0c	; targets: 0x0807c9b1(MAY), 0x0807ca0c(MAY)
+0x0807c9b1:	movl	0x10(%esp), %ebp	; from: 0x0807c9af(MAY)
+0x0807c9b5:	cmpl	$0x2, %eax	; from: 0x0807ca51(MAY)
+0x0807c9b8:	je	0x0807c9d6	; targets: 0x0807c9ba(MAY), 0x0807c9d6(MAY)
+0x0807c9ba:	movl	%ebp, 0x10(%esp)	; from: 0x0807c9b8(MAY)
+0x0807c9be:	jmp	0x0807c968	; targets: 0x0807c968(MAY)
+0x0807c9c0:	movzbl	0x1f(%esp), %eax	; from: 0x0807c8d6(MAY)
+0x0807c9c5:	movl	0x10(%esp), %ebp
+0x0807c9c9:	movb	%al, 0x4(%esp)
+0x0807c9cd:	jmp	0x0807c868	; targets: 0x0807c868(MAY)
+0x0807c9d2:	movl	0x10(%esp), %ebp	; from: 0x0807c99d(MAY)
+0x0807c9d6:	movl	0x10(%esp), %edx	; from: 0x0807c9b8(MAY)
+0x0807c9da:	subl	0x2c(%esp), %edx
+0x0807c9de:	addl	0x14(%esp), %edx
+0x0807c9e2:	movl	0x20(%esp), %eax
+0x0807c9e6:	movb	$0x0, (%edx,%eax)
+0x0807c9ea:	imull	$0x2c, %esi, %eax
+0x0807c9ed:	addl	0x28(%esp), %eax
+0x0807c9f1:	call	tunable_initialize	; targets: 0x0807c4f0(MAY)
+0x0807c9ff:	movl	$0x0, 0x20(%esp)	; from: 0x0807c8de(MAY), 0x0807c8e7(MAY)
+0x0807ca07:	jmp	0x0807c910	; targets: 0x0807c910(MAY)
+0x0807ca0c:	cmpb	$0x0, 0x1f(%esp)	; from: 0x0807c9af(MAY)
+0x0807ca11:	je	0x0807ca7d	; targets: 0x0807ca7d(MAY), 0x0807ca13(MAY)
+0x0807ca13:	movl	0x10(%esp), %eax	; from: 0x0807ca11(MAY)
+0x0807ca17:	movl	0x20(%esp), %edi
+0x0807ca1b:	leal	0x1(%eax,%edi), %edx
+0x0807ca1f:	movl	%ebp, %eax
+0x0807ca21:	movzbl	(%edx), %ecx
+0x0807ca24:	testb	%cl, %cl
+0x0807ca26:	je	0x0807ca38	; targets: 0x0807ca28(MAY), 0x0807ca38(MAY)
+0x0807ca28:	addl	$0x1, %edx	; from: 0x0807ca26(MAY), 0x0807ca36(MAY)
+0x0807ca2b:	addl	$0x1, %eax
+0x0807ca2e:	movb	%cl, -1(%eax)
+0x0807ca31:	movzbl	(%edx), %ecx
+0x0807ca34:	testb	%cl, %cl
+0x0807ca36:	jne	0x0807ca28	; targets: 0x0807ca38(MAY), 0x0807ca28(MAY)
+0x0807ca38:	movb	$0x0, (%eax)	; from: 0x0807ca36(MAY), 0x0807ca26(MAY)
+0x0807ca3b:	movl	0xc(%esp), %edi
+0x0807ca3f:	imull	$0x2c, %esi, %eax
+0x0807ca42:	movl	$0x0, 0x20(%esp)
+0x0807ca4a:	movl	-1340(%edi,%eax), %eax
+0x0807ca51:	jmp	0x0807c9b5	; targets: 0x0807c9b5(MAY)
+0x0807ca56:	movl	0x24(%esp), %ebx	; from: 0x0807c822(MAY)
+0x0807ca5a:	testl	%ebx, %ebx
+0x0807ca5c:	je	0x0807c894	; targets: 0x0807ca62(MAY), 0x0807c894(MAY)
+0x0807ca62:	jmp	0x0807c840	; targets: 0x0807c840(MAY)	; from: 0x0807ca5c(MAY)
+0x0807ca70:	movl	$0x0, 0x24(%esp)	; from: 0x0807c813(MAY)
+0x0807ca78:	jmp	0x0807c894	; targets: 0x0807c894(MAY)
+0x0807ca7d:	movb	$0x0, (%ebp)	; from: 0x0807ca11(MAY)
+0x0807ca81:	jmp	0x0807c894	; targets: 0x0807c894(MAY)
+
+__tunable_get_val:
+0x0807ca90:	pushl	%edi	; from: 0x0804fb24(MAY), 0x0804fb13(MAY)
+0x0807ca91:	pushl	%esi
+0x0807ca92:	pushl	%ebx
+0x0807ca93:	movl	0x10(%esp), %eax
+0x0807ca97:	call	__x86.get_pc_thunk.dx	; targets: 0x0804a97f(MAY)
+0x0807ca9c:	addl	$0x6b564, %edx	; from: 0x0804a982(MAY)
+0x0807caa2:	movl	0x14(%esp), %esi
+0x0807caa6:	movl	0x18(%esp), %ebx
+0x0807caaa:	imull	$0x2c, %eax, %ecx
+0x0807caad:	leal	-1376(%edx,%ecx), %ecx
+0x0807cab4:	movl	0x4(%ecx), %edi
+0x0807cab7:	cmpl	$0x1, %edi
+0x0807caba:	je	0x0807caf0	; targets: 0x0807cabc(MAY)
+0x0807cabc:	movl	0x18(%ecx), %ecx	; from: 0x0807caba(MAY)
+0x0807cabf:	movl	%ecx, (%esi)
+0x0807cac1:	imull	$0x2c, %eax, %eax
+0x0807cac4:	leal	-1376(%edx), %edx
+0x0807caca:	cmpb	$0x0, 0x20(%edx,%eax)
+0x0807cacf:	je	0x0807cae8	; targets: 0x0807cae8(MAY), 0x0807cad1(MAY)
+0x0807cad1:	testl	%ebx, %ebx	; from: 0x0807cacf(MAY)
+0x0807cad3:	je	0x0807cae8	; targets: 0x0807cad5(MAY)
+0x0807cad5:	leal	0x18(%edx,%eax), %eax	; from: 0x0807cad3(MAY)
+0x0807cad9:	movl	%eax, 0x10(%esp)
+0x0807cadd:	movl	%ebx, %eax
+0x0807cadf:	popl	%ebx
+0x0807cae0:	popl	%esi
+0x0807cae1:	popl	%edi
+0x0807cae2:	jmp	%eax	; targets: 0x0807d8f0(MAY)
+0x0807cae8:	popl	%ebx	; from: 0x0807cacf(MAY)
+0x0807cae9:	popl	%esi
+0x0807caea:	popl	%edi
+0x0807caeb:	ret	; targets: 0x0804fb18(MAY)
+
+
+_dl_aux_init:
+0x0807cb10:	pushl	%ebp	; from: 0x0804f9ff(MAY)
+0x0807cb11:	pushl	%edi
+0x0807cb12:	pushl	%esi
+0x0807cb13:	pushl	%ebx
+0x0807cb14:	call	__x86.get_pc_thunk.cx	; targets: 0x0804a983(MAY)
+0x0807cb19:	addl	$0x6b4e7, %ecx	; from: 0x0804a986(MAY)
+0x0807cb1f:	subl	$0x74, %esp
+0x0807cb22:	movl	0x88(%esp), %eax
+0x0807cb29:	movl	%eax, 0x4(%esp)
+0x0807cb2d:	movl	$0x80ea25c, %eax
+0x0807cb33:	movl	0x4(%esp), %edx
+0x0807cb37:	movl	%edx, (%eax)
+0x0807cb39:	movl	(%edx), %eax
+0x0807cb3b:	testl	%eax, %eax
+0x0807cb3d:	je	0x0807cdad	; targets: 0x0807cdad(MAY), 0x0807cb43(MAY)
+0x0807cb43:	movl	$0x80ea284, %esi	; from: 0x0807cb3d(MAY)
+0x0807cb49:	movl	0x1c40(%ecx), %edi
+0x0807cb4f:	movl	0x1c44(%ecx), %ebp
+0x0807cb55:	movl	(%esi), %ebx
+0x0807cb57:	movl	%edi, 0x30(%esp)
+0x0807cb5b:	movl	$0x80e7ecc, %edi
+0x0807cb61:	movl	%esi, 0x5c(%esp)
+0x0807cb65:	movl	%ebp, 0x34(%esp)
+0x0807cb69:	xorl	%ebp, %ebp
+0x0807cb6b:	movl	%ebx, 0x48(%esp)
+0x0807cb6f:	movl	0xba0(%ecx), %ebx
+0x0807cb75:	movl	%ebp, %edx
+0x0807cb77:	movl	(%edi), %esi
+0x0807cb79:	movl	%edi, 0x10(%esp)
+0x0807cb7d:	movl	$0x80ea260, %edi
+0x0807cb83:	movl	%ebx, 0x40(%esp)
+0x0807cb87:	movl	-320(%ecx), %ebx
+0x0807cb8d:	movl	%esi, 0x4c(%esp)
+0x0807cb91:	movzwl	0xb6c(%ecx), %esi
+0x0807cb98:	movl	%edi, 0x68(%esp)
+0x0807cb9c:	movl	%ebx, 0x54(%esp)
+0x0807cba0:	movl	$0x80ea2a8, %ebx
+0x0807cba6:	movw	%si, 0x44(%esp)
+0x0807cbab:	movl	$0x80ea27c, %esi
+0x0807cbb1:	movl	%ebx, 0x14(%esp)
+0x0807cbb5:	movl	(%ebx), %ebx
+0x0807cbb7:	movl	%esi, 0x64(%esp)
+0x0807cbbb:	movl	%ebx, 0x50(%esp)
+0x0807cbbf:	movl	(%esi), %ebx
+0x0807cbc1:	movl	0x1c4c(%ecx), %esi
+0x0807cbc7:	movl	%ebx, 0x18(%esp)
+0x0807cbcb:	movl	0x1c48(%ecx), %ebx
+0x0807cbd1:	movl	%esi, 0x2c(%esp)
+0x0807cbd5:	movl	%ebx, 0x28(%esp)
+0x0807cbd9:	movl	(%edi), %esi
+0x0807cbdb:	xorl	%edi, %edi
+0x0807cbdd:	movl	0xb78(%ecx), %ebx
+0x0807cbe3:	movb	%dl, 0x21(%esp)
+0x0807cbe7:	movl	0x4(%esp), %edx
+0x0807cbeb:	movb	$0x0, 0x5b(%esp)
+0x0807cbf0:	movl	%esi, 0x38(%esp)
+0x0807cbf4:	movb	$0x0, 0x5a(%esp)
+0x0807cbf9:	movl	%ebx, 0xc(%esp)
+0x0807cbfd:	movl	$0x80ea290, %ebx
+0x0807cc03:	movb	$0x0, 0x59(%esp)
+0x0807cc08:	movb	$0x0, 0x58(%esp)
+0x0807cc0d:	movb	$0x0, 0x47(%esp)
+0x0807cc12:	movb	$0x0, 0x46(%esp)
+0x0807cc17:	movl	(%ebx), %esi
+0x0807cc19:	movl	%ebx, 0x6c(%esp)
+0x0807cc1d:	movb	$0x0, 0x3f(%esp)
+0x0807cc22:	movb	$0x0, 0x3e(%esp)
+0x0807cc27:	movb	$0x0, 0x3d(%esp)
+0x0807cc2c:	movb	$0x0, 0x3c(%esp)
+0x0807cc31:	movl	%esi, 0x24(%esp)
+0x0807cc35:	movl	$0x80ea270, %esi
+0x0807cc3b:	movb	$0x0, 0x23(%esp)
+0x0807cc40:	movb	$0x0, 0x22(%esp)
+0x0807cc45:	movl	%edi, 0x8(%esp)
+0x0807cc49:	movl	(%esi), %ebx
+0x0807cc4b:	movl	%esi, 0x60(%esp)
+0x0807cc4f:	xorl	%esi, %esi
+0x0807cc51:	movl	%ebx, 0x1c(%esp)
+0x0807cc55:	xorl	%ebx, %ebx
+0x0807cc57:	movl	%esi, %esi
+0x0807cc59:	leal	(%edi), %edi
+0x0807cc60:	subl	$0x3, %eax	; from: 0x0807cca2(MAY)
+0x0807cc63:	cmpl	$0x1e, %eax
+0x0807cc66:	ja	0x0807cc9b	; targets: 0x0807cc68(MAY), 0x0807cc9b(MAY)
+0x0807cc68:	movl	-182976(%ecx,%eax,4), %edi	; from: 0x0807cc66(MAY)
+0x0807cc6f:	addl	%ecx, %edi
+0x0807cc71:	jmp	%edi	; targets: unresolved
+0x0807cc9b:	addl	$0x8, %edx	; from: 0x0807cc66(MAY)
+0x0807cc9e:	movl	(%edx), %eax
+0x0807cca0:	testl	%eax, %eax
+0x0807cca2:	jne	0x0807cc60	; targets: 0x0807cca4(MAY), 0x0807cc60(MAY)
+0x0807cca4:	leal	(%esi), %esi	; from: 0x0807cca2(MAY)
+0x0807cca8:	movzbl	0x21(%esp), %ebp
+0x0807ccad:	movl	0x8(%esp), %edi
+0x0807ccb1:	movl	%ebp, %eax
+0x0807ccb3:	testb	%al, %al
+0x0807ccb5:	jne	0x0807cfce	; targets: 0x0807cfce(MAY), 0x0807ccbb(MAY)
+0x0807ccbb:	cmpb	$0x0, 0x22(%esp)	; from: 0x0807cfd8(MAY), 0x0807ccb5(MAY)
+0x0807ccc0:	je	0x0807cccc	; targets: 0x0807cccc(MAY)
+0x0807cccc:	cmpb	$0x0, 0x23(%esp)	; from: 0x0807ccc0(MAY)
+0x0807ccd1:	je	0x0807ccdd	; targets: 0x0807ccdd(MAY)
+0x0807ccdd:	cmpb	$0x0, 0x3c(%esp)	; from: 0x0807ccd1(MAY)
+0x0807cce2:	je	0x0807ccee	; targets: 0x0807ccee(MAY)
+0x0807ccee:	cmpb	$0x0, 0x3d(%esp)	; from: 0x0807cce2(MAY)
+0x0807ccf3:	je	0x0807ccff	; targets: 0x0807ccff(MAY)
+0x0807ccff:	cmpb	$0x0, 0x3e(%esp)	; from: 0x0807ccf3(MAY)
+0x0807cd04:	je	0x0807cd14	; targets: 0x0807cd14(MAY)
+0x0807cd14:	cmpb	$0x0, 0x3f(%esp)	; from: 0x0807cd04(MAY)
+0x0807cd19:	je	0x0807cd29	; targets: 0x0807cd29(MAY)
+0x0807cd29:	cmpb	$0x0, 0x46(%esp)	; from: 0x0807cd19(MAY)
+0x0807cd2e:	je	0x0807cd3c	; targets: 0x0807cd3c(MAY)
+0x0807cd3c:	cmpb	$0x0, 0x47(%esp)	; from: 0x0807cd2e(MAY)
+0x0807cd41:	je	0x0807cd4d	; targets: 0x0807cd4d(MAY)
+0x0807cd4d:	cmpb	$0x0, 0x58(%esp)	; from: 0x0807cd41(MAY)
+0x0807cd52:	je	0x0807cd5e	; targets: 0x0807cd5e(MAY)
+0x0807cd5e:	cmpb	$0x0, 0x59(%esp)	; from: 0x0807cd52(MAY)
+0x0807cd63:	je	0x0807cd6f	; targets: 0x0807cd6f(MAY)
+0x0807cd6f:	cmpb	$0x0, 0x5a(%esp)	; from: 0x0807cd63(MAY)
+0x0807cd74:	je	0x0807cd80	; targets: 0x0807cd80(MAY)
+0x0807cd80:	cmpb	$0x0, 0x5b(%esp)	; from: 0x0807cd74(MAY)
+0x0807cd85:	je	0x0807cd91	; targets: 0x0807cd91(MAY)
+0x0807cd91:	cmpl	$0xf, %ebx	; from: 0x0807cd85(MAY)
+0x0807cd94:	jne	0x0807cdad	; targets: 0x0807cdad(MAY), 0x0807cd96(MAY)
+0x0807cd96:	movl	0x10(%esp), %edx	; from: 0x0807cd94(MAY)
+0x0807cd9a:	xorl	%eax, %eax
+0x0807cd9c:	orl	%esi, %edi
+0x0807cd9e:	setne	%al
+0x0807cda1:	movl	%eax, (%edx)
+0x0807cda3:	movl	0x14(%esp), %eax
+0x0807cda7:	movl	$0x1, (%eax)
+0x0807cdad:	addl	$0x74, %esp	; from: 0x0807cd94(MAY), 0x0807cb3d(MAY)
+0x0807cdb0:	popl	%ebx
+0x0807cdb1:	popl	%esi
+0x0807cdb2:	popl	%edi
+0x0807cdb3:	popl	%ebp
+0x0807cdb4:	ret	; targets: 0x0804fa04(MAY)
+
+0x0807cfce:	movl	0xc(%esp), %eax	; from: 0x0807ccb5(MAY)
+0x0807cfd2:	movl	%eax, 0xb78(%ecx)
+0x0807cfd8:	jmp	0x0807ccbb	; targets: 0x0807ccbb(MAY)
+
+__libc_init_secure:
+0x0807d810:	pushl	%esi	; from: 0x0804fa48(MAY)
+0x0807d811:	pushl	%ebx
+0x0807d812:	call	__x86.get_pc_thunk.bx	; targets: 0x08048780(MAY)
+0x0807d817:	addl	$0x6a7e9, %ebx	; from: 0x08048783(MAY)
+0x0807d81d:	subl	$0x4, %esp
+0x0807d820:	movl	$0x80ea2a8, %eax
+0x0807d826:	movl	(%eax), %eax
+0x0807d828:	testl	%eax, %eax
+0x0807d82a:	je	0x0807d838	; targets: 0x0807d82c(MAY), 0x0807d838(MAY)
+0x0807d82c:	addl	$0x4, %esp	; from: 0x0807d82a(MAY)
+0x0807d82f:	popl	%ebx
+0x0807d830:	popl	%esi
+0x0807d831:	ret	; targets: 0x0804fa4d(MAY)
+
+0x0807d838:	call	__geteuid	; targets: 0x0809d110(MAY)	; from: 0x0807d82a(MAY)
+
+_dl_tunable_set_hwcaps:
+0x0807d8f0:	pushl	%ebp	; from: 0x0807cae2(MAY)
+0x0807d8f1:	pushl	%edi
+0x0807d8f2:	pushl	%esi
+0x0807d8f3:	pushl	%ebx
+0x0807d8f4:	call	__x86.get_pc_thunk.bx	; targets: 0x08048780(MAY)
+
+__syscall_error:
+0x0807e700:	call	__x86.get_pc_thunk.dx	; targets: 0x0804a97f(MAY)	; from: 0x0809d60e(MAY)
+
+__geteuid:
+0x0809d110:	movl	$0xc9, %eax	; from: 0x0807d838(MAY)
+0x0809d115:	call	%gs:0x10	; targets: 0x312d302e(MAY)
+
+brk:
+0x0809d5e0:	pushl	%ebx	; from: 0x0807a0a2(MAY), 0x0807a0e6(MAY)
+0x0809d5e1:	movl	$0x2d, %eax
+0x0809d5e6:	movl	0x8(%esp), %ebx
+0x0809d5ea:	call	__x86.get_pc_thunk.dx	; targets: 0x0804a97f(MAY)
+0x0809d5ef:	addl	$0x4aa11, %edx	; from: 0x0804a982(MAY)
+0x0809d5f5:	int	$0xffffff80
+0x0809d5f7:	cmpl	%eax, %ebx
+0x0809d5f9:	movl	%eax, 0x1d0c(%edx)
+0x0809d5ff:	ja	0x0809d608	; targets: 0x0809d601(MAY), 0x0809d608(MAY)
+0x0809d601:	xorl	%eax, %eax	; from: 0x0809d5ff(MAY)
+0x0809d603:	popl	%ebx
+0x0809d604:	ret	; targets: 0x0807a0eb(MAY), 0x0807a0a7(MAY)
+
+0x0809d608:	popl	%ebx	; from: 0x0809d5ff(MAY)
+0x0809d609:	movl	$0xfffffff4, %eax
+0x0809d60e:	jmp	__syscall_error	; targets: 0x0807e700(MAY)
+
+_dl_strtoul:
+0x080a5e60:	pushl	%ebp	; from: 0x0807c516(MAY)
+0x080a5e61:	pushl	%edi
+0x080a5e62:	pushl	%esi
+0x080a5e63:	pushl	%ebx
+0x080a5e64:	call	__x86.get_pc_thunk.bx	; targets: 0x08048780(MAY)
+0x080a5e69:	addl	$0x42197, %ebx	; from: 0x08048783(MAY)
+0x080a5e6f:	subl	$0x2c, %esp
+0x080a5e72:	movl	0x40(%esp), %ebp
+0x080a5e76:	movzbl	(%ebp), %eax
+0x080a5e7a:	cmpb	$0x20, %al
+0x080a5e7c:	jne	0x080a5e8b	; targets: 0x080a5e8b(MAY), 0x080a5e7e(MAY)
+0x080a5e7e:	nop		; from: 0x080a5e7c(MAY)
+0x080a5e80:	addl	$0x1, %ebp	; from: 0x080a5e89(MAY), 0x080a5e8d(MAY)
+0x080a5e83:	movzbl	(%ebp), %eax
+0x080a5e87:	cmpb	$0x20, %al
+0x080a5e89:	je	0x080a5e80	; targets: 0x080a5e8b(MAY), 0x080a5e80(MAY)
+0x080a5e8b:	cmpb	$0x9, %al	; from: 0x080a5e7c(MAY), 0x080a5e89(MAY)
+0x080a5e8d:	je	0x080a5e80	; targets: 0x080a5e8f(MAY), 0x080a5e80(MAY)
+0x080a5e8f:	cmpb	$0x2d, %al	; from: 0x080a5e8d(MAY)
+0x080a5e91:	je	0x080a5fc0	; targets: 0x080a5fc0(MAY), 0x080a5e97(MAY)
+0x080a5e97:	cmpb	$0x2b, %al	; from: 0x080a5e91(MAY)
+0x080a5e99:	movb	$0x1, 0x1f(%esp)
+0x080a5e9e:	sete	%al
+0x080a5ea1:	movzbl	%al, %eax
+0x080a5ea4:	addl	%eax, %ebp
+0x080a5ea6:	movsbl	(%ebp), %eax	; from: 0x080a5fc8(MAY)
+0x080a5eaa:	leal	-48(%eax), %edx
+0x080a5ead:	cmpb	$0x9, %dl
+0x080a5eb0:	jbe	0x080a5ed0	; targets: 0x080a5eb2(MAY), 0x080a5ed0(MAY)
+0x080a5eb2:	movl	0x44(%esp), %ecx	; from: 0x080a5eb0(MAY)
+0x080a5eb6:	xorl	%esi, %esi
+0x080a5eb8:	xorl	%edi, %edi
+0x080a5eba:	testl	%ecx, %ecx
+0x080a5ebc:	je	0x080a5ec4	; targets: 0x080a5ec4(MAY)
+0x080a5ebe:	movl	0x44(%esp), %eax	; from: 0x080a5f51(MAY)
+0x080a5ec2:	movl	%ebp, (%eax)
+0x080a5ec4:	addl	$0x2c, %esp	; from: 0x080a5f57(MAY), 0x080a5fe3(MAY), 0x080a5ebc(MAY)
+0x080a5ec7:	movl	%esi, %eax
+0x080a5ec9:	movl	%edi, %edx
+0x080a5ecb:	popl	%ebx
+0x080a5ecc:	popl	%esi
+0x080a5ecd:	popl	%edi
+0x080a5ece:	popl	%ebp
+0x080a5ecf:	ret	; targets: 0x0807c51b(MAY)
+
+0x080a5ed0:	cmpb	$0x30, %al	; from: 0x080a5eb0(MAY)
+0x080a5ed2:	movl	$0xa, 0x14(%esp)
+0x080a5eda:	movl	$0x9, %edx
+0x080a5edf:	je	0x080a6000	; targets: 0x080a5ee5(MAY), 0x080a6000(MAY)
+0x080a5ee5:	leal	0x30(%edx), %ecx	; from: 0x080a602d(MAY), 0x080a5edf(MAY), 0x080a601b(MAY)
+0x080a5ee8:	xorl	%esi, %esi
+0x080a5eea:	xorl	%edi, %edi
+0x080a5eec:	movl	%ecx, 0x18(%esp)
+0x080a5ef0:	movl	0x14(%esp), %ecx
+0x080a5ef4:	movl	%ecx, (%esp)
+0x080a5ef7:	sarl	$0x1f, %ecx
+0x080a5efa:	cmpb	$0x2f, %al
+0x080a5efc:	movl	%ecx, 0x4(%esp)
+0x080a5f00:	jle	0x080a5f97	; targets: 0x080a5f06(MAY), 0x080a5f97(MAY)
+0x080a5f06:	leal	(%esi), %esi	; from: 0x080a5f00(MAY)
+0x080a5f09:	leal	(%edi), %edi
+0x080a5f10:	movsbl	%al, %edx	; from: 0x080a5f91(MAY)
+0x080a5f13:	cmpl	0x18(%esp), %edx
+0x080a5f17:	ja	0x080a5f97	; targets: 0x080a5f19(MAY), 0x080a5f97(MAY)
+0x080a5f19:	leal	-48(%edx), %eax	; from: 0x080a5f17(MAY)
+0x080a5f1c:	cltd		; from: 0x080a5fbb(MAY), 0x080a5fa9(MAY)
+0x080a5f1d:	movl	%eax, 0x8(%esp)
+0x080a5f21:	notl	%eax
+0x080a5f23:	movl	%edx, 0xc(%esp)
+0x080a5f27:	notl	%edx
+0x080a5f29:	pushl	0x4(%esp)
+0x080a5f2d:	pushl	0x4(%esp)
+0x080a5f31:	pushl	%edx
+0x080a5f32:	pushl	%eax
+0x080a5f33:	call	__udivdi3	; targets: 0x080b0a50(MAY)
+0x080a5f38:	addl	$0x10, %esp	; from: 0x080b0b2d(MAY), 0x080b0b15(MAY), 0x080b0b41(MAY), 0x080b0a9b(MAY)
+0x080a5f3b:	cmpl	%edi, %edx
+0x080a5f3d:	ja	0x080a5f64	; targets: 0x080a5f3f(MAY), 0x080a5f64(MAY)
+0x080a5f3f:	jae	0x080a5f60	; targets: 0x080a5f41(MAY), 0x080a5f60(MAY)	; from: 0x080a5f3d(MAY)
+0x080a5f41:	movl	0x44(%esp), %edx	; from: 0x080a5f3f(MAY), 0x080a5f62(MAY)
+0x080a5f45:	movl	$0xffffffff, %esi
+0x080a5f4a:	movl	$0xffffffff, %edi
+0x080a5f4f:	testl	%edx, %edx
+0x080a5f51:	jne	0x080a5ebe	; targets: 0x080a5f57(MAY), 0x080a5ebe(MAY)
+0x080a5f57:	jmp	0x080a5ec4	; targets: 0x080a5ec4(MAY)	; from: 0x080a5f51(MAY)
+0x080a5f60:	cmpl	%esi, %eax	; from: 0x080a5f3f(MAY)
+0x080a5f62:	jbe	0x080a5f41	; targets: 0x080a5f64(MAY), 0x080a5f41(MAY)
+0x080a5f64:	movl	0x4(%esp), %edx	; from: 0x080a5f62(MAY), 0x080a5f3d(MAY)
+0x080a5f68:	movl	(%esp), %eax
+0x080a5f6b:	movl	%edx, %ecx
+0x080a5f6d:	imull	%edi, %eax
+0x080a5f70:	imull	%esi, %ecx
+0x080a5f73:	addl	%eax, %ecx
+0x080a5f75:	movl	%esi, %eax
+0x080a5f77:	mull	(%esp), %eax
+0x080a5f7a:	movl	%edx, %edi
+0x080a5f7c:	movl	%eax, %esi
+0x080a5f7e:	addl	%ecx, %edi
+0x080a5f80:	addl	0x8(%esp), %esi
+0x080a5f84:	adcl	0xc(%esp), %edi
+0x080a5f88:	addl	$0x1, %ebp
+0x080a5f8b:	movsbl	(%ebp), %eax
+0x080a5f8f:	cmpb	$0x2f, %al
+0x080a5f91:	jg	0x080a5f10	; targets: 0x080a5f10(MAY), 0x080a5f97(MAY)
+0x080a5f97:	cmpl	$0x10, 0x14(%esp)	; from: 0x080a5f00(MAY), 0x080a5f91(MAY), 0x080a5f17(MAY)
+0x080a5f9c:	jne	0x080a5fd0	; targets: 0x080a5fd0(MAY), 0x080a5f9e(MAY)
+0x080a5f9e:	leal	-97(%eax), %edx	; from: 0x080a5f9c(MAY)
+0x080a5fa1:	cmpb	$0x5, %dl
+0x080a5fa4:	ja	0x080a5fb0	; targets: 0x080a5fb0(MAY), 0x080a5fa6(MAY)
+0x080a5fa6:	subl	$0x57, %eax	; from: 0x080a5fa4(MAY)
+0x080a5fa9:	jmp	0x080a5f1c	; targets: 0x080a5f1c(MAY)
+0x080a5fb0:	leal	-65(%eax), %edx	; from: 0x080a5fa4(MAY)
+0x080a5fb3:	cmpb	$0x5, %dl
+0x080a5fb6:	ja	0x080a5fd0	; targets: 0x080a5fd0(MAY), 0x080a5fb8(MAY)
+0x080a5fb8:	subl	$0x37, %eax	; from: 0x080a5fb6(MAY)
+0x080a5fbb:	jmp	0x080a5f1c	; targets: 0x080a5f1c(MAY)
+0x080a5fc0:	addl	$0x1, %ebp	; from: 0x080a5e91(MAY)
+0x080a5fc3:	movb	$0x0, 0x1f(%esp)
+0x080a5fc8:	jmp	0x080a5ea6	; targets: 0x080a5ea6(MAY)
+0x080a5fd0:	movl	0x44(%esp), %eax	; from: 0x080a5f9c(MAY), 0x080a5fb6(MAY)
+0x080a5fd4:	testl	%eax, %eax
+0x080a5fd6:	je	0x080a5fde	; targets: 0x080a5fde(MAY)
+0x080a5fde:	cmpb	$0x0, 0x1f(%esp)	; from: 0x080a5fd6(MAY)
+0x080a5fe3:	jne	0x080a5ec4	; targets: 0x080a5ec4(MAY), 0x080a5fe9(MAY)
+0x080a5fe9:	negl	%esi	; from: 0x080a5fe3(MAY)
+0x080a5feb:	adcl	$0x0, %edi
+0x080a5fee:	addl	$0x2c, %esp
+0x080a5ff1:	movl	%esi, %eax
+0x080a5ff3:	negl	%edi
+0x080a5ff5:	popl	%ebx
+0x080a5ff6:	movl	%edi, %edx
+0x080a5ff8:	popl	%esi
+0x080a5ff9:	popl	%edi
+0x080a5ffa:	popl	%ebp
+0x080a5ffb:	ret	; targets: 0x0807c51b(MAY)
+
+0x080a6000:	movzbl	0x1(%ebp), %ecx	; from: 0x080a5edf(MAY)
+0x080a6004:	andl	$0xffffffdf, %ecx
+0x080a6007:	cmpb	$0x58, %cl
+0x080a600a:	jne	0x080a6020	; targets: 0x080a6020(MAY), 0x080a600c(MAY)
+0x080a600c:	movsbl	0x2(%ebp), %eax	; from: 0x080a600a(MAY)
+0x080a6010:	movl	$0x10, 0x14(%esp)
+0x080a6018:	addl	$0x2, %ebp
+0x080a601b:	jmp	0x080a5ee5	; targets: 0x080a5ee5(MAY)
+0x080a6020:	movl	$0x8, 0x14(%esp)	; from: 0x080a600a(MAY)
+0x080a6028:	movl	$0x7, %edx
+0x080a602d:	jmp	0x080a5ee5	; targets: 0x080a5ee5(MAY)
+
+__udivdi3:
+0x080b0a50:	pushl	%ebp	; from: 0x080a5f33(MAY)
+0x080b0a51:	pushl	%edi
+0x080b0a52:	pushl	%esi
+0x080b0a53:	pushl	%ebx
+0x080b0a54:	subl	$0x1c, %esp
+0x080b0a57:	movl	0x3c(%esp), %edx
+0x080b0a5b:	movl	0x30(%esp), %ebp
+0x080b0a5f:	movl	0x34(%esp), %esi
+0x080b0a63:	movl	0x38(%esp), %ebx
+0x080b0a67:	testl	%edx, %edx
+0x080b0a69:	jne	0x080b0aa0	; targets: 0x080b0a6b(MAY), 0x080b0aa0(MAY)
+0x080b0a6b:	cmpl	%esi, %ebx	; from: 0x080b0a69(MAY)
+0x080b0a6d:	ja	0x080b0b30	; targets: 0x080b0b30(MAY), 0x080b0a73(MAY)
+0x080b0a73:	testl	%ebx, %ebx	; from: 0x080b0a6d(MAY)
+0x080b0a75:	movl	%ebx, %ecx
+0x080b0a77:	jne	0x080b0a84	; targets: 0x080b0a84(MAY), 0x080b0a79(MAY)
+0x080b0a79:	movl	$0x1, %eax	; from: 0x080b0a77(MAY)
+0x080b0a7e:	xorl	%edx, %edx
+0x080b0a80:	divl	%ebx, %eax
+0x080b0a82:	movl	%eax, %ecx
+0x080b0a84:	xorl	%edx, %edx	; from: 0x080b0a77(MAY)
+0x080b0a86:	movl	%esi, %eax
+0x080b0a88:	divl	%ecx, %eax
+0x080b0a8a:	movl	%eax, %esi
+0x080b0a8c:	movl	%ebp, %eax
+0x080b0a8e:	movl	%esi, %edi
+0x080b0a90:	divl	%ecx, %eax
+0x080b0a92:	movl	%edi, %edx
+0x080b0a94:	addl	$0x1c, %esp
+0x080b0a97:	popl	%ebx
+0x080b0a98:	popl	%esi
+0x080b0a99:	popl	%edi
+0x080b0a9a:	popl	%ebp
+0x080b0a9b:	ret	; targets: 0x080a5f38(MAY)
+
+0x080b0aa0:	cmpl	%esi, %edx	; from: 0x080b0a69(MAY)
+0x080b0aa2:	ja	0x080b0b20	; targets: 0x080b0b20(MAY), 0x080b0aa4(MAY)
+0x080b0aa4:	bsrl	%edx, %edi	; from: 0x080b0aa2(MAY)
+0x080b0aa7:	xorl	$0x1f, %edi
+0x080b0aaa:	je	0x080b0b48	; targets: 0x080b0b48(MAY), 0x080b0ab0(MAY)
+0x080b0ab0:	movl	%edi, %ecx	; from: 0x080b0aaa(MAY)
+0x080b0ab2:	movl	$0x20, %eax
+0x080b0ab7:	subl	%edi, %eax
+0x080b0ab9:	shll	%cl, %edx
+0x080b0abb:	movl	%edx, 0x8(%esp)
+0x080b0abf:	movl	%eax, %ecx
+0x080b0ac1:	movl	%ebx, %edx
+0x080b0ac3:	shrl	%cl, %edx
+0x080b0ac5:	movl	0x8(%esp), %ecx
+0x080b0ac9:	orl	%edx, %ecx
+0x080b0acb:	movl	%esi, %edx
+0x080b0acd:	movl	%ecx, 0x8(%esp)
+0x080b0ad1:	movl	%edi, %ecx
+0x080b0ad3:	shll	%cl, %ebx
+0x080b0ad5:	movl	%eax, %ecx
+0x080b0ad7:	shrl	%cl, %edx
+0x080b0ad9:	movl	%edi, %ecx
+0x080b0adb:	movl	%ebx, 0xc(%esp)
+0x080b0adf:	shll	%cl, %esi
+0x080b0ae1:	movl	%ebp, %ebx
+0x080b0ae3:	movl	%eax, %ecx
+0x080b0ae5:	shrl	%cl, %ebx
+0x080b0ae7:	orl	%ebx, %esi
+0x080b0ae9:	movl	%esi, %eax
+0x080b0aeb:	divl	0x8(%esp), %eax
+0x080b0aef:	movl	%edx, %esi
+0x080b0af1:	movl	%eax, %ebx
+0x080b0af3:	mull	0xc(%esp), %eax
+0x080b0af7:	cmpl	%edx, %esi
+0x080b0af9:	jb	0x080b0b07	; targets: 0x080b0b07(MAY), 0x080b0afb(MAY)
+0x080b0afb:	movl	%edi, %ecx	; from: 0x080b0af9(MAY)
+0x080b0afd:	shll	%cl, %ebp
+0x080b0aff:	cmpl	%eax, %ebp
+0x080b0b01:	jae	0x080b0b60	; targets: 0x080b0b60(MAY), 0x080b0b03(MAY)
+0x080b0b03:	cmpl	%edx, %esi	; from: 0x080b0b01(MAY)
+0x080b0b05:	jne	0x080b0b60	; targets: 0x080b0b07(MAY), 0x080b0b60(MAY)
+0x080b0b07:	leal	-1(%ebx), %eax	; from: 0x080b0af9(MAY), 0x080b0b05(MAY)
+0x080b0b0a:	xorl	%edi, %edi
+0x080b0b0c:	movl	%edi, %edx
+0x080b0b0e:	addl	$0x1c, %esp
+0x080b0b11:	popl	%ebx
+0x080b0b12:	popl	%esi
+0x080b0b13:	popl	%edi
+0x080b0b14:	popl	%ebp
+0x080b0b15:	ret	; targets: 0x080a5f38(MAY)
+
+0x080b0b20:	xorl	%edi, %edi	; from: 0x080b0aa2(MAY)
+0x080b0b22:	xorl	%eax, %eax
+0x080b0b24:	movl	%edi, %edx	; from: 0x080b0b64(MAY), 0x080b0b50(MAY), 0x080b0b57(MAY)
+0x080b0b26:	addl	$0x1c, %esp
+0x080b0b29:	popl	%ebx
+0x080b0b2a:	popl	%esi
+0x080b0b2b:	popl	%edi
+0x080b0b2c:	popl	%ebp
+0x080b0b2d:	ret	; targets: 0x080a5f38(MAY)
+
+0x080b0b30:	xorl	%edi, %edi	; from: 0x080b0a6d(MAY)
+0x080b0b32:	movl	%ebp, %eax
+0x080b0b34:	movl	%esi, %edx
+0x080b0b36:	divl	%ebx, %eax
+0x080b0b38:	movl	%edi, %edx
+0x080b0b3a:	addl	$0x1c, %esp
+0x080b0b3d:	popl	%ebx
+0x080b0b3e:	popl	%esi
+0x080b0b3f:	popl	%edi
+0x080b0b40:	popl	%ebp
+0x080b0b41:	ret	; targets: 0x080a5f38(MAY)
+
+0x080b0b48:	cmpl	%esi, %edx	; from: 0x080b0aaa(MAY)
+0x080b0b4a:	jb	0x080b0b52	; targets: 0x080b0b52(MAY), 0x080b0b4c(MAY)
+0x080b0b4c:	xorl	%eax, %eax	; from: 0x080b0b4a(MAY)
+0x080b0b4e:	cmpl	%ebp, %ebx
+0x080b0b50:	ja	0x080b0b24	; targets: 0x080b0b24(MAY), 0x080b0b52(MAY)
+0x080b0b52:	movl	$0x1, %eax	; from: 0x080b0b4a(MAY), 0x080b0b50(MAY)
+0x080b0b57:	jmp	0x080b0b24	; targets: 0x080b0b24(MAY)
+0x080b0b60:	movl	%ebx, %eax	; from: 0x080b0b01(MAY), 0x080b0b05(MAY)
+0x080b0b62:	xorl	%edi, %edi
+0x080b0b64:	jmp	0x080b0b24	; targets: 0x080b0b24(MAY)

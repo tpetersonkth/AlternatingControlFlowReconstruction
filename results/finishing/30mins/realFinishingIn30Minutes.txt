@@ -1,0 +1,217 @@
+nohup: ignoring input
+cpa i: NO : ../Input/Real/linuxCommandsStatic/[
+cpa i: NO : ../Input/Real/linuxCommandsStatic/b2sum
+cpa i: NO : ../Input/Real/linuxCommandsStatic/base32
+cpa i: NO : ../Input/Real/linuxCommandsStatic/base64
+cpa i: NO : ../Input/Real/linuxCommandsStatic/basename
+cpa i: NO : ../Input/Real/linuxCommandsStatic/basenc
+cpa i: NO : ../Input/Real/linuxCommandsStatic/cat
+cpa i: NO : ../Input/Real/linuxCommandsStatic/chcon
+cpa i: NO : ../Input/Real/linuxCommandsStatic/chgrp
+cpa i: NO : ../Input/Real/linuxCommandsStatic/chmod
+cpa i: NO : ../Input/Real/linuxCommandsStatic/chown
+cpa i: NO : ../Input/Real/linuxCommandsStatic/chroot
+cpa i: NO : ../Input/Real/linuxCommandsStatic/cksum
+cpa i: NO : ../Input/Real/linuxCommandsStatic/comm
+cpa i: NO : ../Input/Real/linuxCommandsStatic/cp
+cpa i: NO : ../Input/Real/linuxCommandsStatic/csplit
+cpa i: NO : ../Input/Real/linuxCommandsStatic/cut
+cpa i: NO : ../Input/Real/linuxCommandsStatic/date
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x53f
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.X86Disassembler.getPrefixes(X86Disassembler.java:145)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:80)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.Program.getStatement(Program.java:316)
+	at org.jakstab.cfa.ResolvingTransformerFactory.getTransformers(ResolvingTransformerFactory.java:63)
+	at org.jakstab.analysis.CPAAlgorithm.run(CPAAlgorithm.java:259)
+	at org.jakstab.analysis.ControlFlowReconstruction.run(ControlFlowReconstruction.java:257)
+	at org.jakstab.Main.runAlgorithm(Main.java:458)
+	at org.jakstab.Main.main(Main.java:201)
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x57c
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.X86Disassembler.getPrefixes(X86Disassembler.java:145)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:80)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.Program.getStatement(Program.java:316)
+	at org.jakstab.cfa.ResolvingTransformerFactory.getTransformers(ResolvingTransformerFactory.java:63)
+	at org.jakstab.analysis.CPAAlgorithm.run(CPAAlgorithm.java:259)
+	at org.jakstab.analysis.ControlFlowReconstruction.run(ControlFlowReconstruction.java:257)
+	at org.jakstab.Main.runAlgorithm(Main.java:458)
+	at org.jakstab.Main.main(Main.java:201)
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x54f
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.X86Disassembler.getPrefixes(X86Disassembler.java:145)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:80)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.Program.getStatement(Program.java:316)
+	at org.jakstab.cfa.ResolvingTransformerFactory.getTransformers(ResolvingTransformerFactory.java:63)
+	at org.jakstab.analysis.CPAAlgorithm.run(CPAAlgorithm.java:259)
+	at org.jakstab.analysis.ControlFlowReconstruction.run(ControlFlowReconstruction.java:257)
+	at org.jakstab.Main.runAlgorithm(Main.java:458)
+	at org.jakstab.Main.main(Main.java:201)
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x537
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.InstructionDecoder.decode(InstructionDecoder.java:135)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:120)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.Program.getStatement(Program.java:316)
+	at org.jakstab.cfa.ResolvingTransformerFactory.getTransformers(ResolvingTransformerFactory.java:63)
+	at org.jakstab.analysis.CPAAlgorithm.run(CPAAlgorithm.java:259)
+	at org.jakstab.analysis.ControlFlowReconstruction.run(ControlFlowReconstruction.java:257)
+	at org.jakstab.Main.runAlgorithm(Main.java:458)
+	at org.jakstab.Main.main(Main.java:201)
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x53f
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.X86Disassembler.getPrefixes(X86Disassembler.java:145)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:80)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.ProgramGraphWriter.writeAssemblyBBCFG(ProgramGraphWriter.java:592)
+	at org.jakstab.ProgramGraphWriter.writeAssemblyBasicBlockGraph(ProgramGraphWriter.java:288)
+	at org.jakstab.Main.main(Main.java:341)
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x54f
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.X86Disassembler.getPrefixes(X86Disassembler.java:145)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:80)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.ProgramGraphWriter.writeAssemblyBBCFG(ProgramGraphWriter.java:592)
+	at org.jakstab.ProgramGraphWriter.writeAssemblyBasicBlockGraph(ProgramGraphWriter.java:288)
+	at org.jakstab.Main.main(Main.java:341)
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x57c
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.X86Disassembler.getPrefixes(X86Disassembler.java:145)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:80)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.ProgramGraphWriter.writeAssemblyBBCFG(ProgramGraphWriter.java:592)
+	at org.jakstab.ProgramGraphWriter.writeAssemblyBasicBlockGraph(ProgramGraphWriter.java:288)
+	at org.jakstab.Main.main(Main.java:341)
+cpa i: yes : ../Input/Real/linuxCommandsStatic/dcgen
+cpa i: NO : ../Input/Real/linuxCommandsStatic/dd
+cpa i: NO : ../Input/Real/linuxCommandsStatic/df
+cpa i: NO : ../Input/Real/linuxCommandsStatic/dir
+cpa i: NO : ../Input/Real/linuxCommandsStatic/dircolors
+cpa i: NO : ../Input/Real/linuxCommandsStatic/dirname
+cpa i: NO : ../Input/Real/linuxCommandsStatic/du
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x6c3
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.X86Disassembler.getPrefixes(X86Disassembler.java:145)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:80)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.Program.getStatement(Program.java:316)
+	at org.jakstab.cfa.ResolvingTransformerFactory.getTransformers(ResolvingTransformerFactory.java:63)
+	at org.jakstab.analysis.CPAAlgorithm.run(CPAAlgorithm.java:259)
+	at org.jakstab.analysis.ControlFlowReconstruction.run(ControlFlowReconstruction.java:257)
+	at org.jakstab.Main.runAlgorithm(Main.java:458)
+	at org.jakstab.Main.main(Main.java:201)
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x6c9
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.X86Disassembler.getPrefixes(X86Disassembler.java:145)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:80)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.Program.getStatement(Program.java:316)
+	at org.jakstab.cfa.ResolvingTransformerFactory.getTransformers(ResolvingTransformerFactory.java:63)
+	at org.jakstab.analysis.CPAAlgorithm.run(CPAAlgorithm.java:259)
+	at org.jakstab.analysis.ControlFlowReconstruction.run(ControlFlowReconstruction.java:257)
+	at org.jakstab.Main.runAlgorithm(Main.java:458)
+	at org.jakstab.Main.main(Main.java:201)
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x6c3
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.X86Disassembler.getPrefixes(X86Disassembler.java:145)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:80)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.ProgramGraphWriter.writeAssemblyBBCFG(ProgramGraphWriter.java:592)
+	at org.jakstab.ProgramGraphWriter.writeAssemblyBasicBlockGraph(ProgramGraphWriter.java:288)
+	at org.jakstab.Main.main(Main.java:341)
+java.lang.ArrayIndexOutOfBoundsException: Disassembler requested byte outside of file area: 0x6c9
+	at org.jakstab.disasm.x86.InstructionDecoder.readByte(InstructionDecoder.java:53)
+	at org.jakstab.disasm.x86.X86Disassembler.getPrefixes(X86Disassembler.java:145)
+	at org.jakstab.disasm.x86.X86Disassembler.decodeInstruction(X86Disassembler.java:80)
+	at org.jakstab.Program.getInstruction(Program.java:407)
+	at org.jakstab.ProgramGraphWriter.writeAssemblyBBCFG(ProgramGraphWriter.java:592)
+	at org.jakstab.ProgramGraphWriter.writeAssemblyBasicBlockGraph(ProgramGraphWriter.java:288)
+	at org.jakstab.Main.main(Main.java:341)
+cpa i: yes : ../Input/Real/linuxCommandsStatic/du-tests
+cpa i: NO : ../Input/Real/linuxCommandsStatic/echo
+cpa i: NO : ../Input/Real/linuxCommandsStatic/env
+cpa i: NO : ../Input/Real/linuxCommandsStatic/expand
+cpa i: NO : ../Input/Real/linuxCommandsStatic/expr
+cpa i: NO : ../Input/Real/linuxCommandsStatic/factor
+cpa i: NO : ../Input/Real/linuxCommandsStatic/false
+cpa i: NO : ../Input/Real/linuxCommandsStatic/fmt
+cpa i: NO : ../Input/Real/linuxCommandsStatic/fold
+cpa i: NO : ../Input/Real/linuxCommandsStatic/getlimits
+cpa i: NO : ../Input/Real/linuxCommandsStatic/ginstall
+cpa i: NO : ../Input/Real/linuxCommandsStatic/groups
+cpa i: NO : ../Input/Real/linuxCommandsStatic/head
+cpa i: NO : ../Input/Real/linuxCommandsStatic/hostid
+cpa i: NO : ../Input/Real/linuxCommandsStatic/id
+cpa i: NO : ../Input/Real/linuxCommandsStatic/join
+cpa i: NO : ../Input/Real/linuxCommandsStatic/kill
+cpa i: NO : ../Input/Real/linuxCommandsStatic/link
+cpa i: NO : ../Input/Real/linuxCommandsStatic/ln
+cpa i: NO : ../Input/Real/linuxCommandsStatic/logname
+cpa i: NO : ../Input/Real/linuxCommandsStatic/ls
+cpa i: NO : ../Input/Real/linuxCommandsStatic/make-prime-list
+cpa i: NO : ../Input/Real/linuxCommandsStatic/md5sum
+cpa i: NO : ../Input/Real/linuxCommandsStatic/mkdir
+cpa i: NO : ../Input/Real/linuxCommandsStatic/mkfifo
+cpa i: NO : ../Input/Real/linuxCommandsStatic/mknod
+cpa i: NO : ../Input/Real/linuxCommandsStatic/mktemp
+cpa i: NO : ../Input/Real/linuxCommandsStatic/mv
+cpa i: NO : ../Input/Real/linuxCommandsStatic/nice
+cpa i: NO : ../Input/Real/linuxCommandsStatic/nl
+cpa i: NO : ../Input/Real/linuxCommandsStatic/nohup
+cpa i: NO : ../Input/Real/linuxCommandsStatic/nproc
+cpa i: NO : ../Input/Real/linuxCommandsStatic/numfmt
+cpa i: NO : ../Input/Real/linuxCommandsStatic/od
+cpa i: NO : ../Input/Real/linuxCommandsStatic/paste
+cpa i: NO : ../Input/Real/linuxCommandsStatic/pathchk
+cpa i: NO : ../Input/Real/linuxCommandsStatic/pinky
+cpa i: NO : ../Input/Real/linuxCommandsStatic/pr
+cpa i: NO : ../Input/Real/linuxCommandsStatic/printenv
+cpa i: NO : ../Input/Real/linuxCommandsStatic/printf
+cpa i: NO : ../Input/Real/linuxCommandsStatic/ptx
+cpa i: NO : ../Input/Real/linuxCommandsStatic/pwd
+cpa i: NO : ../Input/Real/linuxCommandsStatic/readlink
+cpa i: NO : ../Input/Real/linuxCommandsStatic/realpath
+cpa i: NO : ../Input/Real/linuxCommandsStatic/rm
+cpa i: NO : ../Input/Real/linuxCommandsStatic/rmdir
+cpa i: NO : ../Input/Real/linuxCommandsStatic/runcon
+cpa i: NO : ../Input/Real/linuxCommandsStatic/seq
+cpa i: NO : ../Input/Real/linuxCommandsStatic/sha1sum
+cpa i: NO : ../Input/Real/linuxCommandsStatic/sha224sum
+cpa i: NO : ../Input/Real/linuxCommandsStatic/sha256sum
+cpa i: NO : ../Input/Real/linuxCommandsStatic/sha384sum
+cpa i: NO : ../Input/Real/linuxCommandsStatic/sha512sum
+cpa i: NO : ../Input/Real/linuxCommandsStatic/shred
+cpa i: NO : ../Input/Real/linuxCommandsStatic/shuf
+cpa i: NO : ../Input/Real/linuxCommandsStatic/sleep
+cpa i: NO : ../Input/Real/linuxCommandsStatic/sort
+cpa i: NO : ../Input/Real/linuxCommandsStatic/split
+cpa i: NO : ../Input/Real/linuxCommandsStatic/stat
+cpa i: NO : ../Input/Real/linuxCommandsStatic/stdbuf
+cpa i: NO : ../Input/Real/linuxCommandsStatic/stty
+cpa i: NO : ../Input/Real/linuxCommandsStatic/sum
+cpa i: NO : ../Input/Real/linuxCommandsStatic/sync
+cpa i: NO : ../Input/Real/linuxCommandsStatic/tac
+cpa i: NO : ../Input/Real/linuxCommandsStatic/tail
+cpa i: NO : ../Input/Real/linuxCommandsStatic/tee
+cpa i: NO : ../Input/Real/linuxCommandsStatic/test
+cpa i: NO : ../Input/Real/linuxCommandsStatic/timeout
+cpa i: NO : ../Input/Real/linuxCommandsStatic/touch
+cpa i: NO : ../Input/Real/linuxCommandsStatic/tr
+cpa i: NO : ../Input/Real/linuxCommandsStatic/true
+cpa i: NO : ../Input/Real/linuxCommandsStatic/truncate
+cpa i: NO : ../Input/Real/linuxCommandsStatic/tsort
+cpa i: NO : ../Input/Real/linuxCommandsStatic/tty
+cpa i: NO : ../Input/Real/linuxCommandsStatic/uname
+cpa i: NO : ../Input/Real/linuxCommandsStatic/unexpand
+cpa i: NO : ../Input/Real/linuxCommandsStatic/uniq
+cpa i: NO : ../Input/Real/linuxCommandsStatic/unlink
+cpa i: NO : ../Input/Real/linuxCommandsStatic/uptime
+cpa i: NO : ../Input/Real/linuxCommandsStatic/users
+cpa i: NO : ../Input/Real/linuxCommandsStatic/vdir
+cpa i: NO : ../Input/Real/linuxCommandsStatic/wc
+cpa i: NO : ../Input/Real/linuxCommandsStatic/who
+cpa i: NO : ../Input/Real/linuxCommandsStatic/whoami
+cpa i: NO : ../Input/Real/linuxCommandsStatic/yes

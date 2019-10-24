@@ -1,0 +1,74 @@
+=======================================================================
+   Statistics for Control Flow Reconstruction
+=======================================================================
+   Total time:                           1795670ms
+   CPA time:                                   0ms
+   DFS time:                                   0ms
+   DSE time:                                   0ms
+   Other time:                           1795670ms
+   Instructions:                            1308
+   RTL Statements:                          3168
+   CFA Edges:                               3333
+   States visited:                        228735
+   Final state space:                      24852
+   Finished normally:                      false
+   Analysis result:                     interrupted
+   Indirect Branches (no import calls):        2
+   Tops:                                       9
+   Unresolved Tops:                            9
+=======================================================================
+Identified binary sections
+=======================================================================
+Section .note.ABI-tag start: 0x80480f4
+Section .note.ABI-tag size: 0x20
+Section .note.gnu.build-id start: 0x8048114
+Section .note.gnu.build-id size: 0x24
+Section .rel.plt start: 0x8048138
+Section .rel.plt size: 0x90
+Section .init start: 0x80481c8
+Section .init size: 0x23
+Section .plt start: 0x80481f0
+Section .plt size: 0x90
+Section .text start: 0x8048280
+Section .text size: 0x7f011
+Section __libc_freeres_fn start: 0x80c72a0
+Section __libc_freeres_fn size: 0xcd5
+Section __libc_thread_freeres_fn start: 0x80c7f80
+Section __libc_thread_freeres_fn size: 0x1c1
+Section .fini start: 0x80c8144
+Section .fini size: 0x14
+Section .rodata start: 0x80c8160
+Section .rodata size: 0x1a8b8
+Section .eh_frame start: 0x80e2a18
+Section .eh_frame size: 0x182a4
+Section .gcc_except_table start: 0x80facbc
+Section .gcc_except_table size: 0xa8
+Section .tdata start: 0x80fc538
+Section .tdata size: 0x38
+Section .tbss start: 0x80fc570
+Section .tbss size: 0x28
+Section .init_array start: 0x80fc570
+Section .init_array size: 0x8
+Section .fini_array start: 0x80fc578
+Section .fini_array size: 0x8
+Section .data.rel.ro start: 0x80fc580
+Section .data.rel.ro size: 0x1a40
+Section .got start: 0x80fdfc0
+Section .got size: 0x30
+Section .got.plt start: 0x80fe000
+Section .got.plt size: 0x54
+Section .data start: 0x80fe060
+Section .data size: 0xfe0
+Section __libc_subfreeres start: 0x80ff040
+Section __libc_subfreeres size: 0x3c
+Section __libc_IO_vtables start: 0x80ff080
+Section __libc_IO_vtables size: 0x3b4
+Section __libc_atexit start: 0x80ff434
+Section __libc_atexit size: 0x4
+Section __libc_thread_subfreeres start: 0x80ff438
+Section __libc_thread_subfreeres size: 0x8
+Section .bss start: 0x80ff440
+Section .bss size: 0x1250
+Section __libc_freeres_ptrs start: 0x8100690
+Section __libc_freeres_ptrs size: 0x2c
+=======================================================================
