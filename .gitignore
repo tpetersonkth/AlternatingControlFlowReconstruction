@@ -28,6 +28,7 @@ mcore_*/
 *.png
 *.dat
 !/Input/IdealCFAs/*.dot
+!/Input/Real/linuxCommandsStatic/idealCFAs/*.dot
 !/results/**/*
 
 #IDA output
