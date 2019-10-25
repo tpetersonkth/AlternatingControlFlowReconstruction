@@ -81,7 +81,7 @@ else
         then
             if test -f "$fullPath"; then #Ensure that it is a file and not a directory
                 echo "Analysing $fullPath"
-                #analyzeBinary $fullPath $2 $3 $4 $5
+                analyzeBinary $fullPath $2 $3 $4 $5
             fi
         fi
         if [[ ${fullPath: -4} == ".asm" ]]
@@ -89,16 +89,16 @@ else
             if [[ ${fullPath: -8} != "_jak.asm" ]]
             then
                 echo "Compiling $fullPath"
-                #../Input/compileStatic.sh $fullPath
-                #analyzeBinary $fullPath $2 $3 $4 $5
+                ../Input/compileStatic.sh $fullPath
+                analyzeBinary $fullPath $2 $3 $4 $5
             fi
         fi
         if [[ ${fullPath: -2} == ".c" ]]
         then
             fullPath="${fullPath%.*}"
             echo "Compiling $fullPath"
-            #../Input/compileMinimal.sh $fullPath #Compiles statically without stdlib
-            #analyzeBinary $fullPath $2 $3 $4 $5
+            ../Input/compileMinimal.sh $fullPath #Compiles statically without stdlib
+            analyzeBinary $fullPath $2 $3 $4 $5
         fi
     done
 fi
