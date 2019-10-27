@@ -37,10 +37,10 @@ def execute(program, address):
     logger.info("Run finished")
     logger.info("Determined that the instruction at " + hex(address) + " can jump to the following addresses: " + ",".join(targets))
 
-def executeDirected(program, pathsObject,args=""):
+def executeDirected(program, pathsObject, args=[]):
     #m = Manticore(program, pure_symbolic=True)
     workplace_url = "/tmp/mcore_tmp"
-    m = Manticore(program, argv=args.split(" "), workspace_url=workplace_url, pure_symbolic=False)
+    m = Manticore(program, argv=args, workspace_url=workplace_url, pure_symbolic=False)
     consts = config.get_group("core")
     consts.__setattr__("procs", 1)
 

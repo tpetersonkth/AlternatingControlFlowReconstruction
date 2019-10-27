@@ -54,17 +54,18 @@ analyzeBinarySub(){
 
     echo "Executing $file in mode $identifier"
 
-    # Constant propagation
+    # Execute one analysis
     timeout -k 60 $seconds jak -m "$pathToBin" -b -v 1 --cpa $mode
     exitCode=$?
 
-    if [[ "$exitCode" -ne "124" ]]
+    mv "$pathToBin"'_ccfa.dot' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_ccfa.dot')
+    mv "$pathToBin"'_states.dat' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_states.dat')
+    mv "$pathToBin"'_stats.dat' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_stats.dat')
+    mv "$pathToBin"'_location_count.dat' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_location_count.dat')
+    #python3 calculateStats.py $(realpath "$idealDir/$fileNoExt"'_ideal.dot') $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_ccfa.dot') $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_stats.dat')
+
+    if [[ "$exitCode" -eq "124" ]]
     then
-        mv "$pathToBin"'_ccfa.dot' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_ccfa.dot')
-        mv "$pathToBin"'_states.dat' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_states.dat')
-        mv "$pathToBin"'_stats.dat' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_stats.dat')
-        python3 calculateStats.py $(realpath "$idealDir/$fileNoExt"'_ideal.dot') $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_ccfa.dot') $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_stats.dat')
-    else
         echo "Analysis timed out at $seconds seconds for $file"
     fi
 
@@ -76,18 +77,29 @@ if [ $# -ne 5 ]
 then
     echo "Usage: ./genresults.sh [asm dir] [ideal graph dir] [output dir] [port for DSE] [timeout in seconds]"
 else
-    for fullPath in $1*.asm; do
-        if [[ ${fullPath: -8} != "_jak.asm" ]] #Skip jakstab dissasembled assembly
+    for fullPath in $1*; do
+        if [[ ${fullPath: -4} != *"."* ]]
         then
-            echo "Attempting to compile $fullPath"
-            ../Input/compileStatic.sh $fullPath
+            if test -f "$fullPath"; then #Ensure that it is a file and not a directory
+                echo "Analysing $fullPath"
+                analyzeBinary $fullPath $2 $3 $4 $5
+            fi
+        fi
+        if [[ ${fullPath: -4} == ".asm" ]]
+        then
+            if [[ ${fullPath: -8} != "_jak.asm" ]]
+            then
+                echo "Compiling $fullPath"
+                ../Input/compileStatic.sh $fullPath
+                analyzeBinary $fullPath $2 $3 $4 $5
+            fi
+        fi
+        if [[ ${fullPath: -2} == ".c" ]]
+        then
+            fullPath="${fullPath%.*}"
+            echo "Compiling $fullPath"
+            ../Input/compileMinimal.sh $fullPath #Compiles statically without stdlib
             analyzeBinary $fullPath $2 $3 $4 $5
         fi
-    done
-    for fullPath in $1*.c; do
-        fullPath="${fullPath%.*}"
-        echo "Attempting to compile $fullPath"
-        ../Input/compileMinimal.sh $fullPath #Compiles statically without stdlib
-        analyzeBinary $fullPath $2 $3 $4 $5
     done
 fi
