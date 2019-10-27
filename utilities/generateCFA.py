@@ -1,4 +1,4 @@
-import os, sys, networkx, angr
+import os, sys, time, networkx, angr
 import queue
 
 from angr.knowledge_plugins.cfg.cfg_node import CFGENode
@@ -9,20 +9,14 @@ def main(file,outputDirectory):
     basename = os.path.basename(file)
 
     print("Loading BBG from angr..")
+    before = time.time()
     cfgEmulated = p.analyses.CFGEmulated()
+    print("Obtained CFG from angr in " + str(time.time()-before) + " seconds")
 
     print("Outputting raw BBG manually in dot format")
-    fid = open(outputDirectory + "/" + basename + "_cfg_manually.dot", "w")
-    fid.write("digraph G {\nnode[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]\nbgcolor=\"transparent\"\ngraph [label=\"CFG from angr for " + basename + "\", labelloc=t, fontsize=35, pad=30]\n")
-
-    for node in cfgEmulated.graph.nodes:
-        fid.write("\"0x"+hex(node.addr)+"\"[label = \"0x"+hex(node.addr)+"\"];\n")
-
-    for edge in cfgEmulated.graph.edges:
-        fid.write("\"0x" + hex(edge[0].addr) + "\" -> \"0x" + hex(edge[1].addr) + "\"[collor = \"#000000\"];\n")
-
-    fid.write("}\n")
-    fid.close()
+    before = time.time()
+    outputDot(outputDirectory + "/" + basename + "_cfg_manually.dot", basename, cfgEmulated.graph.nodes, cfgEmulated.graph.edges)
+    print("Outputted raw BBG in " + str(time.time() - before) + " seconds")
 
     # Output resulting graph in a .dot file
     print("Outputting raw BBG using networkx")
@@ -34,8 +28,9 @@ def main(file,outputDirectory):
     CFA = networkx.DiGraph()
     nodes = list(cfgEmulated.graph.nodes.keys())
     length = len(nodes)
+    before = time.time()
     for i in range(length):
-        sys.stdout.write("\r" + str(round(100*i/length,4))+"%")
+        sys.stdout.write("\r" + str(round(100*(i+1)/length,4))+"% in " + str(round(time.time() - before,2)) + " seconds  ")
         sys.stdout.flush()
 
         node = nodes[i]
@@ -63,9 +58,12 @@ def main(file,outputDirectory):
 
     #Output resulting graph in a .dot file
     sys.stdout.write("\n")
-    print("Outputting CFA")
+
+    print("Outputting CCFA")
+    before = time.time()
     basename = os.path.basename(file)
-    networkx.drawing.nx_pydot.write_dot(CFA, outputDirectory + "/" + basename + "_ccfa_angr.dot")
+    outputDot(outputDirectory + "/" + basename + "_ccfa_angr.dot", basename ,CFA.nodes, CFA.edges, CFGENode=False)
+    print("Outputted CCFA in " + str(time.time() - before) + " seconds")
 
     #Illustrate the BBG as a PNG
     #plot_cfg(cfgEmulated, os.path.abspath(outputDirectory+"/"+basename))
@@ -90,6 +88,30 @@ def getNonSimprocedureSuccessors(node):
                     visited.append(s.addr)
                     worklist.put(s)
     return answer
+
+def outputDot(file, basename, nodes, edges, CFGENode=True):
+    fid = open(file, "w")
+    fid.write(
+        "digraph G {\nnode[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]\nbgcolor=\"transparent\"\ngraph [label=\"Control flow from angr for " + basename + "\", labelloc=t, fontsize=35, pad=30]\n")
+
+    for node in nodes:
+        if (CFGENode):
+            hexaddr = hex(node.addr)
+        else:
+            hexaddr = node
+        fid.write("\"0x" + hexaddr + "\"[label = \"0x" + hexaddr + "\"];\n")
+
+    for edge in edges:
+        if (CFGENode):
+            hexaddr1 = hex(edge[0].addr)
+            hexaddr2 = hex(edge[1].addr)
+        else:
+            hexaddr1 = edge[0]
+            hexaddr2 = edge[1]
+        fid.write("\"0x" + hexaddr1 + "\" -> \"0x" + hexaddr2 + "\"[collor = \"#000000\"];\n")
+
+    fid.write("}\n")
+    fid.close()
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
