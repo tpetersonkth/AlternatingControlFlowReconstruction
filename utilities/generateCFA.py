@@ -19,8 +19,8 @@ def main(file,outputDirectory):
     print("Outputted raw BBG in " + str(time.time() - before) + " seconds")
 
     # Output resulting graph in a .dot file
-    print("Outputting raw BBG using networkx")
-    networkx.drawing.nx_pydot.write_dot(cfgEmulated.graph, outputDirectory + "/" + basename + "_cfg_angr.dot")
+    #print("Outputting raw BBG using networkx")
+    #networkx.drawing.nx_pydot.write_dot(cfgEmulated.graph, outputDirectory + "/" + basename + "_cfg_angr.dot")
 
     print("Converting the BBG to a CFA")
 
