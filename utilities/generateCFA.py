@@ -32,7 +32,13 @@ def main(file,outputDirectory):
 
     #Create a CFA from the BBG provided obtained with angr
     CFA = networkx.DiGraph()
-    for node in list(cfgEmulated.graph.nodes.keys()):
+    nodes = list(cfgEmulated.graph.nodes.keys())
+    length = len(nodes)
+    for i in range(length):
+        sys.stdout.write("\r" + str(round(100*i/length,4))+"%")
+        sys.stdout.flush()
+
+        node = nodes[i]
         if (node.is_simprocedure):
             continue
 
@@ -56,6 +62,7 @@ def main(file,outputDirectory):
             CFA.add_edge(hex(last),hex(successor.addr))
 
     #Output resulting graph in a .dot file
+    sys.stdout.write("\n")
     print("Outputting CFA")
     basename = os.path.basename(file)
     networkx.drawing.nx_pydot.write_dot(CFA, outputDirectory + "/" + basename + "_ccfa_angr.dot")
