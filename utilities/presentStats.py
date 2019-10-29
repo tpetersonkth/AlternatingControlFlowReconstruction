@@ -11,8 +11,8 @@ def main():
     stats = dirToStats(sys.argv[1])
 
     # AccuracyTable
-    accuracyFields = ["Instructions","Coverage","Precision","Soundness","Unresolved Tops","Tops","Top free coverage","Top free precision","Top free soundness"]
-    fieldSwap1 = {"Soundness":"$\mathcal{S}_{E_I,E_G}$","Coverage":"$\mathcal{C}_{E_I,E_G}$","Precision":"$\mathcal{P}_{E_I,E_G}$","Unresolved Tops":"uTops","Top free soundness":"$\mathcal{S}_{E_I,E_{TF}}$","Top free coverage":"$\mathcal{C}_{E_I,E_{TF}}$","Top free precision":"$\mathcal{P}_{E_I,E_{TF}}$"}
+    accuracyFields = ["Instructions","Accuracy","Precision","Soundness","Unresolved Tops","Tops","Top free accuracy","Top free precision","Top free soundness"]
+    fieldSwap1 = {"Soundness":"$\mathcal{S}_{E_I,E_G}$","Accuracy":"$\mathcal{A}_{E_I,E_G}$","Precision":"$\mathcal{P}_{E_I,E_G}$","Unresolved Tops":"uTops","Top free soundness":"$\mathcal{S}_{E_I,E_{TF}}$","Top free accuracy":"$\mathcal{C}_{E_I,E_{TF}}$","Top free precision":"$\mathcal{P}_{E_I,E_{TF}}$"}
     t1 = generateTable(stats, accuracyFields, fieldSwap1,"?l|l|l?l|l|l?l|l?l|l|l?l|l|l|l|l?")
     print(t1)
 
