@@ -228,7 +228,7 @@ public class ControlFlowReconstruction implements Algorithm {
 		Worklist<AbstractState> worklist = new PriorityWorklist();
 		//Worklist<AbstractState> worklist = new FastSet<AbstractState>();
 
-		cpaAlgorithm = new CPAAlgorithm(cpa, transformerFactory, worklist, Options.failFast.getValue(), addedDSE, Options.DSEOnlyOnce.getValue());
+		cpaAlgorithm = new CPAAlgorithm(cpa, transformerFactory, worklist, Options.failFast.getValue(), addedDSE, Options.DSEOnlyOnce.getValue(), Options.DSEDepth.getValue());
 	}
 
 	public ReachedSet getReachedStates() {

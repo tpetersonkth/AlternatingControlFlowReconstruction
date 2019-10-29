@@ -49,6 +49,7 @@ public class CPAAlgorithm implements Algorithm {
 	private final boolean failFast;
 	private final boolean addedDSE;
 	private final boolean DSEOnlyOnce;
+	private final int DSEDepth;
 
 	private long statesVisited;
 	private boolean completed = false;
@@ -87,11 +88,11 @@ public class CPAAlgorithm implements Algorithm {
 
 	public CPAAlgorithm(ConfigurableProgramAnalysis cpa,
 			StateTransformerFactory transformerFactory, Worklist<AbstractState> worklist) {
-		this(cpa, transformerFactory, worklist, false, false,false);
+		this(cpa, transformerFactory, worklist, false, false,false,0);
 	}
 
 	public CPAAlgorithm(ConfigurableProgramAnalysis cpa,
-			StateTransformerFactory transformerFactory, Worklist<AbstractState> worklist, boolean failFast, boolean addedDSE, boolean DSEOnlyOnce) {
+			StateTransformerFactory transformerFactory, Worklist<AbstractState> worklist, boolean failFast, boolean addedDSE, boolean DSEOnlyOnce, int DSEDepth) {
 		super();
 		this.cpa = cpa;
 		this.transformerFactory = transformerFactory;
@@ -99,6 +100,7 @@ public class CPAAlgorithm implements Algorithm {
 		this.failFast = failFast;
 		this.addedDSE = addedDSE;
 		this.DSEOnlyOnce = DSEOnlyOnce;//Can be set to true for increased speed at the cost of precision
+		this.DSEDepth = DSEDepth;
 		
 		if (Options.errorTrace.getValue() || Options.asmTrace.getValue() || 
 				AnalysisManager.getInstance().getAnalysis(
@@ -434,7 +436,7 @@ public class CPAAlgorithm implements Algorithm {
 				logger.info("Searching for paths to the unresolved locations");
 				Pair<Integer, AbsoluteAddress> startPair = new Pair<Integer, AbsoluteAddress>(addressToId.get(Harness.prologueAddress),Harness.prologueAddress);
 				long startTimeDFS = System.currentTimeMillis();
-				Set<LinkedList<AbsoluteAddress>> paths = DSE.LDFSIterative(adjList, startPair, unresolved, 200);
+				Set<LinkedList<AbsoluteAddress>> paths = DSE.LDFSIterative(adjList, startPair, unresolved, this.DSEDepth);
 				long diffDFS = System.currentTimeMillis() - startTimeDFS;
 				DFSTime += diffDFS;
 				logger.info("Iterative path search took: "+Long.toString(diffDFS)+" milliseconds and found " + paths.size() + " paths");
