@@ -1,18 +1,20 @@
 '''
 Author: Thomas Peterson
 year: 2019
-This script loads two graphs and calculates the coverage, soundness and precision based on these.
+This script loads two graphs and calculates the accuracy, soundness and precision based on these.
 '''
 import sys, os, networkx
 
 from presentStats import addStats
 
 def main(idealGraphFile, generatedGraphFile, statsfile):
+    print("Loading graphs")
     IGraph = load(idealGraphFile)
     GGraph = load(generatedGraphFile)
+    print("Graphs loaded")
 
     stats = {}
-    addStats(stats,statsfile)
+    addStats(stats, statsfile)
 
     basename = os.path.basename(statsfile)
     basename = basename.split("_")
@@ -21,14 +23,15 @@ def main(idealGraphFile, generatedGraphFile, statsfile):
 
     textSectionSize = int(stats[basename][analysisType]['Section .text size'],16)
 
-    Coverage, Soundness, Precision, TFCoverage, TFSoundness, TFPrecision = calculateStats(IGraph,GGraph,textSectionSize)
+    print("Starting calculations of graph stats")
+    accuracy, soundness, precision, TFAccuracy, TFSoundness, TFPrecision = calculateStats(IGraph,GGraph,textSectionSize)
 
     #Build output
     out = ""
-    out+="Coverage: "+percentage(Coverage)+"\n"
-    out+="Soundness: "+percentage(Soundness)+"\n"
-    out+="Precision: "+percentage(Precision)+"\n"
-    out+="Top Free Coverage: "+percentage(TFCoverage)+"\n"
+    out+="Accuracy: "+percentage(accuracy)+"\n"
+    out+="Soundness: "+percentage(soundness)+"\n"
+    out+="Precision: "+percentage(precision)+"\n"
+    out+="Top Free Accuracy: "+percentage(TFAccuracy)+"\n"
     out+="Top Free Soundness: "+percentage(TFSoundness)+"\n"
     out+="Top Free Precision: "+percentage(TFPrecision)+"\n"
 
@@ -74,11 +77,14 @@ def getTopFreeGraph(graph, providedTopNodes=[]):
 
     return topFreeGraph, topNodes, topEdges
 
-# Calculate coverage, soundness and precision with respect to the ideal graph
+# Calculate accuracy, soundness and precision with respect to the ideal graph
 def calculateStats(idealGraph, graph, SizeOfTextSection):
 
+    print("Generating top free graph")
     topFreeGraph, topNodes, _ = getTopFreeGraph(graph)
+    print("Generating top free ideal graph")
     topFreeIdealGraph, _, idealTopEdges = getTopFreeGraph(idealGraph, providedTopNodes=topNodes)
+    print("Done generating top free graphs")
 
     # Convert to sets to perform set operations in the calculations
     TFGE = set(topFreeGraph.edges)
@@ -91,26 +97,26 @@ def calculateStats(idealGraph, graph, SizeOfTextSection):
     intersecting = float(len(TFGE.intersection(TFIGE))+intersectingTopEdges)
 
     #Calculate metrics
-    Coverage = intersecting / len(idealGraph.edges) if len(idealGraph.edges) != 0 else None
-    Soundness = intersecting / (len(TFGE)+numberOfTopEdgesOfGraph) if (len(TFGE)+numberOfTopEdgesOfGraph) != 0 else None
-    Precision = 1 / 2 * (Soundness + Coverage) if (Coverage != None and Soundness != None) else None
+    soundness = intersecting / len(idealGraph.edges) if len(idealGraph.edges) != 0 else None
+    accuracy = intersecting / (len(TFGE)+numberOfTopEdgesOfGraph) if (len(TFGE)+numberOfTopEdgesOfGraph) != 0 else None
+    precision = 1 / 2 * (soundness + accuracy) if (accuracy != None and soundness != None) else None
 
     # Top free graphs can be handled as regular graphs
-    TFCoverage, TFSoundness, TFPrecision = calculateStatsRaw(idealGraph,topFreeGraph)
+    TFAccuracy, TFSoundness, TFPrecision = calculateStatsRaw(idealGraph,topFreeGraph)
 
-    return (Coverage, Soundness, Precision, TFCoverage, TFSoundness, TFPrecision)
+    return (accuracy, soundness, precision, TFAccuracy, TFSoundness, TFPrecision)
 
 '''
-Calculate coverage, soundness, precision and precision error without compensating for tops
+Calculate accuracy, soundness, precision and precision error without compensating for tops
 '''
 def calculateStatsRaw(idealGraph, graph):
     GE = set(graph.edges)
     IGE = set(idealGraph.edges)
 
-    #Calculate coverage and soundnes
+    #Calculate accuracy and soundnes
     intersecting = float(len(GE.intersection(IGE)))
-    coverage = intersecting/len(IGE) if len(IGE) != 0 else None
-    soundness = intersecting/len(GE) if len(GE) != 0 else None
+    soundness = intersecting/len(IGE) if len(IGE) != 0 else None
+    accuracy = intersecting/len(GE) if len(GE) != 0 else None
     
     #Calculate precision
     precision = 1/2*(intersecting/len(IGE) + intersecting/len(GE)) if (len(GE) != 0 and len(IGE) != 0) else None
@@ -120,7 +126,7 @@ def calculateStatsRaw(idealGraph, graph):
     #GminI = GE - IGE
     #precisionError = 1/2*(len(IminG)/len(IGE) + len(GminI)/len(GE)) if (len(GE) != 0 and len(IGE) != 0) else None
 
-    return (coverage, soundness, precision)
+    return (accuracy, soundness, precision)
 
 def percentage(decimalForm):
     if (decimalForm == None):
