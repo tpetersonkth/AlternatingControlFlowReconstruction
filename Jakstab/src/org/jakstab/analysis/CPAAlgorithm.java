@@ -441,7 +441,7 @@ public class CPAAlgorithm implements Algorithm {
 				DFSTime += diffDFS;
 				logger.info("Iterative path search took: "+Long.toString(diffDFS)+" milliseconds and found " + paths.size() + " paths");
 
-				//Create an empty list and pass them by reference to DSE.execute to have it filled by this function
+				//Create an empty list and pass it by reference to DSE.execute to have it filled by this function
 				logger.info("Sending request for Directed Symbolic Execution");
 				LinkedList<AbstractState> toExploreAgain = new LinkedList<AbstractState>();
 				DSEedges = DSE.execute(program, unresolvedStatesToSend, Options.mainFilename, paths, toExploreAgain);
