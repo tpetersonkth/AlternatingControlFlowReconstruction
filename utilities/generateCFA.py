@@ -2,7 +2,7 @@ import os, sys, time, networkx, angr
 import queue
 
 from angr.knowledge_plugins.cfg.cfg_node import CFGENode
-from angrutils import plot_cfg
+#from angrutils import plot_cfg
 
 def main(file,outputDirectory):
     p = angr.Project(file,load_options={'auto_load_libs': False})
@@ -74,20 +74,21 @@ def main(file,outputDirectory):
 #Returns the set of all successors that are not simprocedures
 #Note that it skips every simprocedure node until a non-simprocedure node is found
 def getNonSimprocedureSuccessors(node):
-    visited = [node.addr]
-    answer = []
+    visited = set()
+    visited.add(node.addr)
+    answer = set()
     worklist = queue.Queue()
     worklist.put(node)
     while not worklist.empty():
         node = worklist.get()
         for s in node.successors:
             if not s.is_simprocedure:
-                answer.append(s)
+                answer.add(s)
             else:
                 if(s.addr not in visited):
-                    visited.append(s.addr)
+                    visited.add(s.addr)
                     worklist.put(s)
-    return answer
+    return list(answer)
 
 def outputDot(file, basename, nodes, edges, CFGENode=True):
     fid = open(file, "w")
@@ -95,11 +96,14 @@ def outputDot(file, basename, nodes, edges, CFGENode=True):
         "digraph G {\nnode[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]\nbgcolor=\"transparent\"\ngraph [label=\"Control flow from angr for " + basename + "\", labelloc=t, fontsize=35, pad=30]\n")
 
     for node in nodes:
+        extraProperties = ""
         if (CFGENode):
             hexaddr = hex(node.addr)
+            if node.is_simprocedure:
+                extraProperties = ",fillcolor=\"yellow\""
         else:
             hexaddr = node
-        fid.write("\"0x" + hexaddr + "\"[label = \"0x" + hexaddr + "\"];\n")
+        fid.write("\"0x" + hexaddr + "\"[label = \"0x" + hexaddr + "\""+extraProperties+"];\n")
 
     for edge in edges:
         if (CFGENode):
@@ -108,7 +112,7 @@ def outputDot(file, basename, nodes, edges, CFGENode=True):
         else:
             hexaddr1 = edge[0]
             hexaddr2 = edge[1]
-        fid.write("\"0x" + hexaddr1 + "\" -> \"0x" + hexaddr2 + "\"[collor = \"#000000\"];\n")
+        fid.write("\"0x" + hexaddr1 + "\" -> \"0x" + hexaddr2 + "\"[color = \"#000000\"];\n")
 
     fid.write("}\n")
     fid.close()
