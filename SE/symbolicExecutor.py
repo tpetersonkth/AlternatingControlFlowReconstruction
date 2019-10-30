@@ -54,12 +54,12 @@ def executeDirected(program, pathsObject, args=[]):
     with m.locked_context() as context:
         targets = context['targets']
 
-    logger.info("--Results Sorted by Pathlen--")
+    logger.debug("--Results Sorted by Pathlen--")
     sortedPaths = sorted(pathsObject.paths, key=lambda x: x.pathLen, reverse=False)
     for i in range(pathsObject.pathsLen):
         pathID = sortedPaths[i].pathID
         if pathID in targets.keys():
-            logger.info("Path " + str(pathID) + "[len=" + str(sortedPaths[i].pathLen) + "] ending with " + hex(
+            logger.debug("Path " + str(pathID) + "[len=" + str(sortedPaths[i].pathLen) + "] ending with " + hex(
                 pathsObject.lastAddresses[pathID]) + " has the following successors " +
                   ",".join([str(i) for i in targets[pathID]]))
         else:

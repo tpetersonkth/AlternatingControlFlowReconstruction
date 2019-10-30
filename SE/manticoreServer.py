@@ -57,8 +57,8 @@ class Server():
                 response = formatResponse(paths,targets)
 
                 milliseconds = round(time.monotonic() * 1000) - milliseconds
-                logger.info("Symbolic execution took: "+str(milliseconds))
-                logger.info("Sending: " + response)
+                logger.info("Symbolic execution took: " + str(milliseconds) + " ms")
+                logger.debug("Sending: " + response)
 
                 self.connection.sendAnswer(response)
 
