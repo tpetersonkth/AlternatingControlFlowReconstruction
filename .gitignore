@@ -5,6 +5,10 @@
 /Input/Synthetic/Small/*
 !/Input/Synthetic/Small/*.*
 !/Input/Synthetic/Small/*/
+/Input/Synthetic/Small/src/*
+!/Input/Synthetic/Small/src/*.*
+!/Input/Synthetic/Small/src/*/
+!/Input/Synthetic/Small/idealCFAs/*
 /Input/Synthetic/Small/DSEDebug/*
 !/Input/Synthetic/Small/DSEDebug/*.*
 /Input/Synthetic/Small/Intervals/*
@@ -27,7 +31,7 @@ mcore_*/
 *.swp
 *.png
 *.dat
-!/Input/IdealCFAs/*.dot
+!/Input/Synthetic/Small/idealCFAs/*.dot
 !/Input/Real/linuxCommandsStatic/idealCFAs/*.dot
 !/results/**/*
 /results/OLD/
