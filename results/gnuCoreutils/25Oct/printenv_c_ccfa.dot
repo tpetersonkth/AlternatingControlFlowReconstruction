@@ -1,0 +1,24 @@
+digraph G {
+node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
+bgcolor="transparent"
+graph [label="Jakstab v0.8.4-devel   Sat Oct 26 11:43:38 CEST 2019\n-m /home/thomas/Alternating-Control-Flow-Reconstruction/Input/Real/linuxCommandsStatic/smallest/printenv -b -v 1 --cpa c", labelloc=t, fontsize=35, pad=30]
+"0x08048735"[label="0x08048735\n"];
+"0x08048766"[label="0x08048766\n",fillcolor="red"];
+"0x08048738"[label="0x08048738\n"];
+"0x08048732"[label="0x08048732\n"];
+"0x08048763"[label="0x08048763\n"];
+"0x08048733"[label="0x08048733\n"];
+"0x08048730"[label="0x08048730\n"];
+"0x08048739"[label="0x08048739\n"];
+"0x0804873a"[label="0x0804873a\n"];
+"0x0804873b"[label="0x0804873b\n"];
+"0x08048733" -> "0x08048735" [color="#000000"];
+"0x08048763" -> "0x08048766" [color="#000000"];
+"0x08048732" -> "0x08048733" [color="#000000"];
+"0x08048739" -> "0x0804873a" [color="#000000"];
+"0x08048738" -> "0x08048739" [color="#000000"];
+"0x0804873a" -> "0x0804873b" [color="#000000"];
+"0x08048735" -> "0x08048738" [color="#000000"];
+"0x0804873b" -> "0x08048763" [color="#000000"];
+"0x08048730" -> "0x08048732" [color="#000000"];
+}

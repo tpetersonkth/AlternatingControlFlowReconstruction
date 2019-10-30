@@ -30,6 +30,8 @@ mcore_*/
 !/Input/IdealCFAs/*.dot
 !/Input/Real/linuxCommandsStatic/idealCFAs/*.dot
 !/results/**/*
+/results/OLD/
+
 
 #IDA output
 *.i64
