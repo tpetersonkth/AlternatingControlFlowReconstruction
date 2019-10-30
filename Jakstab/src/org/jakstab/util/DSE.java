@@ -211,7 +211,7 @@ public class DSE {
         long diffDSE = System.currentTimeMillis() - startTimeDSE;
 
         CPAAlgorithm.setDSETime(CPAAlgorithm.getDSETime() + diffDSE);
-        logger.info("DSE took " + Long.toString(diffDSE) + "milliseconds");
+        logger.info("DSE took " + Long.toString(diffDSE) + " milliseconds");
         logger.debug("Response from DSE: "+Response);
 
         Set<CFAEdge> extracted = extractEdges(unresolvedStates,Response,toExploreAgain);

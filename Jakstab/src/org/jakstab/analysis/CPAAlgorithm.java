@@ -173,9 +173,6 @@ public class CPAAlgorithm implements Algorithm {
 	}
 
 	public static long getNumberOfUniqueDSEEdges(){
-		for (CFAEdge e: allDSEedges){
-			System.out.println(e);
-		}
 		return allDSEedges.size();
 	}
 
@@ -447,9 +444,6 @@ public class CPAAlgorithm implements Algorithm {
 				DSEedges = DSE.execute(program, unresolvedStatesToSend, Options.mainFilename, paths, toExploreAgain);
 				allDSEedges.addAll(DSEedges);
 				logger.info("DSE resulted in "+DSEedges.size()+" new edges");
-				for (CFAEdge e: DSEedges){
-					System.out.println(e);
-				}
 				//For statistics
 				Set<RTLLabel> resolvedTops = program.getResolvedTops();
 				for (AbstractState as: toExploreAgain){
