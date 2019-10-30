@@ -8,9 +8,6 @@ import sys, logging
 #Custom modules
 import symbolicExecutor
 
-logger = logging.getLogger(__name__)
-logger.setLevel('INFO')
-
 def main():
     if (len(sys.argv) < 3):
         print("Usage: Python getSuccessors.py [path to binary] [address of instruction]")

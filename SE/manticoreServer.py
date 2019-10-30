@@ -9,16 +9,14 @@ import sys, logging, socket, time
 #Custom modules
 import symbolicExecutor, pathsObject, pathObject, communication
 from communication import socketClosedException
-
-logger = logging.getLogger(__name__)
-logger.setLevel('INFO')
+from globalLogger import logger
 
 def main():
     if (len(sys.argv) < 2):
         print("Usage: Python manticoreServer.py [port number]")
         sys.exit(0)
     port=sys.argv[1]
-    logger.info("[*] Starting server..")
+    logger.info("Starting server..")
     server = Server(int(port))
     server.run()
 

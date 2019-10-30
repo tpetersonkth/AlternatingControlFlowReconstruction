@@ -3,18 +3,10 @@ Author: Thomas Peterson
 Year: 2019
 """
 
-#TODO: Purely symbolic execution?
-#TODO(Possible): Timeout
-
 import manticore.utils.config as config
 from manticore.native import Manticore
 from customPlugins import ExtractorPlugin, DirectedExtractorPlugin
-
-import logging
-
-logger = logging.getLogger(__name__)
-logger.setLevel('INFO')
-
+from globalLogger import logger
 
 # Obsolete
 def execute(program, address):

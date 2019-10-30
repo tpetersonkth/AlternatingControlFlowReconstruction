@@ -4,9 +4,7 @@ Year: 2019
 """
 import logging
 from manticore.core.plugin import Plugin
-
-logger = logging.getLogger(__name__)
-logger.setLevel('INFO')
+from globalLogger import logger
 
 #A plugin to extract the successor instructions of a given instruction
 class ExtractorPlugin(Plugin):

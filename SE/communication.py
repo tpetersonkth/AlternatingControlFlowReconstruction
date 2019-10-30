@@ -3,10 +3,8 @@ Author: Thomas Peterson
 Year: 2019
 """
 
-import socket, logging
-
-logger = logging.getLogger(__name__)
-logger.setLevel('INFO')
+import socket, logging, globalLogger
+from globalLogger import logger
 
 class socketClosedException(Exception):
    """Raised when client closes a socket"""
