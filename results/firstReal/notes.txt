@@ -1,4 +1,0 @@
-"jak -m make-prime-list --cpa i --dse 65301"
-
-Jakstab did not finish within 127 hours..
-DSE was not used once -> jakstab never reached a fixpoint..

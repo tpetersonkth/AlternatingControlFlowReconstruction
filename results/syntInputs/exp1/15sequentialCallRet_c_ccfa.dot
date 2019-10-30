@@ -1,7 +1,0 @@
-digraph G {
-node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
-bgcolor="transparent"
-graph [label="Jakstab v0.8.4-devel   Tue Oct 08 15:37:41 CEST 2019\n-m /home/thomas/Alternating-Control-Flow-Reconstruction/Input/Synthetic/Small/15sequentialCallRet --cpa c", labelloc=t, fontsize=35, pad=30]"0x0804806f"[label="0x0804806f\n",fillcolor="red"];
-"0x08048060"[label="0x08048060\n"];
-"0x08048060" -> "0x0804806f" [color="#000000"];
-}
