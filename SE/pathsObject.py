@@ -2,6 +2,7 @@
 Author: Thomas Peterson
 Year: 2019
 """
+
 class PathsObject():
     paths = []#List of PathObjects
     pathsLen = 0

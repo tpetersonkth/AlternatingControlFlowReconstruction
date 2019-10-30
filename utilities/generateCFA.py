@@ -1,3 +1,8 @@
+'''
+Author: Thomas Peterson
+year: 2019
+'''
+
 import os, sys, time, networkx, angr
 import queue
 

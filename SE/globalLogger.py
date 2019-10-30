@@ -1,3 +1,8 @@
+"""
+Author: Thomas Peterson
+Year: 2019
+"""
+
 import logging
 
 logging.basicConfig(format="%(message)s")

@@ -2,6 +2,7 @@
 Author: Thomas Peterson
 Year: 2019
 """
+
 import logging
 from manticore.core.plugin import Plugin
 from globalLogger import logger

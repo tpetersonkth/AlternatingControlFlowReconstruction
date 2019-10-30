@@ -3,8 +3,8 @@ Author: Thomas Peterson
 year: 2019
 This script loads two graphs and calculates the accuracy, soundness and precision based on these.
 '''
-import sys, os, networkx
 
+import sys, os, networkx
 from presentStats import addStats
 
 def main(idealGraphFile, generatedGraphFile, statsfile):
