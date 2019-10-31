@@ -1,21 +1,21 @@
 #!/bin/bash
 
-# Note: Currently assumes that the ideal graphs are located in the results directory
-
 # Analyzes a binary using jakstab and a DSE engine
 # Params:
-#   path to a binary
-#   path to directory containing ideal ccfa:s
+#   path to the binary
 #   directory to store results
 #   port number of DSE
 #   timeout in seconds
+#   optional args to jakstab
 analyzeBinary () {
     # Rename parameters for readability
     fullpath=$1
-    idealDir=$2
-    resultDir=$3
-    DSEPort=$4
-    seconds=$5
+    resultDir=$2
+    DSEPort=$3
+    seconds=$4
+    jakstabArgs=$5
+
+    printf "jak args:$jakstabArgs"
 
     # Extract variables
     path=$(dirname "$fullPath")
@@ -24,27 +24,35 @@ analyzeBinary () {
     pathToBin=$(realpath ${path})/$fileNoExt
 
     # Constant propagation
-    analyzeBinarySub $1 $2 $3 $4 $5 "c" "c"
+    analyzeBinarySub $fullpath $resultDir $DSEPort $seconds "c $jakstabArgs" "c"
 
     # Interval analysis
-    analyzeBinarySub $1 $2 $3 $4 $5 "i" "i"
+    analyzeBinarySub $fullpath $resultDir $DSEPort $seconds "i $jakstabArgs" "i"
 
     # Constant propagation with DSE
-    analyzeBinarySub $1 $2 $3 $4 $5 "c --dse $DSEPort" "cD"
+    analyzeBinarySub $fullpath $resultDir $DSEPort $seconds "c --dse $DSEPort $jakstabArgs" "cD"
 
     # Interval analysis with DSE
-    analyzeBinarySub $1 $2 $3 $4 $5 "i --dse $DSEPort" "iD"
-
+    analyzeBinarySub $fullpath $resultDir $DSEPort $seconds "i --dse $DSEPort $jakstabArgs" "iD"
 }
 
+# Analyzes a binary in a specific mode using jakstab and a DSE engine
+# Params:
+#   path to the binary
+#   directory to store results
+#   port number of DSE
+#   timeout in seconds
+#   mode and optional args to jakstab
+#   identifier for filenames(To differentiate between modes)
 analyzeBinarySub(){
     fullpath=$1
-    idealDir=$2
-    resultDir=$3
-    DSEPort=$4
-    seconds=$5
-    mode=$6
-    identifier=$7
+    resultDir=$2
+    DSEPort=$3
+    seconds=$4
+    mode=$5
+    identifier=$6
+
+    printf "path:$1\nresultDir:$2\nDSEPort:$3\nseconds:$4\nmode:$5\nid:$6\n"
 
     # Extract variables
     path=$(dirname "$fullPath")
@@ -62,7 +70,6 @@ analyzeBinarySub(){
     mv "$pathToBin"'_states.dat' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_states.dat')
     mv "$pathToBin"'_stats.dat' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_stats.dat')
     mv "$pathToBin"'_location_count.dat' $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_location_count.dat')
-    #python3 calculateStats.py $(realpath "$idealDir/$fileNoExt"'_ideal.dot') $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_ccfa.dot') $(realpath "$resultDir/$fileNoExt"'_'"$identifier"'_stats.dat')
 
     if [[ "$exitCode" -eq "124" ]]
     then
@@ -73,16 +80,18 @@ analyzeBinarySub(){
     pkill -9 java
 }
 
-if [ $# -ne 5 ]
+
+if [ $# -ne 4 && $# -ne 5 ]
 then
-    echo "Usage: ./genresults.sh [asm dir] [ideal graph dir] [output dir] [port for DSE] [timeout in seconds]"
+    echo "Usage: ./genresults.sh [bin dir] [output dir] [port for DSE] [timeout in seconds] [Optional args to jakstab]"
 else
+
     for fullPath in $1*; do
         if [[ ${fullPath: -4} != *"."* ]]
         then
             if test -f "$fullPath"; then #Ensure that it is a file and not a directory
                 echo "Analysing $fullPath"
-                analyzeBinary $fullPath $2 $3 $4 $5
+                analyzeBinary $fullPath $2 $3 $4 "${5:-""}"
             fi
         fi
         if [[ ${fullPath: -4} == ".asm" ]]
@@ -91,7 +100,7 @@ else
             then
                 echo "Compiling $fullPath"
                 ../Input/compileStatic.sh $fullPath
-                analyzeBinary $fullPath $2 $3 $4 $5
+                analyzeBinary $fullPath $2 $3 $4 "${5:-""}"
             fi
         fi
         if [[ ${fullPath: -2} == ".c" ]]
@@ -99,7 +108,7 @@ else
             fullPath="${fullPath%.*}"
             echo "Compiling $fullPath"
             ../Input/compileMinimal.sh $fullPath #Compiles statically without stdlib
-            analyzeBinary $fullPath $2 $3 $4 $5
+            analyzeBinary $fullPath $2 $3 $4 "${5:-""}"
         fi
     done
 fi
