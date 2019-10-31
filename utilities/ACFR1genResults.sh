@@ -30,10 +30,10 @@ analyzeBinary () {
     analyzeBinarySub $1 $2 $3 $4 $5 "i" "i"
 
     # Constant propagation with DSE
-    analyzeBinarySub $1 $2 $3 $4 $5 "c --dse $DSEPort" --dse-only-once "cD"
+    analyzeBinarySub $1 $2 $3 $4 $5 "c --dse $DSEPort --dse-only-once" "cD"
 
     # Interval analysis with DSE
-    analyzeBinarySub $1 $2 $3 $4 $5 "i --dse $DSEPort" --dse-only-once "iD"
+    analyzeBinarySub $1 $2 $3 $4 $5 "i --dse $DSEPort --dse-only-once" "iD"
 
 }
 
