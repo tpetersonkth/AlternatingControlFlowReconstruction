@@ -27,7 +27,7 @@ def main(idealGraphFile, generatedGraphFile, statsfile):
     accuracy, soundness, precision, TFAccuracy, TFSoundness, TFPrecision = calculateStats(IGraph,GGraph,textSectionSize)
 
     #Build output
-    out = ""
+    out = "\n"
     out+="Accuracy: "+percentage(accuracy)+"\n"
     out+="Soundness: "+percentage(soundness)+"\n"
     out+="Precision: "+percentage(precision)+"\n"
@@ -39,11 +39,14 @@ def main(idealGraphFile, generatedGraphFile, statsfile):
     print(out)
 
     #Write states to a file
-    filename = generatedGraphFile.split(".")[0]
-    fid = open(filename + "_graph_stats.dat","w")
+    filename = generatedGraphFile.split(".")
+    filename[-2] += "_graph_stats.dat"
+    filename = ".".join(filename[:-1])
+    print("Writing graph stats to " + filename)
+    fid = open(filename,"w")
     fid.write(out)
     fid.close()
-    
+
 
 def load(filename):
     graph = networkx.drawing.nx_pydot.read_dot(filename)
@@ -117,7 +120,7 @@ def calculateStatsRaw(idealGraph, graph):
     intersecting = float(len(GE.intersection(IGE)))
     soundness = intersecting/len(IGE) if len(IGE) != 0 else None
     accuracy = intersecting/len(GE) if len(GE) != 0 else None
-    
+
     #Calculate precision
     precision = 1/2*(intersecting/len(IGE) + intersecting/len(GE)) if (len(GE) != 0 and len(IGE) != 0) else None
 
@@ -139,5 +142,3 @@ if __name__ == "__main__":
         print("Usage: Python3 calculateStats [Path to ideal graph] [Path to generated graph] [Path to statsfile]")
     else:
         main(sys.argv[1],sys.argv[2],sys.argv[3])
-        
-    
