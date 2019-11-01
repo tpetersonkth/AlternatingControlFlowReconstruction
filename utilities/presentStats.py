@@ -11,8 +11,8 @@ def main():
     stats = dirToStats(sys.argv[1])
 
     # AccuracyTable
-    accuracyFields = ["Instructions","Accuracy","Precision","Soundness","Unresolved Tops","Tops","Top free accuracy","Top free precision","Top free soundness"]
-    fieldSwap1 = {"Soundness":"$\mathcal{S}_{E_I,E_G}$","Accuracy":"$\mathcal{A}_{E_I,E_G}$","Precision":"$\mathcal{P}_{E_I,E_G}$","Unresolved Tops":"uTops","Top free soundness":"$\mathcal{S}_{E_I,E_{TF}}$","Top free accuracy":"$\mathcal{C}_{E_I,E_{TF}}$","Top free precision":"$\mathcal{P}_{E_I,E_{TF}}$"}
+    accuracyFields = ["Instructions","Accuracy","Precision","Soundness","Unresolved Tops","Tops","Top Free Accuracy","Top Free Precision","Top Free Soundness"]
+    fieldSwap1 = {"Soundness":"$\mathcal{S}_{E_I,E_G}$","Accuracy":"$\mathcal{A}_{E_I,E_G}$","Precision":"$\mathcal{P}_{E_I,E_G}$","Unresolved Tops":"uTops","Top Free Soundness":"$\mathcal{S}_{E_I,E_{TF}}$","Top Free Accuracy":"$\mathcal{C}_{E_I,E_{TF}}$","Top Free Precision":"$\mathcal{P}_{E_I,E_{TF}}$"}
     t1 = generateTable(stats, accuracyFields, fieldSwap1,"?l|l|l?l|l|l?l|l?l|l|l?l|l|l|l|l?")
     print(t1)
 
@@ -27,7 +27,7 @@ def main():
     fieldSwap.update(fieldSwap1)
     fieldSwap.update(fieldSwap2)
     fields = accuracyFields + timeFields
-    t2 = generateTable(stats, fields, fieldSwap)
+    t2 = generateTable(stats, fields, fieldSwap, columnStyle="?l|l|l?l|l|l?l|l?l|l|l?l|l|l|l|l?")
     print(t2)
 
 '''
@@ -37,15 +37,15 @@ Params:
     fields - The desired columns of the table
     fieldSwap(opt) - Dictionary mapping actual field name to desired field name 
 '''
-def generateTable(stats, fields, fieldSwap={}, columnstyle=""):
+def generateTable(stats, fields, fieldSwap={}, columnStyle=""):
+    columns = len(fields) + 2# + 2 for name of binary and mode
     if columnStyle == "":
         columnStyle="l".join("|"*(columns+2))
-    columns = len(fields) + 2# + 2 for name of binary and mode
     out = ""
     out += "\\begin{table}[ht]\n"
     out += "\\centering\n"
     out += "\scalebox{0.5}{\n"
-    out += "\\begin{tabular}{"+columnstyle+"}\n"
+    out += "\\begin{tabular}{"+columnStyle+"}\n"
     out += "\\hline\n"
 
     bfFields = ["\\textbf{Binary}","\\textbf{Mode}"]
