@@ -3,7 +3,7 @@ Author: Thomas Peterson
 Year: 2019
 '''
 
-# This is a file to generate latex tables from result files of the genResults.sh script(Files ending with .dat).
+# This is a file to generate latex tables from result files(Files ending with .dat) of the genResults.sh script.
 
 import os, sys
 
@@ -32,10 +32,10 @@ def main():
 
 '''
 generateTable(stats, fields, fieldSwap={}) - Generates a latex table given a statistics dictionrary and a list of desired columns
-Params: 
+Params:
     stats - The statistic dictionary
     fields - The desired columns of the table
-    fieldSwap(opt) - Dictionary mapping actual field name to desired field name 
+    fieldSwap(opt) - Dictionary mapping actual field name to desired field name
 '''
 def generateTable(stats, fields, fieldSwap={}, columnStyle=""):
     columns = len(fields) + 2# + 2 for name of binary and mode
@@ -46,14 +46,14 @@ def generateTable(stats, fields, fieldSwap={}, columnStyle=""):
     out += "\\centering\n"
     out += "\scalebox{0.5}{\n"
     out += "\\begin{tabular}{"+columnStyle+"}\n"
-    out += "\\hline\n"
+    out += "\\Xhline{2\\arrayrulewidth}\n"
 
     bfFields = ["\\textbf{Binary}","\\textbf{Mode}"]
     bfFields = bfFields + ["\\textbf{"+field+"}" if field not in fieldSwap.keys() else "\\textbf{"+fieldSwap[field]+"}" for field in fields]
-    out += " & ".join(bfFields) + "\\\\ \hline \n"
+    out += " & ".join(bfFields) + "\\\\ \\Xhline{2\\arrayrulewidth} \n"
 
     sortedValues = []
-    for binary in stats.keys(): 
+    for binary in stats.keys():
         for analysis in stats[binary].keys():
             values = ["".join([char for char in binary if not char.isdigit()]), analysis]
             for field in fields:
@@ -63,8 +63,13 @@ def generateTable(stats, fields, fieldSwap={}, columnStyle=""):
     modeEnum = {"c":0,"cD":1,"i":2,"iD":3}
     sortedValues.sort(key = lambda values: (values[0],modeEnum[values[1]]))
 
-    for values in sortedValues:
-        out += " & ".join(values) + "\\\\ \hline\n"
+    l = len(sortedValues)
+    for i in range(l):
+        values = sortedValues[i]
+        if (i != l-1): #Is not last line
+            out += " & ".join(values) + "\\\\ \hline\n"
+        else:
+            out += " & ".join(values) + "\\\\ \\Xhline{2\\arrayrulewidth}\n"
 
     out += "\\end{tabular}\n"
     out += "}\n"
@@ -76,9 +81,9 @@ def generateTable(stats, fields, fieldSwap={}, columnStyle=""):
 
 '''
     dirToStats(directory) - Generates a stats object from a directory
-    Params: 
+    Params:
         directory - A directory to retrieve stats from
-    Returns: 
+    Returns:
         stats - A stats object containing the stats of the provided directory
 '''
 def dirToStats(directory):
@@ -88,7 +93,7 @@ def dirToStats(directory):
     for f in os.listdir(directory):
         if (f.endswith("stats.dat") or f.endswith("ccfa_graph_stats.dat")):
             addStats(stats, os.path.join(directory,f))
-    
+
     return stats
 
 '''
@@ -115,7 +120,7 @@ def addStats(stats, filename):
 
     # Fill the stats of this file in the dictionary
     for line in lines:
-        if ":" in line: 
+        if ":" in line:
             line = line.split(":")
             stats[basename][analysisType][line[0].strip()] = line[1].strip()
 
