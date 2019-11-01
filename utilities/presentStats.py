@@ -12,7 +12,7 @@ def main():
 
     # AccuracyTable
     accuracyFields = ["Instructions","Accuracy","Precision","Soundness","Unresolved Tops","Tops","Top Free Accuracy","Top Free Precision","Top Free Soundness"]
-    fieldSwap1 = {"Soundness":"$\mathcal{S}_{E_I,E_G}$","Accuracy":"$\mathcal{A}_{E_I,E_G}$","Precision":"$\mathcal{P}_{E_I,E_G}$","Unresolved Tops":"uTops","Top Free Soundness":"$\mathcal{S}_{E_I,E_{TF}}$","Top Free Accuracy":"$\mathcal{C}_{E_I,E_{TF}}$","Top Free Precision":"$\mathcal{P}_{E_I,E_{TF}}$"}
+    fieldSwap1 = {"Soundness":"$\mathcal{S}_{E_I,E_G}$","Accuracy":"$\mathcal{A}_{E_I,E_G}$","Precision":"$\mathcal{P}_{E_I,E_G}$","Unresolved Tops":"uTops","Top Free Soundness":"$\mathcal{S}_{E_I,E_{TF}}$","Top Free Accuracy":"$\mathcal{A}_{E_I,E_{TF}}$","Top Free Precision":"$\mathcal{P}_{E_I,E_{TF}}$"}
     t1 = generateTable(stats, accuracyFields, fieldSwap1,"?l|l|l?l|l|l?l|l?l|l|l?l|l|l|l|l?")
     print(t1)
 
