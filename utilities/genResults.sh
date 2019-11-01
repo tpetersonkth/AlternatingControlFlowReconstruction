@@ -81,7 +81,7 @@ analyzeBinarySub(){
 }
 
 
-if [ $# -ne 4 && $# -ne 5 ]
+if [[ $# -ne 4 && $# -ne 5 ]]
 then
     echo "Usage: ./genresults.sh [bin dir] [output dir] [port for DSE] [timeout in seconds] [Optional args to jakstab]"
 else
