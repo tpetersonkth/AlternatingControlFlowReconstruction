@@ -1,0 +1,14 @@
+digraph G {
+node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
+bgcolor="transparent"
+graph [label="Jakstab v0.8.4-devel   Wed Oct 30 19:59:51 CET 2019\n-m /home/thomas/Alternating-Control-Flow-Reconstruction/Input/Synthetic/Small/08minimalistic -b -v 1 --cpa c", labelloc=t, fontsize=35, pad=30]
+"0x08048108"[label="0x08048108\n"];
+"0x080480ed"[label="0x080480ed\n"];
+"0x080480ea"[label="0x080480ea\n"];
+"0x0804810b"[label="0x0804810b\n",fillcolor="red"];
+"0x080480eb"[label="0x080480eb\n"];
+"0x080480ed" -> "0x08048108" [color="#000000"];
+"0x08048108" -> "0x0804810b" [color="#000000"];
+"0x080480eb" -> "0x080480ed" [color="#000000"];
+"0x080480ea" -> "0x080480eb" [color="#000000"];
+}

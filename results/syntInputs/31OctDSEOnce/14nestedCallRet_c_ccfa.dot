@@ -1,0 +1,10 @@
+digraph G {
+node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
+bgcolor="transparent"
+graph [label="Jakstab v0.8.4-devel   Thu Oct 31 01:39:03 CET 2019\n-m /home/thomas/Alternating-Control-Flow-Reconstruction/Input/Synthetic/Small/bin/14nestedCallRet -b -v 1 --cpa c", labelloc=t, fontsize=35, pad=30]
+"0x08048060"[label="0x08048060\n"];
+"0x08048070"[label="0x08048070\n",fillcolor="red"];
+"0x0804806a"[label="0x0804806a\n"];
+"0x0804806a" -> "0x08048070" [color="#000000"];
+"0x08048060" -> "0x0804806a" [color="#000000"];
+}

@@ -1,0 +1,22 @@
+digraph G {
+node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
+bgcolor="transparent"
+graph [label="Jakstab v0.8.4-devel   Thu Oct 31 01:38:02 CET 2019\n-m /home/thomas/Alternating-Control-Flow-Reconstruction/Input/Synthetic/Small/bin/09memcallRet -b -v 1 --cpa c --dse 65301 --dse-only-once", labelloc=t, fontsize=35, pad=30]
+"0x08048065"[label="0x08048065\n"];
+"0x08048077"[label="0x08048077\n"];
+"0x08048081"[label="0x08048081\n"];
+"0x08048083"[label="0x08048083\n"];
+"0x0804806f"[label="0x0804806f\n"];
+"0x08048060"[label="0x08048060\n"];
+"0x08048070"[label="0x08048070\n",fillcolor="red"];
+"0x0804806a"[label="0x0804806a\n"];
+"0x0804807c"[label="0x0804807c\n"];
+"0x08048081" -> "0x08048083" [color="#000000"];
+"0x08048065" -> "0x0804806f" [color="#000000"];
+"0x0804807c" -> "0x08048081" [color="#000000"];
+"0x0804806f" -> "0x08048070" [color="#000000"];
+"0x08048070" -> "0x0804806a" [color="#000000"];
+"0x08048060" -> "0x08048065" [color="#000000"];
+"0x0804806a" -> "0x08048077" [color="#000000"];
+"0x08048077" -> "0x0804807c" [color="#000000"];
+}

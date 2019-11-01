@@ -1,0 +1,28 @@
+digraph G {
+node[shape=rectangle,style=filled,fillcolor=lightsteelblue,color=lightsteelblue]
+bgcolor="transparent"
+graph [label="Jakstab v0.8.4-devel   Wed Oct 30 21:37:11 CET 2019\n-m /home/thomas/Alternating-Control-Flow-Reconstruction/Input/Synthetic/Small/bin/04infiniteLoop -b -v 1 --cpa c", labelloc=t, fontsize=35, pad=30]
+"0x08048085"[label="0x08048085\n"];
+"0x08048065"[label="0x08048065\n"];
+"0x08048066"[label="0x08048066\n"];
+"0x08048077"[label="0x08048077\n"];
+"0x08048072"[label="0x08048072\n"];
+"0x08048083"[label="0x08048083\n"];
+"0x0804806d"[label="0x0804806d\n"];
+"0x0804807e"[label="0x0804807e\n"];
+"0x08048060"[label="0x08048060\n"];
+"0x08048079"[label="0x08048079\n"];
+"0x0804806b"[label="0x0804806b\n"];
+"0x08048060" -> "0x08048065" [color="#000000"];
+"0x0804806b" -> "0x08048072" [color="#000000"];
+"0x0804807e" -> "0x08048083" [color="#000000"];
+"0x0804806d" -> "0x08048072" [color="#000000"];
+"0x08048066" -> "0x0804806b" [color="#000000"];
+"0x08048079" -> "0x0804807e" [color="#000000"];
+"0x08048065" -> "0x08048066" [color="#000000"];
+"0x0804806b" -> "0x0804806d" [color="#000000"];
+"0x08048077" -> "0x08048065" [color="#000000"];
+"0x08048083" -> "0x08048085" [color="#000000"];
+"0x08048077" -> "0x08048079" [color="#000000"];
+"0x08048072" -> "0x08048077" [color="#000000"];
+}
