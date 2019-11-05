@@ -6,7 +6,7 @@ year: 2019
 import os, sys, time, networkx, angr
 import queue
 
-from angr.knowledge_plugins.cfg.cfg_node import CFGENode
+#from angr.knowledge_plugins.cfg.cfg_node import CFGENode
 #from angrutils import plot_cfg
 
 def main(file,outputDirectory):
@@ -108,7 +108,7 @@ def outputDot(file, basename, nodes, edges, CFGENode=True):
                 extraProperties = ",fillcolor=\"yellow\""
         else:
             hexaddr = node
-        fid.write("\"0x" + hexaddr + "\"[label = \"0x" + hexaddr + "\""+extraProperties+"];\n")
+        fid.write("\"" + hexaddr + "\"[label = \"" + hexaddr + "\""+extraProperties+"];\n")
 
     for edge in edges:
         if (CFGENode):
@@ -117,7 +117,7 @@ def outputDot(file, basename, nodes, edges, CFGENode=True):
         else:
             hexaddr1 = edge[0]
             hexaddr2 = edge[1]
-        fid.write("\"0x" + hexaddr1 + "\" -> \"0x" + hexaddr2 + "\"[color = \"#000000\"];\n")
+        fid.write("\"" + hexaddr1 + "\" -> \"" + hexaddr2 + "\"[color = \"#000000\"];\n")
 
     fid.write("}\n")
     fid.close()
