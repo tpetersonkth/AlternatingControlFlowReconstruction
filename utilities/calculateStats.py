@@ -4,14 +4,15 @@ year: 2019
 This script loads two graphs and calculates the accuracy, soundness and precision based on these.
 '''
 
-import sys, os, networkx
+import sys, os, networkx, datetime
 from presentStats import addStats
 
 def main(idealGraphFile, generatedGraphFile, statsfile):
-    print("Loading graphs")
+    tprint("Loading ideal graph")
     IGraph = load(idealGraphFile)
+    tprint("Loading generated graph")
     GGraph = load(generatedGraphFile)
-    print("Graphs loaded")
+    tprint("Graphs loaded")
 
     stats = {}
     addStats(stats, statsfile)
@@ -23,7 +24,7 @@ def main(idealGraphFile, generatedGraphFile, statsfile):
 
     textSectionSize = int(stats[basename][analysisType]['Section .text size'],16)
 
-    print("Starting calculations of graph stats")
+    tprint("Starting calculations of graph stats")
     accuracy, soundness, precision, TFAccuracy, TFSoundness, TFPrecision = calculateStats(IGraph,GGraph,textSectionSize)
 
     #Build output
@@ -42,7 +43,7 @@ def main(idealGraphFile, generatedGraphFile, statsfile):
     filename = generatedGraphFile.split(".")
     filename[-2] += "_graph_stats.dat"
     filename = ".".join(filename[:-1])
-    print("Writing graph stats to " + filename)
+    tprint("Writing graph stats to " + filename)
     fid = open(filename,"w")
     fid.write(out)
     fid.close()
@@ -83,11 +84,11 @@ def getTopFreeGraph(graph, providedTopNodes=[]):
 # Calculate accuracy, soundness and precision with respect to the ideal graph
 def calculateStats(idealGraph, graph, SizeOfTextSection):
 
-    print("Generating top free graph")
+    tprint("Generating top free graph")
     topFreeGraph, topNodes, _ = getTopFreeGraph(graph)
-    print("Generating top free ideal graph")
+    tprint("Generating top free ideal graph")
     topFreeIdealGraph, _, idealTopEdges = getTopFreeGraph(idealGraph, providedTopNodes=topNodes)
-    print("Done generating top free graphs")
+    tprint("Done generating top free graphs")
 
     # Convert to sets to perform set operations in the calculations
     TFGE = set(topFreeGraph.edges)
@@ -95,9 +96,18 @@ def calculateStats(idealGraph, graph, SizeOfTextSection):
     idealTopEdges = set(idealTopEdges)
     numberOfTopEdgesOfGraph = SizeOfTextSection*len(topNodes)
 
+    tprint("ideal graph top edges: ")
+    for e in idealTopEdges:
+        print(e)
+
     #Every edge from a top node in the ideal graph is covered since a top node points to every byte in the .text section
     intersectingTopEdges = len(idealTopEdges)
     intersecting = float(len(TFGE.intersection(TFIGE))+intersectingTopEdges)
+
+    tprint("Intersecting: " + str(intersecting))
+    tprint("Intersecting Top Edges: " + str(intersectingTopEdges))
+
+    print("")
 
     #Calculate metrics
     soundness = intersecting / len(idealGraph.edges) if len(idealGraph.edges) != 0 else None
@@ -135,7 +145,10 @@ def percentage(decimalForm):
     if (decimalForm == None):
         return "-"
 
-    return str(round(100*decimalForm,2))+"%"
+    return str(100*decimalForm)+"%"
+
+def tprint(x):
+    print(str(datetime.datetime.now())+": "+str(x))
 
 if __name__ == "__main__":
     if (len(sys.argv) < 4):
