@@ -111,6 +111,7 @@ public class Options {
 	public static JOption<Integer> DSE = JOption.create("dse","port",-1, "Use dynamic symoblic execution to underapproximate unknown branch targets.");
 	public static JOption<Boolean> DSEOnlyOnce = JOption.create("dse-only-once", "Only request DSE to resolve a top the first time it is discovered.");
 	public static JOption<Integer> DSEDepth = JOption.create("dse-depth","depth",200, "Perform DSE until a specific depth. Default is 200 instructions.");
+	public static JOption<Boolean> DSEIntermediateOutput = JOption.create("DSE-intermediate-output","",true, "Output CFA and stats after each DSE Request.");
 
 	private static AnalysisManager mgr = AnalysisManager.getInstance();
 	public static JOption<String> cpas = JOption.create("cpa", "{" + mgr.getShorthandsString() + "}", "x", "Configure which analyses to use for control flow reconstruction.");

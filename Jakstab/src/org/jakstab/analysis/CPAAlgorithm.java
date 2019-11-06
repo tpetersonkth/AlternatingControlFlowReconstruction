@@ -49,6 +49,7 @@ public class CPAAlgorithm implements Algorithm {
 	private final boolean failFast;
 	private final boolean addedDSE;
 	private final boolean DSEOnlyOnce;
+	private final boolean DSEIntermediateOutput;
 	private final int DSEDepth;
 
 	private long statesVisited;
@@ -88,11 +89,11 @@ public class CPAAlgorithm implements Algorithm {
 
 	public CPAAlgorithm(ConfigurableProgramAnalysis cpa,
 			StateTransformerFactory transformerFactory, Worklist<AbstractState> worklist) {
-		this(cpa, transformerFactory, worklist, false, false,false,0);
+		this(cpa, transformerFactory, worklist, false, false,false,false,0);
 	}
 
 	public CPAAlgorithm(ConfigurableProgramAnalysis cpa,
-			StateTransformerFactory transformerFactory, Worklist<AbstractState> worklist, boolean failFast, boolean addedDSE, boolean DSEOnlyOnce, int DSEDepth) {
+			StateTransformerFactory transformerFactory, Worklist<AbstractState> worklist, boolean failFast, boolean addedDSE, boolean DSEOnlyOnce, boolean DSEIntermediateOutput,int DSEDepth) {
 		super();
 		this.cpa = cpa;
 		this.transformerFactory = transformerFactory;
@@ -100,6 +101,7 @@ public class CPAAlgorithm implements Algorithm {
 		this.failFast = failFast;
 		this.addedDSE = addedDSE;
 		this.DSEOnlyOnce = DSEOnlyOnce;//Can be set to true for increased speed at the cost of precision
+		this.DSEIntermediateOutput = DSEIntermediateOutput;
 		this.DSEDepth = DSEDepth;
 		
 		if (Options.errorTrace.getValue() || Options.asmTrace.getValue() || 
@@ -264,6 +266,8 @@ public class CPAAlgorithm implements Algorithm {
 			}
 
 			if (System.currentTimeMillis() - outputTime > outputDelta){
+				logger.info("Outputting intermediate results");
+
 				//Ensure that time is correct before performing output
 				long now = System.currentTimeMillis();
 				Main.setOverallEndTime(now);
@@ -474,6 +478,10 @@ public class CPAAlgorithm implements Algorithm {
 
 				//Benchmark the time of emptying the worklist
 				startTimeOverApx = System.currentTimeMillis();
+				if (DSEIntermediateOutput){
+					//Ensure that intermediate results are outputted by setting the last outputime to 0
+					outputTime = 0;
+				}
 			}
 		}
 		long endTime = System.currentTimeMillis();
