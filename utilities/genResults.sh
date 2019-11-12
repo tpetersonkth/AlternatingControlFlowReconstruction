@@ -99,7 +99,7 @@ else
             if [[ ${fullPath: -8} != "_jak.asm" ]]
             then
                 echo "Compiling $fullPath"
-                ../Input/compileStatic.sh $fullPath
+                ../input/compileStatic.sh $fullPath
                 analyzeBinary $fullPath $2 $3 $4 "${5:-""}"
             fi
         fi
@@ -107,7 +107,7 @@ else
         then
             fullPath="${fullPath%.*}"
             echo "Compiling $fullPath"
-            ../Input/compileMinimal.sh $fullPath #Compiles statically without stdlib
+            ../input/compileMinimal.sh $fullPath #Compiles statically without stdlib
             analyzeBinary $fullPath $2 $3 $4 "${5:-""}"
         fi
     done
