@@ -12,7 +12,7 @@ The tool does currently only support debian-based operating systems and has only
 * z3
 * nasm
 
-Note that the dependencies can be installed automatically executing the installDependencies.sh script.
+Note that the dependencies can be installed automatically by executing the installDependencies.sh script.
 
 ### Installation instructions
 To install the program, cd into the root directory. Then simply execute the setup and compile script:
@@ -35,7 +35,7 @@ jak -m [binary] [options] --dse [port]
 where [binary] is the binary to analyze, [options] are optional options to pass to jakstab and [port] is the port specified for the manticore server.
 
 ## Documentation
-TODO
+For people who desires to modify the tool, a large portion of the code has been documented using comments. Futhermore, jakstab includes a breif description of all the options available which is printed to stdout when the binary is executed without any options. For information concerning the theorethical aspects of the tool, we recommend consulting the master thesis of Thomas Peterson.
 
 ## Questions
 Send an email to thpeter@kth.se or create an issue using the issue board.
