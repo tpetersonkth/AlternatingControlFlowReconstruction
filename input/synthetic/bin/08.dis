@@ -1,0 +1,30 @@
+
+08minimalistic:     file format elf32-i386
+
+
+Disassembly of section .text:
+
+080480d8 <calculate>:
+ 80480d8:	55                   	push   ebp
+ 80480d9:	89 e5                	mov    ebp,esp
+ 80480db:	e8 28 00 00 00       	call   8048108 <__x86.get_pc_thunk.ax>
+ 80480e0:	05 20 1f 00 00       	add    eax,0x1f20
+ 80480e5:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 80480e8:	5d                   	pop    ebp
+ 80480e9:	c3                   	ret    
+
+080480ea <main>:
+ 80480ea:	55                   	push   ebp
+ 80480eb:	89 e5                	mov    ebp,esp
+ 80480ed:	e8 16 00 00 00       	call   8048108 <__x86.get_pc_thunk.ax>
+ 80480f2:	05 0e 1f 00 00       	add    eax,0x1f0e
+ 80480f7:	6a 01                	push   0x1
+ 80480f9:	e8 da ff ff ff       	call   80480d8 <calculate>
+ 80480fe:	83 c4 04             	add    esp,0x4
+ 8048101:	b8 00 00 00 00       	mov    eax,0x0
+ 8048106:	c9                   	leave  
+ 8048107:	c3                   	ret    
+
+08048108 <__x86.get_pc_thunk.ax>:
+ 8048108:	8b 04 24             	mov    eax,DWORD PTR [esp]
+ 804810b:	c3                   	ret    
