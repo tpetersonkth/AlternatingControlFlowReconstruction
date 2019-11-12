@@ -1,0 +1,112 @@
+nohup: ignoring input
+-------------------------------------
+Calculating stats for echo in mode cD
+2019-11-07 11:46:59.690916: Loading ideal graph
+2019-11-07 11:49:52.964739: Loading generated graph
+2019-11-07 11:49:53.149298: Graphs loaded
+2019-11-07 11:49:53.149453: Starting calculations of graph stats
+2019-11-07 11:49:53.149459: Generating top free graph
+2019-11-07 11:49:53.149632: Generating top free ideal graph
+2019-11-07 11:49:53.390788: Done generating top free graphs
+2019-11-07 11:49:53.446932: ideal graph top edges: 
+2019-11-07 11:49:53.446983: Intersecting: 56.0
+2019-11-07 11:49:53.446988: Intersecting Top Edges: 0
+
+
+Accuracy: 0.003282693872382931%
+Soundness: 0.08103141414287575%
+Precision: 0.04215705400762934%
+Top Free Accuracy: 100.0%
+Top Free Soundness: 0.08103141414287575%
+Top Free Precision: 50.04051570707144%
+
+2019-11-07 11:49:53.593889: Writing graph stats to ../results/gnuCoreutils/6NovDSEOnlyOnce//echo_cD_ccfa_graph_stats.dat
+-------------------------------------
+Calculating stats for false in mode cD
+2019-11-07 11:49:57.920826: Loading ideal graph
+2019-11-07 11:53:40.285495: Loading generated graph
+2019-11-07 11:53:40.467085: Graphs loaded
+2019-11-07 11:53:40.467244: Starting calculations of graph stats
+2019-11-07 11:53:40.467251: Generating top free graph
+2019-11-07 11:53:40.467429: Generating top free ideal graph
+2019-11-07 11:53:40.702835: Done generating top free graphs
+2019-11-07 11:53:40.757184: ideal graph top edges: 
+2019-11-07 11:53:40.757233: Intersecting: 56.0
+2019-11-07 11:53:40.757237: Intersecting Top Edges: 0
+
+
+Accuracy: 0.003293195552304178%
+Soundness: 0.08180317571614298%
+Precision: 0.04254818563422358%
+Top Free Accuracy: 100.0%
+Top Free Soundness: 0.08180317571614298%
+Top Free Precision: 50.040901587858066%
+
+2019-11-07 11:53:40.897782: Writing graph stats to ../results/gnuCoreutils/6NovDSEOnlyOnce//false_cD_ccfa_graph_stats.dat
+-------------------------------------
+Calculating stats for make-prime-list in mode cD
+2019-11-07 11:53:46.031210: Loading ideal graph
+2019-11-07 11:57:54.629839: Loading generated graph
+2019-11-07 11:57:54.818058: Graphs loaded
+2019-11-07 11:57:54.818219: Starting calculations of graph stats
+2019-11-07 11:57:54.818226: Generating top free graph
+2019-11-07 11:57:54.818404: Generating top free ideal graph
+2019-11-07 11:57:55.050085: Done generating top free graphs
+2019-11-07 11:57:55.103395: ideal graph top edges: 
+2019-11-07 11:57:55.103446: Intersecting: 56.0
+2019-11-07 11:57:55.103450: Intersecting Top Edges: 0
+
+
+Accuracy: 0.0034317846996330444%
+Soundness: 0.08754514046305127%
+Precision: 0.045488462581342155%
+Top Free Accuracy: 100.0%
+Top Free Soundness: 0.08754514046305127%
+Top Free Precision: 50.043772570231525%
+
+2019-11-07 11:57:55.243950: Writing graph stats to ../results/gnuCoreutils/6NovDSEOnlyOnce//make-prime-list_cD_ccfa_graph_stats.dat
+-------------------------------------
+Calculating stats for printenv in mode cD
+2019-11-07 11:58:00.106448: Loading ideal graph
+2019-11-07 12:01:53.368709: Loading generated graph
+2019-11-07 12:01:53.572680: Graphs loaded
+2019-11-07 12:01:53.584287: Starting calculations of graph stats
+2019-11-07 12:01:53.584301: Generating top free graph
+2019-11-07 12:01:53.584508: Generating top free ideal graph
+2019-11-07 12:01:53.838405: Done generating top free graphs
+2019-11-07 12:01:53.897361: ideal graph top edges: 
+2019-11-07 12:01:53.897413: Intersecting: 56.0
+2019-11-07 12:01:53.897418: Intersecting Top Edges: 0
+
+
+Accuracy: 0.003260553129548763%
+Soundness: 0.07967447286799648%
+Precision: 0.04146751299877262%
+Top Free Accuracy: 100.0%
+Top Free Soundness: 0.07967447286799648%
+Top Free Precision: 50.039837236433996%
+
+2019-11-07 12:01:54.052644: Writing graph stats to ../results/gnuCoreutils/6NovDSEOnlyOnce//printenv_cD_ccfa_graph_stats.dat
+-------------------------------------
+Calculating stats for true in mode cD
+2019-11-07 12:02:00.392611: Loading ideal graph
+2019-11-07 12:06:01.119995: Loading generated graph
+2019-11-07 12:06:01.319162: Graphs loaded
+2019-11-07 12:06:01.319436: Starting calculations of graph stats
+2019-11-07 12:06:01.319443: Generating top free graph
+2019-11-07 12:06:01.319623: Generating top free ideal graph
+2019-11-07 12:06:01.559676: Done generating top free graphs
+2019-11-07 12:06:01.613977: ideal graph top edges: 
+2019-11-07 12:06:01.614029: Intersecting: 56.0
+2019-11-07 12:06:01.614034: Intersecting Top Edges: 0
+
+
+Accuracy: 0.003293195552304178%
+Soundness: 0.08180317571614298%
+Precision: 0.04254818563422358%
+Top Free Accuracy: 100.0%
+Top Free Soundness: 0.08180317571614298%
+Top Free Precision: 50.040901587858066%
+
+2019-11-07 12:06:01.753500: Writing graph stats to ../results/gnuCoreutils/6NovDSEOnlyOnce//true_cD_ccfa_graph_stats.dat
+-------------------------------------
