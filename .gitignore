@@ -1,26 +1,19 @@
 #Ignore input binaries
-/Input/*
-!/Input/*.*
-!/Input/*/
-/Input/Synthetic/Small/*
-!/Input/Synthetic/Small/*.*
-!/Input/Synthetic/Small/*/
-/Input/Synthetic/Small/src/*
-!/Input/Synthetic/Small/src/*.*
-!/Input/Synthetic/Small/src/*/
-!/Input/Synthetic/Small/idealCFAs/*
-/Input/Synthetic/Small/DSEDebug/*
-!/Input/Synthetic/Small/DSEDebug/*.*
-/Input/Synthetic/Small/Intervals/*
-!/Input/Synthetic/Small/Intervals/*.*
-/Input/Synthetic/Medium/*
-!/Input/Synthetic/Medium/*.*
+/input/*
+!/input/*.*
+!/input/*/
+/input/synthetic/*
+!/input/synthetic/*.*
+!/input/synthetic/*/
+/input/synthetic/src/*
+!/input/synthetic/src/*.*
+!/input/synthetic/src/*/
+!/input/synthetic/idealCFAs/*
 
 #Other ignores
 /logs/
 /Jakstab/bin/
 mcore_*/
-/SE/x86
 *__pycache__/
 *.vscode/
 *.idea/
@@ -31,10 +24,9 @@ mcore_*/
 *.swp
 *.png
 *.dat
-!/Input/Synthetic/Small/idealCFAs/*.dot
-!/Input/Real/linuxCommandsStatic/idealCFAs/*.dot
+!/input/synthetic/idealCFAs/*.dot
+!/input/GNUCoreutils/idealCFAs/*.dot
 !/results/**/*
-/results/OLD/
 
 
 #IDA output
