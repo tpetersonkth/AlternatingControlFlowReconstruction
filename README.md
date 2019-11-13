@@ -22,7 +22,7 @@ To install the program, cd into the root directory. Then simply execute the setu
 ```
 
 ## Usage
-Open two terminals. In one, cd into the SE folder and execute:
+Open two terminals. In one, cd into the symbolicExecution folder and execute:
 ```
 python manticoreServer.py [port]
 ```
