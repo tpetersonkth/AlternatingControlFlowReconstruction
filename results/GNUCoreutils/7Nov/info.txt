@@ -1,5 +1,0 @@
-Executed with a timeout of 7200 seconds(2 hours)
-Depth of DFS 500
-On commit c04a1827c9939963017ccd9c9807d01dae073edc
-ACFR version 2
-The binaries were only analyzed in cD mode.
