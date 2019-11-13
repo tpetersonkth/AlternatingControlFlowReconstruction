@@ -32,7 +32,7 @@ Then, use the other terminal to run jakstab. This can be done by executing:
 ```
 jak -m [binary] [options] --dse [port]
 ```
-where [binary] is the binary to analyze, [options] are optional options to pass to jakstab and [port] is the port specified for the manticore server.
+where [binary] is the binary to analyze, [options] are optional options to pass to jakstab and [port] is the port specified for the manticore server. Note that the version of Jakstab in this repository contains options for configuring how dse is used in addition to the original options.
 
 ## Documentation
 For people who desires to modify the tool, a large portion of the code has been documented using comments. Futhermore, jakstab includes a breif description of all the options available which is printed to stdout when the binary is executed without any options. For information concerning the theorethical aspects of the tool, we recommend consulting the master thesis of Thomas Peterson.
