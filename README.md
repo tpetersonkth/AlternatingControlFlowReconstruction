@@ -8,7 +8,7 @@ The tool does currently only support debian-based operating systems and has only
 ### Dependencies: 
 * Python 3.6+
 * Java
-* manticore
+* Manticore
 * z3
 * nasm
 
