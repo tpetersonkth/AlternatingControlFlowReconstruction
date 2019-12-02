@@ -1,6 +1,6 @@
 # ACFR
 ## Overview
-ACFR stands for Alternating Control Flow Reconstruction and is a project whose goal is to reconstruct precise control flow of x86 binaries using under and over-approximation alternatingly. The over-approximation is done with the static analysis tool Jakstab and the under-approximation with the dynamic symbolic execution tool manticore.
+ACFR stands for Alternating Control Flow Reconstruction and is a project whose goal is to reconstruct precise control flow of x86 binaries using under and over-approximation alternatingly. The over-approximation is done with the static analysis tool [Jakstab](https://github.com/jkinder/jakstab) and the under-approximation with the symbolic execution engine of [Manticore](https://github.com/trailofbits/manticore).
 ## Installation
 
 The tool does currently only support debian-based operating systems and has only been tested on Ubuntu 18.04.
@@ -8,7 +8,7 @@ The tool does currently only support debian-based operating systems and has only
 ### Dependencies: 
 * Python 3.6+
 * Java
-* manticore
+* Manticore
 * z3
 * nasm
 
