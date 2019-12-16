@@ -1,6 +1,7 @@
 """
 Author: Thomas Peterson
 Year: 2019
+Description: A file containing custom plugins for Manticore
 """
 
 import logging

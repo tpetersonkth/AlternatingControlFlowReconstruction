@@ -3,6 +3,7 @@ Author: Thomas Peterson
 Year: 2019
 """
 
+#An object which stores one path
 class PathObject():
     path = []#List of addresses
     pathLen = 0

@@ -1,6 +1,7 @@
 """
 Author: Thomas Peterson
 Year: 2019
+Description: A server which leverages manticore to obtain successors of locations given by a client
 """
 
 #Built in modules
@@ -20,12 +21,15 @@ def main():
     server = Server(int(port))
     server.run()
 
+#The server class which ret
 class Server():
     connection = None
 
+    #Setup a socket on a specified port
     def __init__(self, port):
         self.connection = communication.Communication(port)
 
+    # Serve connections
     def run(self):
         while True:
             logger.info("Waiting for connection..")
@@ -62,6 +66,8 @@ class Server():
 
                 self.connection.sendAnswer(response)
 
+#Formats a response from a set of paths and a dictionary of targets
+#The message is expected to be of the format START[pairs]END where [pairs] is a set of control flow edges
 def formatResponse(paths,targets):
     response = "START"
     pairs = []
@@ -71,6 +77,7 @@ def formatResponse(paths,targets):
     response += ":".join(pairs) + "END"
     return response
 
+#Formats a set of lines into a set of paths
 def formatPaths(lines):
     paths = []
     id = 0
@@ -83,15 +90,6 @@ def formatPaths(lines):
         id +=1
 
     return pathsObject.PathsObject(paths)
-
-#Deprecated
-def loadPathsFromFile(filename):
-
-    with open(filename, "r") as f:
-        lines = f.readlines()
-
-    return formatPaths(lines)
-
 
 if __name__ == "__main__":
     main()

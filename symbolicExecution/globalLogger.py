@@ -1,6 +1,7 @@
 """
 Author: Thomas Peterson
 Year: 2019
+Description: A file to modify the logging functionality of the logging module.
 """
 
 import logging
