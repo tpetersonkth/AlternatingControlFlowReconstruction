@@ -1,6 +1,8 @@
 """
 Author: Thomas Peterson
 Year: 2019
+Description: A script which, given a binary and an address, returns a set of possible successors after the given address. 
+Note; This file is not used by any other file in the ACFR setup. It is only used for debugging.
 """
 
 #Built in modules

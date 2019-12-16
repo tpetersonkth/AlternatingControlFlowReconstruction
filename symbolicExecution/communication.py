@@ -1,13 +1,14 @@
 """
 Author: Thomas Peterson
 Year: 2019
+Description: A file to handle the socket communication
 """
 
 import socket, logging, globalLogger
 from globalLogger import logger
 
+#Raised when the client closes a socket
 class socketClosedException(Exception):
-   """Raised when client closes a socket"""
    pass
 
 class Communication():
@@ -15,6 +16,7 @@ class Communication():
     encoding = "utf-8"
     socket = None
 
+    #Initializes a clase instance with a port
     def __init__(self,port):
         self.host = 'localhost' # Standard loopback interface address (localhost)
         self.port = port        # Port to listen on
@@ -24,9 +26,11 @@ class Communication():
         self.socket.bind((self.host, self.port))
         self.socket.listen()
 
+    #Waits for a connection
     def connect(self):
         self.conn, addr = self.socket.accept()
 
+    #Waits for data from the client
     def getWork(self):
         BUFFERSIZE = 1024 # 1kb buffer
 
@@ -41,22 +45,26 @@ class Communication():
                 break
             else:
                 pass
-                #logger.info("Waiting for more data: "+str(data))
+
         return self.formatRequest(data).decode(self.encoding)
 
+    #Send an answer back to the client
     def sendAnswer(self,answer):
         answer = str.encode(answer,self.encoding)
         self.conn.sendall(answer + b'\n')
 
+    #Close the connection
     def close(self):
         self.conn.close()
         self.conn = None
 
+    #Check that a message is a valied request
     def isValidRequest(self, message):
         if message.startswith(b'START') and message.endswith(b'END'):
             return True
         return False
 
+    #Format the request to not include the START and END tags
     def formatRequest(self, request):
         if not self.isValidRequest(request):
             raise Exception
