@@ -35,7 +35,7 @@ jak -m [binary] [options] --dse [port]
 where [binary] is the binary to analyze, [options] are optional options to pass to jakstab and [port] is the port specified for the manticore server. Note that the version of Jakstab in this repository contains options for configuring how dse is used in addition to the original options.
 
 ## Documentation
-For people who desire to modify the tool, a large portion of the code has been documented using comments. Futhermore, jakstab includes a brief description of all the options available which is printed to stdout when the binary is executed without any options. For information concerning the theorethical aspects of the tool, we recommend consulting the [master thesis of Thomas Peterson](http://www.nada.kth.se/~ann/exjobb/thomas_peterson.pdf).
+For people who desire to modify the tool, a large portion of the code has been documented using comments. Futhermore, jakstab includes a brief description of all the options available which is printed to stdout when the binary is executed without any options. For information concerning the theorethical aspects of the tool, we recommend consulting the [master thesis of Thomas Peterson](https://kth.diva-portal.org/smash/record.jsf?pid=diva2:1416002).
 
 ## Questions
 Send an email to thpeter@kth.se or create an issue using the issue board.
